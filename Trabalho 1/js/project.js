@@ -10,6 +10,8 @@ const CAMERA_Z = 0
 const BASE_LENGTH = 40
 const BASE_HEIGTH = 2
 const WHEEL_RADIUS = 2
+const ARM_RADIUS_BASE = 4
+
 
 function render() {
     'use strict'
@@ -32,10 +34,23 @@ function addBase(obj, x, y, z) {
     obj.add(mesh)
 }
 
+
 function addWheel(obj,x,y,z){
     'use strict'
 
     geometry = new THREE.SphereGeometry(WHEEL_RADIUS,3, 3)
+    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.position.set(x, y, z)
+
+    obj.add(mesh)
+}
+
+function addArm_base(obj,x,y,z){
+    'use strict'
+
+    geometry = new THREE.CylinderGeometry(ARM_RADIUS_BASE,ARM_RADIUS_BASE,2)
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
@@ -55,6 +70,7 @@ function createRobot(x, y, z) {
     addWheel(robot,-17,-2,17)
     addWheel(robot,17,-2,-17)
     addWheel(robot,-17,-2,-17)
+    addArm_base(robot,0,2,0)
 
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
