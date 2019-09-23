@@ -38,7 +38,7 @@ function addBase(obj, x, y, z) {
 function addWheel(obj,x,y,z){
     'use strict'
 
-    geometry = new THREE.SphereGeometry(WHEEL_RADIUS,3, 3)
+    geometry = new THREE.SphereGeometry(WHEEL_RADIUS,6, 6)
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
