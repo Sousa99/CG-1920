@@ -24,7 +24,7 @@ function addBase(obj, x, y, z) {
     var base = new THREE.Object3D()
 
     geometry = new THREE.CubeGeometry(BASE_LENGTH, BASE_HEIGTH, BASE_LENGTH)
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+    material = new THREE.MeshBasicMaterial({ color: 0x994d00, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
@@ -39,7 +39,7 @@ function addWheel(obj,x,y,z){
     'use strict'
 
     geometry = new THREE.SphereGeometry(WHEEL_RADIUS,6, 6)
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
@@ -51,7 +51,7 @@ function addArm_base(obj,x,y,z){
     'use strict'
 
     geometry = new THREE.CylinderGeometry(ARM_RADIUS_BASE,ARM_RADIUS_BASE,2)
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+    material = new THREE.MeshBasicMaterial({ color: 0xcc6600, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
