@@ -2,9 +2,10 @@
 var camera, scene, renderer
 var geometry, material, mesh
 
-const CAMERA_X = 70
-const CAMERA_Y = 20
-const CAMERA_Z = 0
+var robot, target
+var movementVector = [0, 0, 0]
+
+const CAMERA_MAIN = 100
 
 /* Object Sizes - Just for now */
 const BASE_LENGTH = 40
@@ -34,7 +35,6 @@ function addBase(obj, x, y, z) {
     obj.add(mesh)
 }
 
-
 function addWheel(obj,x,y,z){
     'use strict'
 
@@ -47,7 +47,7 @@ function addWheel(obj,x,y,z){
     obj.add(mesh)
 }
 
-function addArm_base(obj,x,y,z){
+function addArm_base(obj, x, y, z) {
     'use strict'
 
     geometry = new THREE.CylinderGeometry(ARM_RADIUS_BASE,ARM_RADIUS_BASE,2)
@@ -59,18 +59,40 @@ function addArm_base(obj,x,y,z){
     obj.add(mesh)
 }
 
+function addBaseTarget(obj, x, y, z) {
+    'use strict'
 
+    geometry = new THREE.CylinderGeometry(5, 5, 25)
+    material = new THREE.MeshBasicMaterial({ color: 0xcccc99, wireframe: true })
+
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.position.set(x, y + 25 / 2, z)
+
+    obj.add(mesh)
+}
+
+function addTorus(obj, x, y, z) {
+    'use strict'
+
+    geometry = new THREE.TorusGeometry(4.5, 1, 12, 12)
+    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
+
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.position.set(x, y, z)
+
+    obj.add(mesh)
+}
 
 function createRobot(x, y, z) {
     'use strict'
 
     var robot = new THREE.Object3D()
-    addBase(robot, 0, 0, 0)
-    addWheel(robot,17,-2,17)
-    addWheel(robot,-17,-2,17)
-    addWheel(robot,17,-2,-17)
-    addWheel(robot,-17,-2,-17)
-    addArm_base(robot,0,2,0)
+    addBase(robot, x, y + 2, z)
+    addWheel(robot, x + 17, y, z + 17)
+    addWheel(robot, x - 17, y, z + 17)
+    addWheel(robot, x + 17, y, z - 17)
+    addWheel(robot, x - 17, y, z - 17)
+    addArm_base(robot, x , y + 4, z)
 
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
@@ -78,6 +100,25 @@ function createRobot(x, y, z) {
     robot.position.x = x
     robot.position.y = y
     robot.position.z = z
+
+    return robot
+}
+
+function createTarget(x, y, z) {
+    'use strict'
+
+    var target = new THREE.Object3D()
+    addTorus(target, x, y + 30, z)
+
+    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+    addBaseTarget(target, x, y, z)
+
+    scene.add(target)
+    target.position.x = x
+    target.position.y = y
+    target.position.z = z
+
+    return target
 }
 
 function createCamera() {
@@ -85,9 +126,9 @@ function createCamera() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
 
-    camera.position.x = CAMERA_X
-    camera.position.y = CAMERA_Y
-    camera.position.z = CAMERA_Z
+    camera.position.x = 0
+    camera.position.y = CAMERA_MAIN
+    camera.position.z = 0
     camera.lookAt(scene.position)
 }
 
@@ -97,7 +138,8 @@ function createScene() {
     scene = new THREE.Scene()
     scene.add(new THREE.AxesHelper(10))
 
-    createRobot(0, 0, 0)
+    robot = createRobot(0, 0, 0)
+    target = createTarget(30, 0, 0)
 }
 
 function onResize() {
@@ -118,13 +160,82 @@ function onKeyDown(e){
     case 65: //A
     case 97: //a
         break
+    
+    case 37: //arrow_left
+        movementVector[2] = - 1
+        break
+    case 38: //arrow_up
+        movementVector[0] = 1
+        break
+    case 39: //arrow_right
+        movementVector[2] = 1
+        break
+    case 40: //arrow_down
+        movementVector[0] = - 1
+        break
+    
+    case 49: // 1
+        camera.position.x = 0
+        camera.position.y = CAMERA_MAIN
+        camera.position.z = 0
+        camera.lookAt(scene.position)
+        break
+    case 50: // 2
+        camera.position.x = 0
+        camera.position.y = 20
+        camera.position.z = CAMERA_MAIN
+        camera.lookAt(scene.position)
+        break
+    case 51: // 3
+        camera.position.x = CAMERA_MAIN
+        camera.position.y = 20
+        camera.position.z = 0
+        camera.lookAt(scene.position)
+        break
+    case 52: // 4
+        scene.traverse(function (node) {
+            if (node instanceof THREE.Mesh) {
+                node.material.wireframe = !node.material.wireframe
+            }
+        })
+        break
     }
+}
+
+function onKeyUp(e){
+    'use strict'
+
+    switch (e.keyCode) {
+    case 37: //arrow_left
+        movementVector[2] = 0
+        break
+    case 38: //arrow_up
+        movementVector[0] = 0
+        break
+    case 39: //arrow_right
+        movementVector[2] = 0
+        break
+    case 40: //arrow_down
+        movementVector[0] = 0
+        break
+    }
+}
+
+function animate() {
+    'use strict'
+
+    robot.position.x += 0.1 * movementVector[0]
+    robot.position.y += 0.1 * movementVector[1]
+    robot.position.z += 0.1 * movementVector[2]
+
+    render()
+    requestAnimationFrame(animate)
 }
 
 function init() {
     'use strict'
 
-    renderer = new THREE.WebGLRenderer()
+    renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.body.appendChild(renderer.domElement)
 
@@ -135,4 +246,5 @@ function init() {
 
     window.addEventListener("resize", onResize)
     window.addEventListener("keydown", onKeyDown)
+    window.addEventListener("keyup", onKeyUp)
 }
