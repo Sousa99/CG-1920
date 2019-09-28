@@ -101,7 +101,7 @@ function addHalfArmDown(obj, x, y, z){
 function addSphereArm(obj, x, y, z){
     'use strict'
 
-    geometry = new THREE.SphereGeometry(2,6, 6)
+    geometry = new THREE.SphereGeometry(2,6,6,70)
     material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
      
     mesh = new THREE.Mesh(geometry, material)
