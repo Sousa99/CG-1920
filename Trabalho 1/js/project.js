@@ -25,7 +25,7 @@ function addBase(obj, x, y, z) {
     var base = new THREE.Object3D()
 
     geometry = new THREE.CubeGeometry(BASE_LENGTH, BASE_HEIGTH, BASE_LENGTH)
-    material = new THREE.MeshBasicMaterial({ color: 0x994d00, wireframe: true })
+    material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
