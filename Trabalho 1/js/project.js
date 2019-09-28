@@ -40,7 +40,7 @@ function addWheel(obj,x,y,z){
 
     geometry = new THREE.SphereGeometry(WHEEL_RADIUS,6, 6)
     material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
-
+    material.side = THREE.DoubleSide; 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
 
@@ -50,8 +50,9 @@ function addWheel(obj,x,y,z){
 function addArm_base(obj, x, y, z) {
     'use strict'
 
-    geometry = new THREE.CylinderGeometry(ARM_RADIUS_BASE,ARM_RADIUS_BASE,2)
+    geometry = new THREE.SphereBufferGeometry(ARM_RADIUS_BASE,32,32)
     material = new THREE.MeshBasicMaterial({ color: 0xcc6600, wireframe: true })
+
 
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.set(x, y, z)
@@ -83,6 +84,33 @@ function addTorus(obj, x, y, z) {
     obj.add(mesh)
 }
 
+function addHalfArmDown(obj, x, y, z){
+    'use strict'
+
+    geometry = new THREE.CylinderGeometry(2,2,12)
+    material = new THREE.MeshBasicMaterial({ color: 0xcccc99, wireframe: true })
+
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.rotation.x += 0.15;
+    mesh.rotation.z += 0.15;
+    mesh.position.set(x, y, z)
+
+    obj.add(mesh)
+}
+
+function addSphereArm(obj, x, y, z){
+    'use strict'
+
+    geometry = new THREE.SphereGeometry(2,6, 6)
+    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
+     
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.rotation.x += 0.50;
+    mesh.rotation.z += 0.50;
+    mesh.position.set(x, y, z)
+
+    obj.add(mesh)
+}
 function createRobot(x, y, z) {
     'use strict'
 
@@ -92,7 +120,9 @@ function createRobot(x, y, z) {
     addWheel(robot, x - 17, y, z + 17)
     addWheel(robot, x + 17, y, z - 17)
     addWheel(robot, x - 17, y, z - 17)
-    addArm_base(robot, x , y + 4, z)
+    addArm_base(robot, x , y + 2, z)
+    addHalfArmDown(robot, x , y + 4, z)
+    addSphereArm(robot, x , y + 11, z)
 
     material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
