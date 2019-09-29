@@ -122,7 +122,7 @@ class Target extends THREE.Object3D {
     constructor(x , y, z) {
         super()
 
-        this.addTorus(x, y + 30, z)
+        this.addTorus(x, y + 35.5, z)
         this.addBaseTarget(x, y, z)
 
         this.position.set(x, y, z)
@@ -131,7 +131,7 @@ class Target extends THREE.Object3D {
     addBaseTarget(x, y, z) {
         'use strict'
     
-        geometry = new THREE.CylinderGeometry(5, 5, 25)
+        geometry = new THREE.CylinderGeometry(5, 5, 35)
         material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y + 25 / 2, z)
