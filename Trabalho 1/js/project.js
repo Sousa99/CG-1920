@@ -1,161 +1,168 @@
 /* var THREE */
+var cameras = []
 var camera, scene, renderer
 var geometry, material, mesh
 
 var robot, target
-var movementVector = [0, 0, 0]
 
-const CAMERA_MAIN = 100
-
-/* Object Sizes - Just for now */
-const BASE_LENGTH = 40
-const BASE_HEIGTH = 2
-const WHEEL_RADIUS = 2
-const ARM_RADIUS_BASE = 7
-
+const VELOCITY_CONSTANT = 0.1
+const ROTATE_VELOCITY_CONSTANT = 0.05
 
 function render() {
     'use strict'
-    renderer.render(scene, camera)
+    renderer.render(scene, cameras[camera])
 }
 
-function addBase(obj, x, y, z) {
-    'use strict'
+class Robot extends THREE.Object3D {
+    constructor(x, y, z) {
+        super()
 
-    var base = new THREE.Object3D()
+        this.movement = new THREE.Vector3(0, 0, 0)
+        this.angle1 = 0
+        
+        this.forearm = new THREE.Object3D()
+        this.forearm.add(this.addArt(x , y, z))
+        this.forearm.add(this.addHalfArm(x + 11.25, y, z, true))
+        this.forearm.position.set(x, y + 29, z)
+        
+        this.arm = new THREE.Object3D()
+        this.arm.add(this.addHalfArm(x , y + 17, z))
+        this.arm.add(this.forearm)
+        this.arm.position.set(x, y, z)
+        
+        this.base = new THREE.Object3D()
+        this.base.add(this.addBase(x, y + 2, z))
+        this.base.add(this.addWheel(x + 17, y, z + 17))
+        this.base.add(this.addWheel(x - 17, y, z + 17))
+        this.base.add(this.addWheel(x + 17, y, z - 17))
+        this.base.add(this.addWheel(x - 17, y, z - 17))
+        this.base.add(this.addMainArt(x , y + 2, z))
+        this.base.add(this.arm)
+        this.base.position.set(x, y, z)
 
-    geometry = new THREE.CubeGeometry(BASE_LENGTH, BASE_HEIGTH, BASE_LENGTH)
-    material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
+        this.position.set(x, y, z)
 
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
+        this.add(this.base)
+    }
 
+    addBase(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.CubeGeometry(40, 2, 40)
+        material = new THREE.MeshBasicMaterial({ color: 0x003366, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addWheel(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.SphereGeometry(2,6, 6)
+        material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addMainArt(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.SphereBufferGeometry(7, 16, 16, undefined, undefined, 0, Math.PI / 2)
+        material = new THREE.MeshBasicMaterial({ color: 0x0059b3, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addHalfArm(x, y, z, forearm) {
+        'use strict'
     
+        geometry = new THREE.BoxGeometry(3, 21, 3)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
 
-    obj.add(mesh)
+        if (forearm)
+            mesh.rotateZ(Math.PI / 2)
+    
+        return mesh
+    }
+
+    addArt(x, y, z) {
+        'use strict'
+    
+        geometry = new THREE.SphereGeometry(2.5, 7, 7, 70)
+        material = new THREE.MeshBasicMaterial({ color: 0x0059b3, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+    
+        return mesh
+    }
+
+    move() {
+        var angledVector = new THREE.Vector3(
+            Math.cos(this.angle1) * this.movement.x + Math.sin(this.angle1) * this.movement.z,
+            0,
+            Math.cos(this.angle1) * this.movement.z - Math.sin(this.angle1) * this.movement.x)
+        //console.log("Angle: " + this.angle1)
+        //console.log("Vector: " + Math.cos(this.angle1) * this.movement.x, 0, Math.sin(this.angle1 * this.movement.z))
+        this.translateOnAxis(angledVector, VELOCITY_CONSTANT)
+    }
+
+    rotateBase(value) {
+        this.angle1 += ROTATE_VELOCITY_CONSTANT * value
+        this.base.rotateY(ROTATE_VELOCITY_CONSTANT * value) 
+    }
 }
 
-function addWheel(obj,x,y,z){
-    'use strict'
+class Target extends THREE.Object3D {
+    constructor(x , y, z) {
+        super()
 
-    geometry = new THREE.SphereGeometry(WHEEL_RADIUS,6, 6)
-    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
-    material.side = THREE.DoubleSide; 
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
+        this.addTorus(x, y + 30, z)
+        this.addBaseTarget(x, y, z)
 
-    obj.add(mesh)
+        this.position.set(x, y, z)
+    }
+
+    addBaseTarget(x, y, z) {
+        'use strict'
+    
+        geometry = new THREE.CylinderGeometry(5, 5, 25)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y + 25 / 2, z)
+    
+        this.add(mesh)
+    }
+
+    addTorus(x, y, z) {
+        'use strict'
+    
+        geometry = new THREE.TorusGeometry(4.5, 1, 12, 12)
+        material = new THREE.MeshBasicMaterial({ color: 0x0059b3, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+    
+        this.add(mesh)
+    }
 }
 
-function addArm_base(obj, x, y, z) {
+function createCamera(x, y, z) {
     'use strict'
 
-    geometry = new THREE.SphereBufferGeometry(ARM_RADIUS_BASE, 16, 16, undefined, undefined, 0, Math.PI / 2)
-    material = new THREE.MeshBasicMaterial({ color: 0xcc6600, wireframe: true })
+    var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
 
-
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
-
-    obj.add(mesh)
-}
-
-function addBaseTarget(obj, x, y, z) {
-    'use strict'
-
-    geometry = new THREE.CylinderGeometry(5, 5, 25)
-    material = new THREE.MeshBasicMaterial({ color: 0xcccc99, wireframe: true })
-
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y + 25 / 2, z)
-
-    obj.add(mesh)
-}
-
-function addTorus(obj, x, y, z) {
-    'use strict'
-
-    geometry = new THREE.TorusGeometry(4.5, 1, 12, 12)
-    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
-
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
-
-    obj.add(mesh)
-}
-
-function addHalfArmDown(obj, x, y, z){
-    'use strict'
-
-    geometry = new THREE.BoxGeometry(3, 20, 3)
-    material = new THREE.MeshBasicMaterial({ color: 0xcccc99, wireframe: true })
-
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
-
-    obj.add(mesh)
-}
-
-function addSphereArm(obj, x, y, z){
-    'use strict'
-
-    geometry = new THREE.SphereGeometry(2.5, 7, 7, 70)
-    material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true })
-     
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.set(x, y, z)
-
-    obj.add(mesh)
-}
-function createRobot(x, y, z) {
-    'use strict'
-
-    var robot = new THREE.Object3D()
-    addBase(robot, x, y + 2, z)
-    addWheel(robot, x + 17, y, z + 17)
-    addWheel(robot, x - 17, y, z + 17)
-    addWheel(robot, x + 17, y, z - 17)
-    addWheel(robot, x - 17, y, z - 17)
-    addArm_base(robot, x , y + 2, z)
-    addHalfArmDown(robot, x , y + 18, z)
-    addSphereArm(robot, x , y + 30, z)
-
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
-
-    scene.add(robot)
-    robot.position.x = x
-    robot.position.y = y
-    robot.position.z = z
-
-    return robot
-}
-
-function createTarget(x, y, z) {
-    'use strict'
-
-    var target = new THREE.Object3D()
-    addTorus(target, x, y + 30, z)
-
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
-    addBaseTarget(target, x, y, z)
-
-    scene.add(target)
-    target.position.x = x
-    target.position.y = y
-    target.position.z = z
-
-    return target
-}
-
-function createCamera() {
-    'use strict'
-
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
-
-    camera.position.x = 0
-    camera.position.y = CAMERA_MAIN
-    camera.position.z = 0
+    camera.position.x = x
+    camera.position.y = y
+    camera.position.z = z
     camera.lookAt(scene.position)
+
+    return camera
 }
 
 function createScene() {
@@ -164,8 +171,10 @@ function createScene() {
     scene = new THREE.Scene()
     scene.add(new THREE.AxesHelper(10))
 
-    robot = createRobot(0, 0, 0)
-    target = createTarget(30, 0, 0)
+    robot = new Robot(0, 0, 0)
+    target = new Target(30, 0, 0)
+    scene.add(robot)
+    scene.add(target)
 }
 
 function onResize() {
@@ -183,41 +192,29 @@ function onKeyDown(e){
     'use strict'
 
     switch (e.keyCode) {
-    case 65: //A
-    case 97: //a
-        break
-    
     case 37: //arrow_left
-        movementVector[2] = - 1
+        robot.movement.setZ(-1)
         break
     case 38: //arrow_up
-        movementVector[0] = 1
+        robot.movement.setX(1)
         break
     case 39: //arrow_right
-        movementVector[2] = 1
+        robot.movement.setZ(1)
         break
     case 40: //arrow_down
-        movementVector[0] = - 1
+        robot.movement.setX(-1)
         break
     
     case 49: // 1
-        camera.position.x = 0
-        camera.position.y = CAMERA_MAIN
-        camera.position.z = 0
-        camera.lookAt(scene.position)
+        camera = 0
         break
     case 50: // 2
-        camera.position.x = 0
-        camera.position.y = 20
-        camera.position.z = CAMERA_MAIN
-        camera.lookAt(scene.position)
+        camera = 1
         break
     case 51: // 3
-        camera.position.x = CAMERA_MAIN
-        camera.position.y = 20
-        camera.position.z = 0
-        camera.lookAt(scene.position)
+        camera = 2
         break
+    
     case 52: // 4
         scene.traverse(function (node) {
             if (node instanceof THREE.Mesh) {
@@ -225,7 +222,16 @@ function onKeyDown(e){
             }
         })
         break
+
+    case 65: //a
+        robot.rotateBase(1)
+        break
+
+    case 83: //s
+        robot.rotateBase(-1)
+        break
     }
+
 }
 
 function onKeyUp(e){
@@ -233,16 +239,12 @@ function onKeyUp(e){
 
     switch (e.keyCode) {
     case 37: //arrow_left
-        movementVector[2] = 0
+    case 39: //arrow_right
+        robot.movement.setZ(0)
         break
     case 38: //arrow_up
-        movementVector[0] = 0
-        break
-    case 39: //arrow_right
-        movementVector[2] = 0
-        break
     case 40: //arrow_down
-        movementVector[0] = 0
+        robot.movement.setX(0)
         break
     }
 }
@@ -250,9 +252,7 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    robot.position.x += 0.1 * movementVector[0]
-    robot.position.y += 0.1 * movementVector[1]
-    robot.position.z += 0.1 * movementVector[2]
+    robot.move()
 
     render()
     requestAnimationFrame(animate)
@@ -266,7 +266,11 @@ function init() {
     document.body.appendChild(renderer.domElement)
 
     createScene()
-    createCamera()
+
+    camera = 0
+    cameras[0] = createCamera(0, 100, 0)
+    cameras[1] = createCamera(0, 20, 100)
+    cameras[2] = createCamera(100, 20, 0)
 
     render()
 
