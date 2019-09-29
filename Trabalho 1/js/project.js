@@ -104,12 +104,11 @@ class Robot extends THREE.Object3D {
     }
 
     move() {
+        // TODO: change this for math formula
         var angledVector = new THREE.Vector3(
             Math.cos(this.angle1) * this.movement.x + Math.sin(this.angle1) * this.movement.z,
             0,
             Math.cos(this.angle1) * this.movement.z - Math.sin(this.angle1) * this.movement.x)
-        //console.log("Angle: " + this.angle1)
-        //console.log("Vector: " + Math.cos(this.angle1) * this.movement.x, 0, Math.sin(this.angle1 * this.movement.z))
         this.translateOnAxis(angledVector, VELOCITY_CONSTANT)
     }
 
@@ -216,6 +215,7 @@ function onKeyDown(e){
         break
     
     case 52: // 4
+        // TODO: We can't use this
         scene.traverse(function (node) {
             if (node instanceof THREE.Mesh) {
                 node.material.wireframe = !node.material.wireframe
