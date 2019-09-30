@@ -6,7 +6,12 @@ var geometry, material, mesh
 var robot, target
 
 const VELOCITY_CONSTANT = 0.1
-const ROTATE_VELOCITY_CONSTANT = 0.05
+const ROTATE_VELOCITY_CONSTANT = 0.02
+
+var SCREEN_WIDTH = window.innerWidth
+var SCREEN_HEIGHT = window.innerHeight
+var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
+var frustumSize = 100
 
 function render() {
     'use strict'
@@ -18,6 +23,7 @@ class Robot extends THREE.Object3D {
         super()
 
         this.movement = new THREE.Vector3(0, 0, 0)
+        this.rotationMovement = [0, 0, 0]
         this.angle1 = 0
         
         this.forearm = new THREE.Object3D()
@@ -28,6 +34,7 @@ class Robot extends THREE.Object3D {
         this.arm = new THREE.Object3D()
         this.arm.add(this.addHalfArm(x , y + 17, z))
         this.arm.add(this.forearm)
+        this.arm.add(this.addMainArt(x , y + 2, z))
         this.arm.position.set(x, y, z)
         
         this.base = new THREE.Object3D()
@@ -36,7 +43,6 @@ class Robot extends THREE.Object3D {
         this.base.add(this.addWheel(x - 17, y, z + 17))
         this.base.add(this.addWheel(x + 17, y, z - 17))
         this.base.add(this.addWheel(x - 17, y, z - 17))
-        this.base.add(this.addMainArt(x , y + 2, z))
         this.base.add(this.arm)
         this.base.position.set(x, y, z)
 
@@ -104,17 +110,12 @@ class Robot extends THREE.Object3D {
     }
 
     move() {
-        // TODO: change this for math formula
-        var angledVector = new THREE.Vector3(
-            Math.cos(this.angle1) * this.movement.x + Math.sin(this.angle1) * this.movement.z,
-            0,
-            Math.cos(this.angle1) * this.movement.z - Math.sin(this.angle1) * this.movement.x)
-        this.translateOnAxis(angledVector, VELOCITY_CONSTANT)
+        this.translateOnAxis(this.movement, VELOCITY_CONSTANT)
     }
 
-    rotateBase(value) {
-        this.angle1 += ROTATE_VELOCITY_CONSTANT * value
-        this.base.rotateY(ROTATE_VELOCITY_CONSTANT * value) 
+    rotateArms() {
+        this.angle1 += ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0]
+        this.arm.rotateY(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0])
     }
 }
 
@@ -122,7 +123,7 @@ class Target extends THREE.Object3D {
     constructor(x , y, z) {
         super()
 
-        this.addTorus(x, y + 35.5, z)
+        this.addTorus(x, y + 30, z)
         this.addBaseTarget(x, y, z)
 
         this.position.set(x, y, z)
@@ -131,7 +132,7 @@ class Target extends THREE.Object3D {
     addBaseTarget(x, y, z) {
         'use strict'
     
-        geometry = new THREE.CylinderGeometry(5, 5, 35)
+        geometry = new THREE.CylinderGeometry(5, 5, 25)
         material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y + 25 / 2, z)
@@ -154,7 +155,7 @@ class Target extends THREE.Object3D {
 function createCamera(x, y, z) {
     'use strict'
 
-    var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
+    var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
 
     camera.position.x = x
     camera.position.y = y
@@ -181,10 +182,11 @@ function onResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight)
 
-    if (window.innerHeight > 0 && window.innerWidth > 0) {
-        camera.aspect = renderer.getSize().width / renderer.getSize().height
-        camera.updateProjectionMatrix()
-    }
+    cameras[camera].left = - window.innerWidth / 2
+    cameras[camera].right = window.innerWidth / 2
+    cameras[camera].top = window.innerHeight / 2
+    cameras[camera].bottom = - window.innerHeight / 2
+    cameras[camera].updateProjectionMatrix()
 }
 
 function onKeyDown(e){
@@ -224,11 +226,10 @@ function onKeyDown(e){
         break
 
     case 65: //a
-        robot.rotateBase(1)
+        robot.rotationMovement[0] = 1
         break
-
     case 83: //s
-        robot.rotateBase(-1)
+        robot.rotationMovement[0] = -1
         break
     }
 
@@ -246,6 +247,11 @@ function onKeyUp(e){
     case 40: //arrow_down
         robot.movement.setX(0)
         break
+
+    case 65: //a
+    case 83: //s
+        robot.rotationMovement[0] = 0
+        break
     }
 }
 
@@ -253,6 +259,7 @@ function animate() {
     'use strict'
 
     robot.move()
+    robot.rotateArms()
 
     render()
     requestAnimationFrame(animate)
@@ -262,15 +269,17 @@ function init() {
     'use strict'
 
     renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio( window.devicePixelRatio)
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+
     document.body.appendChild(renderer.domElement)
 
     createScene()
 
     camera = 0
-    cameras[0] = createCamera(0, 100, 0)
-    cameras[1] = createCamera(0, 20, 100)
-    cameras[2] = createCamera(100, 20, 0)
+    cameras[0] = createCamera(0, 20, 0)
+    cameras[1] = createCamera(0, 0, 20)
+    cameras[2] = createCamera(20, 0, 0)
 
     render()
 
