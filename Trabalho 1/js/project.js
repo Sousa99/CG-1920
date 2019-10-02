@@ -6,7 +6,7 @@ var geometry, material, mesh
 var robot, target
 
 const VELOCITY_CONSTANT = 0.1
-const ROTATE_VELOCITY_CONSTANT = 0.02
+const ROTATE_VELOCITY_CONSTANT = 0.01
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -26,21 +26,23 @@ class Robot extends THREE.Object3D {
         this.rotationMovement = [0, 0, 0]
         this.angle1 = 0
 
-        this.hand = new THREE.Object3D();
-        this.hand.add(this.addHand(x, y, z));
-        this.hand.add(this.addFinger(x, y, z));
-        this.hand.add(this.addFinger(x, y, z));
-        this.hand.position.set(x, y, z + 10);
+        this.hand = new THREE.Object3D()
+        this.hand.add(this.addArt(x + 1.25, y, z))
+        this.hand.add(this.addHand(x + 4.25, y, z))
+        this.hand.add(this.addFinger(x + 7.50, y, z + 1.55))
+        this.hand.add(this.addFinger(x + 7.50, y, z - 1.55))
+        this.hand.position.set(x + 21.75, y, z)
         
         this.forearm = new THREE.Object3D()
         this.forearm.add(this.addArt(x , y, z))
         this.forearm.add(this.addHalfArm(x + 11.25, y, z, true))
+        this.forearm.add(this.hand)
         this.forearm.position.set(x, y + 29, z)
         
         this.arm = new THREE.Object3D()
         this.arm.add(this.addHalfArm(x , y + 17, z))
-        this.arm.add(this.forearm)
         this.arm.add(this.addMainArt(x , y + 2, z))
+        this.arm.add(this.forearm)
         this.arm.position.set(x, y, z)
         
         this.base = new THREE.Object3D()
@@ -58,21 +60,21 @@ class Robot extends THREE.Object3D {
     }
 
 	addHand(x, y, z) {
-		geometry = new THREE.CubeGeometry(5, 2, 5)
-		material = new THREE.MeshBasicMaterial({ color: 0x003366, wireframe: true})
+		geometry = new THREE.CubeGeometry(1.5, 6, 6)
+		material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true})
 		mesh = new THREE.Mesh(geometry, material)
 		mesh.position.set(x, y, z)
 
-		return mesh;
+		return mesh
 	}   
 
 	addFinger(x, y, z) {
-		geometry = new THREE.CubeGeometry(1, 5, 1);
-		material = new THREE.MeshBasicMaterial({ color: 0x003366, wireframe: true});
-		mesh = new THREE.Mesh(geometry, material);
-		mesh.position.set(x, y, z);
+		geometry = new THREE.CubeGeometry(5, 1, 1)
+		material = new THREE.MeshBasicMaterial({ color: 0x33ccff, wireframe: true})
+		mesh = new THREE.Mesh(geometry, material)
+		mesh.position.set(x, y, z)
 
-		return mesh;
+		return mesh
 	} 
 
     addBase(x, y, z) {
@@ -241,7 +243,7 @@ function onKeyDown(e){
         break
     
     case 52: // 4
-        // TODO: We can't use this33
+        // TODO: We can't use this
         scene.traverse(function (node) {
             if (node instanceof THREE.Mesh) {
                 node.material.wireframe = !node.material.wireframe
@@ -301,7 +303,7 @@ function init() {
     createScene()
 
     camera = 0
-    cameras[0] = createCamera(5, 5, 5)
+    cameras[0] = createCamera(0, 20, 0)
     cameras[1] = createCamera(0, 0, 20)
     cameras[2] = createCamera(20, 0, 0)
 
