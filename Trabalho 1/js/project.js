@@ -27,11 +27,11 @@ class Robot extends THREE.Object3D {
         this.angle1 = 0
 
         this.hand = new THREE.Object3D()
-        this.hand.add(this.addArt(x + 1.25, y, z))
-        this.hand.add(this.addHand(x + 4.25, y, z))
-        this.hand.add(this.addFinger(x + 7.50, y, z + 1.55))
-        this.hand.add(this.addFinger(x + 7.50, y, z - 1.55))
-        this.hand.position.set(x + 21.75, y, z)
+        this.hand.add(this.addArt(x, y, z))
+        this.hand.add(this.addHand(x + 3, y, z))
+        this.hand.add(this.addFinger(x + 6.25, y, z + 1.55))
+        this.hand.add(this.addFinger(x + 6.25, y, z - 1.55))
+        this.hand.position.set(x + 23, y, z)
         
         this.forearm = new THREE.Object3D()
         this.forearm.add(this.addArt(x , y, z))
