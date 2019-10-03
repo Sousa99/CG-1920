@@ -31,19 +31,19 @@ class Robot extends THREE.Object3D {
         this.hand.add(this.addHand(x + 3, y, z))
         this.hand.add(this.addFinger(x + 6.25, y, z + 1.55))
         this.hand.add(this.addFinger(x + 6.25, y, z - 1.55))
-        this.hand.position.set(x + 23, y, z)
+        this.hand.position.set(x + 25.75, y, z)
         
         this.forearm = new THREE.Object3D()
         this.forearm.add(this.addArt(x , y, z))
-        this.forearm.add(this.addHalfArm(x + 11.25, y, z, true))
+        this.forearm.add(this.addHalfArm(x + 12.75, y, z, true))
         this.forearm.add(this.hand)
-        this.forearm.position.set(x, y + 29, z)
+        this.forearm.position.set(x, y + 30, z)
         
         this.arm = new THREE.Object3D()
         this.arm.add(this.addHalfArm(x , y + 17, z))
-        this.arm.add(this.addMainArt(x , y + 2, z))
+        this.arm.add(this.addMainArt(x , y, z))
         this.arm.add(this.forearm)
-        this.arm.position.set(x, y, z)
+        this.arm.position.set(x, y + 3, z)
         
         this.base = new THREE.Object3D()
         this.base.add(this.addBase(x, y + 2, z))
@@ -136,12 +136,32 @@ class Robot extends THREE.Object3D {
     }
 
     move() {
+        'use strict'
         this.translateOnAxis(this.movement, VELOCITY_CONSTANT)
     }
 
     rotateArms() {
+        'use strict'
+
         this.angle1 += ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0]
         this.arm.rotateY(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0])
+    }
+
+    toggleWireframe() {
+        'use strict'
+
+        var toChange = new Array()
+
+        toChange = toChange.concat(this)
+
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+
+            if (current.type == "Object3D")
+                toChange = toChange.concat(current.children)
+            else if (current.type == "Mesh")
+                current.material.wireframe = !current.material.wireframe
+        }
     }
 }
 
@@ -175,6 +195,22 @@ class Target extends THREE.Object3D {
         mesh.position.set(x, y, z)
     
         this.add(mesh)
+    }
+
+    toggleWireframe() {
+        'use strict'
+        var toChange = new Array()
+
+        toChange = toChange.concat(this)
+
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+
+            if (current.type == "Object3D")
+                toChange = toChange.concat(current.children)
+            else if (current.type == "Mesh")
+                current.material.wireframe = !current.material.wireframe
+        }
     }
 }
 
@@ -243,12 +279,8 @@ function onKeyDown(e){
         break
     
     case 52: // 4
-        // TODO: We can't use this
-        scene.traverse(function (node) {
-            if (node instanceof THREE.Mesh) {
-                node.material.wireframe = !node.material.wireframe
-            }
-        })
+        robot.toggleWireframe()
+        target.toggleWireframe()
         break
 
     case 65: //a
