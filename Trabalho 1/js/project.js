@@ -25,6 +25,7 @@ class Robot extends THREE.Object3D {
         this.movement = new THREE.Vector3(0, 0, 0)
         this.rotationMovement = [0, 0, 0]
         this.angle1 = 0
+        this.angle2 = 0
 
         this.hand = new THREE.Object3D()
         this.hand.add(this.addArt(x, y, z))
@@ -41,17 +42,21 @@ class Robot extends THREE.Object3D {
         
         this.arm = new THREE.Object3D()
         this.arm.add(this.addHalfArm(x , y + 17, z))
-        this.arm.add(this.addMainArt(x , y, z))
         this.arm.add(this.forearm)
-        this.arm.position.set(x, y + 3, z)
+        this.arm.position.set(x, y, z)
         
+        this.fullArm = new THREE.Object3D()
+        this.fullArm.add(this.addMainArt(x , y, z))
+        this.fullArm.add(this.arm)
+        this.fullArm.position.set(x, y + 3, z)
+
         this.base = new THREE.Object3D()
         this.base.add(this.addBase(x, y + 2, z))
         this.base.add(this.addWheel(x + 17, y, z + 17))
         this.base.add(this.addWheel(x - 17, y, z + 17))
         this.base.add(this.addWheel(x + 17, y, z - 17))
         this.base.add(this.addWheel(x - 17, y, z - 17))
-        this.base.add(this.arm)
+        this.base.add(this.fullArm)
         this.base.position.set(x, y, z)
 
         this.position.set(x, y, z)
@@ -144,7 +149,16 @@ class Robot extends THREE.Object3D {
         'use strict'
 
         this.angle1 += ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0]
-        this.arm.rotateY(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0])
+        this.fullArm.rotateY(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0])
+
+        console.log(this.angle2 + ":" + this.rotationMovement[1])
+
+        if ((this.angle2 < 0.85 * (Math.PI / 2) && this.angle2 > - 0.44 * (Math.PI / 2)) ||
+            (this.angle2 > 0.85 * (Math.PI / 2) && this.rotationMovement[1] == -1) ||
+            (this.angle2 < - 0.44 * (Math.PI / 2) && this.rotationMovement[1] == 1)) {
+                this.angle2 += ROTATE_VELOCITY_CONSTANT * this.rotationMovement[1]
+                this.arm.rotateZ(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[1])
+        }
     }
 
     toggleWireframe() {
@@ -289,6 +303,13 @@ function onKeyDown(e){
     case 83: //s
         robot.rotationMovement[0] = -1
         break
+    
+    case 81: //q
+        robot.rotationMovement[1] = 1
+        break
+    case 87: //w
+        robot.rotationMovement[1] = -1
+        break
     }
 
 }
@@ -309,6 +330,10 @@ function onKeyUp(e){
     case 65: //a
     case 83: //s
         robot.rotationMovement[0] = 0
+        break
+    case 81: //q
+    case 87: //w
+        robot.rotationMovement[1] = 0
         break
     }
 }
