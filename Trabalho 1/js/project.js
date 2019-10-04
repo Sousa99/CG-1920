@@ -151,8 +151,6 @@ class Robot extends THREE.Object3D {
         this.angle1 += ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0]
         this.fullArm.rotateY(ROTATE_VELOCITY_CONSTANT * this.rotationMovement[0])
 
-        console.log(this.angle2 + ":" + this.rotationMovement[1])
-
         if ((this.angle2 < 0.85 * (Math.PI / 2) && this.angle2 > - 0.44 * (Math.PI / 2)) ||
             (this.angle2 > 0.85 * (Math.PI / 2) && this.rotationMovement[1] == -1) ||
             (this.angle2 < - 0.44 * (Math.PI / 2) && this.rotationMovement[1] == 1)) {
@@ -257,11 +255,14 @@ function onResize() {
     'use strict'
 
     renderer.setSize(window.innerWidth, window.innerHeight)
+    SCREEN_WIDTH = window.innerWidth
+    SCREEN_HEIGHT = window.innerHeight
+    aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    cameras[camera].left = - window.innerWidth / 2
-    cameras[camera].right = window.innerWidth / 2
-    cameras[camera].top = window.innerHeight / 2
-    cameras[camera].bottom = - window.innerHeight / 2
+    cameras[camera].left = frustumSize * aspect / - 2
+    cameras[camera].right = frustumSize * aspect / 2
+    cameras[camera].top = frustumSize / 2
+    cameras[camera].bottom = frustumSize / - 2
     cameras[camera].updateProjectionMatrix()
 }
 
