@@ -30,8 +30,8 @@ class Robot extends THREE.Object3D {
         this.hand = new THREE.Object3D()
         this.hand.add(this.addArt(x, y, z))
         this.hand.add(this.addHand(x + 3, y, z))
-        this.hand.add(this.addFinger(x + 6.25, y, z + 1.55))
-        this.hand.add(this.addFinger(x + 6.25, y, z - 1.55))
+        this.hand.add(this.addFinger(x + 6.25, y, z + 1.60))
+        this.hand.add(this.addFinger(x + 6.25, y, z - 1.60))
         this.hand.position.set(x + 25.75, y, z)
         
         this.forearm = new THREE.Object3D()
@@ -259,11 +259,13 @@ function onResize() {
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    cameras[camera].left = frustumSize * aspect / - 2
-    cameras[camera].right = frustumSize * aspect / 2
-    cameras[camera].top = frustumSize / 2
-    cameras[camera].bottom = frustumSize / - 2
-    cameras[camera].updateProjectionMatrix()
+    for (var i = 0; i < 3; i++) {
+        cameras[i].left = frustumSize * aspect / - 2
+        cameras[i].right = frustumSize * aspect / 2
+        cameras[i].top = frustumSize / 2
+        cameras[i].bottom = frustumSize / - 2
+        cameras[i].updateProjectionMatrix()
+    }
 }
 
 function onKeyDown(e){
