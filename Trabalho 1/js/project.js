@@ -142,7 +142,10 @@ class Robot extends THREE.Object3D {
 
     move() {
         'use strict'
-        this.translateOnAxis(this.movement, VELOCITY_CONSTANT)
+        if (this.movement.length() != 0) {
+            var distance = VELOCITY_CONSTANT / this.movement.length()
+            this.translateOnAxis(this.movement, distance)
+        }
     }
 
     rotateArms() {
