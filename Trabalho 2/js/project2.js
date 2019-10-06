@@ -20,12 +20,10 @@ class Wall extends THREE.Object3D {
     constructor(x, y, z) {
         super()
 
-
-        this.wall = new THREE.Object3D()
-        this.wall.add(this.addWall(x - 5, y, z - 5))
-        this.wall.add(this.addWall(x, y, z))
-        this.wall.add(this.addWall(x + 5, y, z + 5))
-        this.wall.position.set(x + 25.75, y, z)
+        this.add(this.addWall(x - 5, y, z - 5))
+        this.add(this.addWall(x, y, z))
+        this.add(this.addWall(x + 5, y, z + 5))
+        this.position.set(x + 25.75, y, z)
     
 
         this.position.set(x, y, z)
@@ -47,9 +45,8 @@ class Gun extends THREE.Object3D {
     constructor(x , y, z) {
         super()
 
-        this.gun.add(this.addGun(x, y, z))
-
-        this.gun.position.set(x, y, z)
+        this.add(this.addGun(x, y, z))
+        this.position.set(x, y, z)
     }
 
     addGun(x, y, z) {
@@ -64,7 +61,6 @@ class Gun extends THREE.Object3D {
     }
 
 }
-
 
 function createCamera(x, y, z) {
     'use strict'
