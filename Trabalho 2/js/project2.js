@@ -4,6 +4,7 @@ var camera, scene, renderer
 var geometry, material, mesh
 
 var gun,wall
+var balls = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -64,6 +65,20 @@ class Gun extends THREE.Object3D {
         return mesh
     }
 
+}
+
+class Ball extends THREE.Object3D {
+    constructor(x, y, z) {
+        super()
+
+        this.velocity = new THREE.Vector3(0, 0, 0)
+        geometry = new THREE.SphereGeometry(2, 20, 20)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y + 2, z)
+
+        this.add(mesh)
+    }
 }
 
 function createCamera(x, y, z) {
@@ -146,9 +161,21 @@ function createScene() {
     scene.add(new THREE.AxesHelper(10))
 
     wall = new Wall(0, 0, 0)
-    gun = new Gun(30, 0, 0)
+    //gun = new Gun(30, 0, 0)
+
     scene.add(wall)
     scene.add(gun)
+
+    var numberBalls = Math.floor(Math.random() * 7 + 5)
+    var ball, coordinateX, coordinateZ
+    for (var i = 0; i < numberBalls; i ++) {
+        coordinateX = Math.random() * 40 - 20
+        coordinateZ = Math.random() * 40 - 20
+
+        ball = new Ball(coordinateX, 0, coordinateZ)
+        balls.push(ball)
+        scene.add(ball)
+    }
 }
 
 function onResize() {
