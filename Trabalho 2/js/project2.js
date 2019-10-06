@@ -57,7 +57,7 @@ class Gun extends THREE.Object3D {
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y + 25 / 2, z)
     
-        this.add(mesh)
+        return mesh
     }
 
 }
@@ -127,6 +127,14 @@ function onKeyUp(e){
     }
    
 }
+
+function animate() {
+    'use strict'
+
+    render()
+    requestAnimationFrame(animate)
+}
+
 function createScene() {
     'use strict'
 
@@ -138,7 +146,6 @@ function createScene() {
     scene.add(wall)
     scene.add(gun)
 }
-
 
 function onResize() {
     'use strict'
