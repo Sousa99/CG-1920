@@ -20,11 +20,15 @@ class Wall extends THREE.Object3D {
     constructor(x, y, z) {
         super()
 
-        this.add(this.addWall(x - 5, y, z - 5))
-        this.add(this.addWall(x, y, z))
-        this.add(this.addWall(x + 5, y, z + 5))
-        this.position.set(x + 25.75, y, z)
-    
+        var rightWall = this.addWall(x, y + 10, z - 26.5)
+        var frontWall = this.addWall(x - 23.5, y + 10, z)
+        var leftWall = this.addWall(x, y + 10, z + 26.5)
+
+        frontWall.rotateY(2 * Math.PI / 4)
+
+        this.add(rightWall)
+        this.add(frontWall)
+        this.add(leftWall)
 
         this.position.set(x, y, z)
     }
@@ -32,7 +36,7 @@ class Wall extends THREE.Object3D {
 	addWall(x, y, z) {
 		'use strict'
     
-        geometry = new THREE.BoxGeometry(10, 20 ,3)
+        geometry = new THREE.BoxGeometry(50, 20 ,3)
         material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
@@ -55,7 +59,7 @@ class Gun extends THREE.Object3D {
         geometry = new THREE.CylinderGeometry(2, 2, 5)
         material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y + 25 / 2, z)
+        mesh.position.set(x, y + 5 / 2, z)
     
         return mesh
     }
