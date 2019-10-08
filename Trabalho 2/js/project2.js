@@ -61,8 +61,8 @@ class Gun extends THREE.Object3D {
         this.base.add(this.addFrameDown(0, 0, 0))
         this.base.add(this.addSupport(6, 0, 0))
         this.base.add(this.main)
-        this.base.add(this.addWheelsLeft(7,2,-5))
-        this.base.add(this.addWheelsRight(7,2,5))
+        this.base.add(this.addWheelsLeft(-2,2,-5))
+        this.base.add(this.addWheelsRight(-2,2,5))
         this.base.position.set(0, 0, 0)
 
         this.add(this.base)
