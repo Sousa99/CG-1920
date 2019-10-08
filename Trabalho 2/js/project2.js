@@ -38,7 +38,7 @@ class Wall extends THREE.Object3D {
 		'use strict'
     
         geometry = new THREE.BoxGeometry(50, 20 ,3)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x009933, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
     
@@ -61,6 +61,8 @@ class Gun extends THREE.Object3D {
         this.base.add(this.addFrameDown(0, 0, 0))
         this.base.add(this.addSupport(6, 0, 0))
         this.base.add(this.main)
+        this.base.add(this.addWheelsLeft(7,2,-5))
+        this.base.add(this.addWheelsRight(7,2,5))
         this.base.position.set(0, 0, 0)
 
         this.add(this.base)
@@ -71,7 +73,7 @@ class Gun extends THREE.Object3D {
         'use strict'
         console.log("Main Chamber: " + x)
         geometry = new THREE.CylinderGeometry(2, 3, 13)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateZ(2 * Math.PI / 4)
         mesh.position.set(x - 6.5, y, z)
@@ -83,7 +85,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.SphereGeometry(3, 7, 7, 2 * Math.PI / 4, 2 * Math.PI / 2)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
 
@@ -94,7 +96,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateY(2 * Math.PI / 4)
         mesh.position.set(x, y, z)
@@ -106,7 +108,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.CylinderGeometry(2 + 0.25, 2, 1)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateZ(2 * Math.PI / 4)
         mesh.position.set(x, y, z)
@@ -118,7 +120,7 @@ class Gun extends THREE.Object3D {
         'use strict'
         console.log("Frame: " + x)
         var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0xa6ff4d, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
 
         geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
         mesh = new THREE.Mesh(geometry, material)
@@ -143,7 +145,7 @@ class Gun extends THREE.Object3D {
         'use strict'
         
         var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0xa6ff4d, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
 
         geometry = new THREE.BoxGeometry(1, 8, 1)
         mesh = new THREE.Mesh(geometry, material)
@@ -158,6 +160,30 @@ class Gun extends THREE.Object3D {
         return frame
     }
 
+    addWheelsLeft(x,y,z){
+        'use strict'
+
+        geometry = new THREE.CylinderGeometry(2 + 1, 3, 2)
+        material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.rotateX(2 * Math.PI / 4)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addWheelsRight(x,y,z){
+        'use strict'
+
+        geometry = new THREE.CylinderGeometry(2 + 1, 3, 2)
+        material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.rotateX(2 * Math.PI / 4)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
 }
 
 class Ball extends THREE.Object3D {
@@ -166,7 +192,7 @@ class Ball extends THREE.Object3D {
 
         this.velocity = new THREE.Vector3(0, 0, 0)
         geometry = new THREE.SphereGeometry(2, 20, 20)
-        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x99ff99, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y + 2, z)
 
