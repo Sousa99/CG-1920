@@ -3,7 +3,7 @@ var cameras = []
 var camera, scene, renderer
 var geometry, material, mesh
 
-var gun,wall
+var gun1, gun2, gun3, wall
 var balls = []
 
 var SCREEN_WIDTH = window.innerWidth
@@ -50,19 +50,112 @@ class Gun extends THREE.Object3D {
     constructor(x , y, z) {
         super()
 
-        this.add(this.addGun(x, y, z))
+        this.main = new THREE.Object3D()
+        this.main.add(this.addMainChamber(0, 0, 0))
+        this.main.add(this.addMainChamberBack(0, 0, 0))
+        this.main.add(this.addMainChamberHold(0, 0, 0))
+        this.main.add(this.addMouth(0, 0, 0))
+        this.main.position.set(6, 5, 0)
+
+        this.base = new THREE.Object3D()
+        this.base.add(this.addFrameDown(0, 0, 0))
+        this.base.add(this.addSupport(6, 0, 0))
+        this.base.add(this.main)
+        this.base.position.set(0, 0, 0)
+
+        this.add(this.base)
         this.position.set(x, y, z)
     }
 
-    addGun(x, y, z) {
+    addMainChamber(x, y, z) {
         'use strict'
-    
-        geometry = new THREE.CylinderGeometry(2, 2, 5)
+        console.log("Main Chamber: " + x)
+        geometry = new THREE.CylinderGeometry(2, 3, 13)
         material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y + 5 / 2, z)
-    
+        mesh.rotateZ(2 * Math.PI / 4)
+        mesh.position.set(x - 6.5, y, z)
+
         return mesh
+    }
+
+    addMainChamberBack(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.SphereGeometry(3, 7, 7, 2 * Math.PI / 4, 2 * Math.PI / 2)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addMainChamberHold(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.rotateY(2 * Math.PI / 4)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addMouth(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.CylinderGeometry(2 + 0.25, 2, 1)
+        material = new THREE.MeshBasicMaterial({ color: 0x4da6ff, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.rotateZ(2 * Math.PI / 4)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
+    addFrameDown(x, y, z) {
+        'use strict'
+        console.log("Frame: " + x)
+        var frame = new THREE.Object3D()
+        material = new THREE.MeshBasicMaterial({ color: 0xa6ff4d, wireframe: true })
+
+        geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z - 4)
+        frame.add(mesh)
+
+        geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y, z + 4)
+        frame.add(mesh)
+
+        geometry = new THREE.BoxGeometry(1.75, 1.75, 8 - 1.75)
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x + 6, y, z)
+        frame.add(mesh)
+
+        return frame
+
+    }
+
+    addSupport(x, y, z) {
+        'use strict'
+        
+        var frame = new THREE.Object3D()
+        material = new THREE.MeshBasicMaterial({ color: 0xa6ff4d, wireframe: true })
+
+        geometry = new THREE.BoxGeometry(1, 8, 1)
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y + 5, z - 4)
+        frame.add(mesh)
+
+        geometry = new THREE.BoxGeometry(1, 8, 1)
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.position.set(x, y + 5, z + 4)
+        frame.add(mesh)
+
+        return frame
     }
 
 }
@@ -161,10 +254,14 @@ function createScene() {
     scene.add(new THREE.AxesHelper(10))
 
     wall = new Wall(0, 0, 0)
-    //gun = new Gun(30, 0, 0)
+    gun1 = new Gun(80, 0, 0)
+    gun2 = new Gun(80, 0, - 20)
+    gun3 = new Gun(80, 0, 20)
 
     scene.add(wall)
-    scene.add(gun)
+    scene.add(gun1)
+    scene.add(gun2)
+    scene.add(gun3)
 
     var numberBalls = Math.floor(Math.random() * 7 + 5)
     var ball, coordinateX, coordinateZ
