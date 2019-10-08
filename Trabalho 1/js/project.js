@@ -28,36 +28,36 @@ class Robot extends THREE.Object3D {
         this.angle2 = 0
 
         this.hand = new THREE.Object3D()
-        this.hand.add(this.addArt(x, y, z))
-        this.hand.add(this.addHand(x + 3, y, z))
-        this.hand.add(this.addFinger(x + 6.25, y, z + 1.60))
-        this.hand.add(this.addFinger(x + 6.25, y, z - 1.60))
-        this.hand.position.set(x + 25.75, y, z)
+        this.hand.add(this.addArt(0, 0, 0))
+        this.hand.add(this.addHand(3, 0, 0))
+        this.hand.add(this.addFinger(6.25, 0, + 1.60))
+        this.hand.add(this.addFinger(6.25, 0, - 1.60))
+        this.hand.position.set(25.75, 0, 0)
         
         this.forearm = new THREE.Object3D()
-        this.forearm.add(this.addArt(x , y, z))
-        this.forearm.add(this.addHalfArm(x + 12.75, y, z, true))
+        this.forearm.add(this.addArt(0 , 0, 0))
+        this.forearm.add(this.addHalfArm(12.75, 0, 0, true))
         this.forearm.add(this.hand)
-        this.forearm.position.set(x, y + 30, z)
+        this.forearm.position.set(0, 30, 0)
         
         this.arm = new THREE.Object3D()
-        this.arm.add(this.addHalfArm(x , y + 17, z))
+        this.arm.add(this.addHalfArm(0 , 17, 0))
         this.arm.add(this.forearm)
-        this.arm.position.set(x, y, z)
+        this.arm.position.set(0, 0, 0)
         
         this.fullArm = new THREE.Object3D()
-        this.fullArm.add(this.addMainArt(x , y, z))
+        this.fullArm.add(this.addMainArt(0 , 0, 0))
         this.fullArm.add(this.arm)
-        this.fullArm.position.set(x, y + 3, z)
+        this.fullArm.position.set(0, 3, 0)
 
         this.base = new THREE.Object3D()
-        this.base.add(this.addBase(x, y + 2, z))
-        this.base.add(this.addWheel(x + 17, y, z + 17))
-        this.base.add(this.addWheel(x - 17, y, z + 17))
-        this.base.add(this.addWheel(x + 17, y, z - 17))
-        this.base.add(this.addWheel(x - 17, y, z - 17))
+        this.base.add(this.addBase(0, 2, 0))
+        this.base.add(this.addWheel(+ 17, 0, + 17))
+        this.base.add(this.addWheel(- 17, 0, + 17))
+        this.base.add(this.addWheel(+ 17, 0, - 17))
+        this.base.add(this.addWheel(- 17, 0, - 17))
         this.base.add(this.fullArm)
-        this.base.position.set(x, y, z)
+        this.base.position.set(0, 0, 0)
 
         this.position.set(x, y, z)
 
@@ -184,8 +184,8 @@ class Target extends THREE.Object3D {
     constructor(x , y, z) {
         super()
 
-        this.addTorus(x, y + 30, z)
-        this.addBaseTarget(x, y, z)
+        this.addTorus(0, 30, 0)
+        this.addBaseTarget(0, 0, 0)
 
         this.position.set(x, y, z)
     }
@@ -249,7 +249,7 @@ function createScene() {
     scene.add(new THREE.AxesHelper(10))
 
     robot = new Robot(0, 0, 0)
-    target = new Target(30, 0, 0)
+    target = new Target(60, 0, 0)
     scene.add(robot)
     scene.add(target)
 }
