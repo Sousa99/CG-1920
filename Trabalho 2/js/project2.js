@@ -248,10 +248,10 @@ function onKeyDown(e){
 
     switch (e.keyCode) {
     case 37: //arrow_left
-        gunsRotation = -1
+        gunsRotation = 1
         break
     case 39: //arrow_right
-        gunsRotation = 1
+        gunsRotation = -1
         break
     
     case 49: // 1
