@@ -54,15 +54,19 @@ class Gun extends THREE.Object3D {
         this.main.add(this.addMainChamber(0, 0, 0))
         this.main.add(this.addMainChamberBack(0, 0, 0))
         this.main.add(this.addMainChamberHold(0, 0, 0))
+        this.main.add(this.addMouthHold(-8, 0, 0))
         this.main.add(this.addMouth(0, 0, 0))
         this.main.position.set(6, 5, 0)
+
+        this.main.rotateZ(0.05)
 
         this.base = new THREE.Object3D()
         this.base.add(this.addFrameDown(0, 0, 0))
         this.base.add(this.addSupport(6, 0, 0))
+        this.base.add(this.addSupport(-2, 0, 0))
         this.base.add(this.main)
-        this.base.add(this.addWheelsLeft(-2,2,-5))
-        this.base.add(this.addWheelsRight(-2,2,5))
+        this.base.add(this.addWheelsLeft(-2, 2, -5))
+        this.base.add(this.addWheelsRight(-2, 2, 5))
         this.base.position.set(0, 0, 0)
 
         this.add(this.base)
@@ -104,6 +108,18 @@ class Gun extends THREE.Object3D {
         return mesh
     }
 
+    addMouthHold(x, y, z) {
+        'use strict'
+
+        geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
+        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
+        mesh = new THREE.Mesh(geometry, material)
+        mesh.rotateY(2 * Math.PI / 4)
+        mesh.position.set(x, y, z)
+
+        return mesh
+    }
+
     addMouth(x, y, z) {
         'use strict'
 
@@ -111,7 +127,7 @@ class Gun extends THREE.Object3D {
         material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateZ(2 * Math.PI / 4)
-        mesh.position.set(x, y, z)
+        mesh.position.set(x - 13.5, y, z)
 
         return mesh
     }
