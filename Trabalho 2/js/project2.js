@@ -3,7 +3,9 @@ var cameras = []
 var camera, scene, renderer
 var geometry, material, mesh
 
-var gun1, gun2, gun3, wall
+var wall
+var guns = []
+var gunsRotation = 0
 var balls = []
 
 var SCREEN_WIDTH = window.innerWidth
@@ -11,6 +13,7 @@ var SCREEN_HEIGHT = window.innerHeight
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 115
 
+const ROTATE_VELOCITY_CONSTANT = 0.01
 
 function render() {
     'use strict'
@@ -47,8 +50,9 @@ class Wall extends THREE.Object3D {
 }
 
 class Gun extends THREE.Object3D {
-    constructor(x , y, z) {
+    constructor(x , y, z, rotation) {
         super()
+        this.angle = rotation
 
         this.main = new THREE.Object3D()
         this.main.add(this.addMainChamber(0, 0, 0))
@@ -69,13 +73,15 @@ class Gun extends THREE.Object3D {
         this.base.add(this.addWheelsRight(-2, 2, 5))
         this.base.position.set(0, 0, 0)
 
+        this.rotateY(rotation)
+
         this.add(this.base)
         this.position.set(x, y, z)
     }
 
     addMainChamber(x, y, z) {
         'use strict'
-        console.log("Main Chamber: " + x)
+
         geometry = new THREE.CylinderGeometry(2, 3, 13)
         material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
@@ -89,7 +95,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.SphereGeometry(3, 7, 7, 2 * Math.PI / 4, 2 * Math.PI / 2)
-        material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
 
@@ -134,7 +140,7 @@ class Gun extends THREE.Object3D {
 
     addFrameDown(x, y, z) {
         'use strict'
-        console.log("Frame: " + x)
+
         var frame = new THREE.Object3D()
         material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
 
@@ -200,6 +206,14 @@ class Gun extends THREE.Object3D {
         return mesh
     }
 
+    rotateCanon() {
+        'use strict'
+
+        this.angle += ROTATE_VELOCITY_CONSTANT * gunsRotation
+        this.rotateY(ROTATE_VELOCITY_CONSTANT * gunsRotation)
+
+    }
+
 }
 
 class Ball extends THREE.Object3D {
@@ -207,7 +221,7 @@ class Ball extends THREE.Object3D {
         super()
 
         this.velocity = new THREE.Vector3(0, 0, 0)
-        geometry = new THREE.SphereGeometry(2, 20, 20)
+        geometry = new THREE.SphereGeometry(2, 10, 10)
         material = new THREE.MeshBasicMaterial({ color: 0x99ff99, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y + 2, z)
@@ -234,10 +248,10 @@ function onKeyDown(e){
 
     switch (e.keyCode) {
     case 37: //arrow_left
-        //robot.movement.setZ(-1)
+        gunsRotation = -1
         break
     case 39: //arrow_right
-        //robot.movement.setZ(1)
+        gunsRotation = 1
         break
     
     case 49: // 1
@@ -269,7 +283,7 @@ function onKeyUp(e){
     switch (e.keyCode) {
     case 37: //arrow_left
     case 39: //arrow_right
-        //robot.movement.setZ(0)
+        gunsRotation = 0
         break
     case 81: //q
     case 87: //w
@@ -285,6 +299,10 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
+    for (var i = 0; i < guns.length; i++) {
+        guns[i].rotateCanon()
+    }
+
     render()
     requestAnimationFrame(animate)
 }
@@ -296,14 +314,14 @@ function createScene() {
     scene.add(new THREE.AxesHelper(10))
 
     wall = new Wall(0, 0, 0)
-    gun1 = new Gun(80, 0, 0)
-    gun2 = new Gun(80, 0, - 20)
-    gun3 = new Gun(80, 0, 20)
+    guns.push(new Gun(80, 0, 0, 0))
+    guns.push(new Gun(80, 0, - 30, 0.2))
+    guns.push(new Gun(80, 0, 30, - 0.2))
 
     scene.add(wall)
-    scene.add(gun1)
-    scene.add(gun2)
-    scene.add(gun3)
+    for (var i = 0; i < guns.length; i++) {
+        scene.add(guns[i])
+    }
 
     var numberBalls = Math.floor(Math.random() * 7 + 5)
     var ball, coordinateX, coordinateZ
