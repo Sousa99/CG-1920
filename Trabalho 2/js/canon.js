@@ -169,7 +169,6 @@ class Gun extends THREE.Object3D {
         toChange = toChange.concat(this.main)
         while (toChange.length > 0) {
             var current = toChange.shift()
-            console.log(current)
             
             if (current.type == "Object3D")
             toChange = toChange.concat(current.children)
