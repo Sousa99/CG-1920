@@ -14,6 +14,7 @@ var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 115
 
 const ROTATE_VELOCITY_CONSTANT = 0.01
+const RADIUS_BALL = 2
 
 function render() {
     'use strict'
@@ -121,6 +122,8 @@ function createScene() {
     guns.push(new Gun(80, 0, - 30, 0.2))
     guns.push(new Gun(80, 0, 30, - 0.2))
 
+    guns[1].activateCanon()
+
     scene.add(wall)
     for (var i = 0; i < guns.length; i++) {
         scene.add(guns[i])
@@ -129,8 +132,21 @@ function createScene() {
     var numberBalls = Math.floor(Math.random() * 7 + 5)
     var ball, coordinateX, coordinateZ
     for (var i = 0; i < numberBalls; i ++) {
-        coordinateX = Math.random() * 40 - 20
-        coordinateZ = Math.random() * 40 - 20
+        var positionOK = false
+        var distance, currentBall
+        while (!positionOK) {
+            coordinateX = Math.random() * 40 - 20
+            coordinateZ = Math.random() * 40 - 20
+
+            positionOK = true
+            for (var x = 0; x < i; x++) {
+                currentBall = balls[x]
+                distance = Math.sqrt(Math.pow(currentBall.globalPosition.x - coordinateX, 2) + Math.pow(currentBall.globalPosition.z - coordinateZ, 2))
+                if (distance < 2 * RADIUS_BALL) {
+                    positionOK = false
+                }
+            }
+        }
 
         ball = new Ball(coordinateX, 0, coordinateZ)
         balls.push(ball)
