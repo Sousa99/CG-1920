@@ -20,216 +20,6 @@ function render() {
     renderer.render(scene, cameras[camera])
 }
 
-class Wall extends THREE.Object3D {
-    constructor(x, y, z) {
-        super()
-
-        var rightWall = this.addWall(x, y + 10, z - 26.5)
-        var frontWall = this.addWall(x - 23.5, y + 10, z)
-        var leftWall = this.addWall(x, y + 10, z + 26.5)
-
-        frontWall.rotateY(2 * Math.PI / 4)
-
-        this.add(rightWall)
-        this.add(frontWall)
-        this.add(leftWall)
-
-        this.position.set(x, y, z)
-    }
-
-	addWall(x, y, z) {
-		'use strict'
-    
-        geometry = new THREE.BoxGeometry(50, 20 ,3)
-        material = new THREE.MeshBasicMaterial({ color: 0x009933, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y, z)
-    
-        return mesh
-	}   
-}
-
-class Gun extends THREE.Object3D {
-    constructor(x , y, z, rotation) {
-        super()
-        this.angle = rotation
-
-        this.main = new THREE.Object3D()
-        this.main.add(this.addMainChamber(0, 0, 0))
-        this.main.add(this.addMainChamberBack(0, 0, 0))
-        this.main.add(this.addMainChamberHold(0, 0, 0))
-        this.main.add(this.addMouthHold(-8, 0, 0))
-        this.main.add(this.addMouth(0, 0, 0))
-        this.main.position.set(6, 5, 0)
-
-        this.main.rotateZ(0.05)
-
-        this.base = new THREE.Object3D()
-        this.base.add(this.addFrameDown(0, 0, 0))
-        this.base.add(this.addSupport(6, 0, 0))
-        this.base.add(this.addSupport(-2, 0, 0))
-        this.base.add(this.main)
-        this.base.add(this.addWheelsLeft(-2, 2, -5))
-        this.base.add(this.addWheelsRight(-2, 2, 5))
-        this.base.position.set(0, 0, 0)
-
-        this.rotateY(rotation)
-
-        this.add(this.base)
-        this.position.set(x, y, z)
-    }
-
-    addMainChamber(x, y, z) {
-        'use strict'
-
-        geometry = new THREE.CylinderGeometry(2, 3, 13)
-        material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateZ(2 * Math.PI / 4)
-        mesh.position.set(x - 6.5, y, z)
-
-        return mesh
-    }
-
-    addMainChamberBack(x, y, z) {
-        'use strict'
-
-        geometry = new THREE.SphereGeometry(3, 7, 7, 2 * Math.PI / 4, 2 * Math.PI / 2)
-        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y, z)
-
-        return mesh
-    }
-
-    addMainChamberHold(x, y, z) {
-        'use strict'
-
-        geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateY(2 * Math.PI / 4)
-        mesh.position.set(x, y, z)
-
-        return mesh
-    }
-
-    addMouthHold(x, y, z) {
-        'use strict'
-
-        geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateY(2 * Math.PI / 4)
-        mesh.position.set(x, y, z)
-
-        return mesh
-    }
-
-    addMouth(x, y, z) {
-        'use strict'
-
-        geometry = new THREE.CylinderGeometry(2 + 0.25, 2, 1)
-        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateZ(2 * Math.PI / 4)
-        mesh.position.set(x - 13.5, y, z)
-
-        return mesh
-    }
-
-    addFrameDown(x, y, z) {
-        'use strict'
-
-        var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
-
-        geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y, z - 4)
-        frame.add(mesh)
-
-        geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y, z + 4)
-        frame.add(mesh)
-
-        geometry = new THREE.BoxGeometry(1.75, 1.75, 8 - 1.75)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x + 6, y, z)
-        frame.add(mesh)
-
-        return frame
-
-    }
-
-    addSupport(x, y, z) {
-        'use strict'
-        
-        var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
-
-        geometry = new THREE.BoxGeometry(1, 8, 1)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y + 5, z - 4)
-        frame.add(mesh)
-
-        geometry = new THREE.BoxGeometry(1, 8, 1)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y + 5, z + 4)
-        frame.add(mesh)
-
-        return frame
-    }
-
-    addWheelsLeft(x,y,z){
-        'use strict'
-
-        geometry = new THREE.CylinderGeometry(2 + 1, 3, 2)
-        material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateX(2 * Math.PI / 4)
-        mesh.position.set(x, y, z)
-
-        return mesh
-    }
-
-    addWheelsRight(x,y,z){
-        'use strict'
-
-        geometry = new THREE.CylinderGeometry(2 + 1, 3, 2)
-        material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.rotateX(2 * Math.PI / 4)
-        mesh.position.set(x, y, z)
-
-        return mesh
-    }
-
-    rotateCanon() {
-        'use strict'
-
-        this.angle += ROTATE_VELOCITY_CONSTANT * gunsRotation
-        this.rotateY(ROTATE_VELOCITY_CONSTANT * gunsRotation)
-
-    }
-
-}
-
-class Ball extends THREE.Object3D {
-    constructor(x, y, z) {
-        super()
-
-        this.velocity = new THREE.Vector3(0, 0, 0)
-        geometry = new THREE.SphereGeometry(2, 10, 10)
-        material = new THREE.MeshBasicMaterial({ color: 0x99ff99, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y + 2, z)
-
-        this.add(mesh)
-    }
-}
-
 function createCamera(x, y, z) {
     'use strict'
 
@@ -265,12 +55,25 @@ function onKeyDown(e){
         break
     
     case 81: //q
-        //robot.rotationMovement[1] = 1
+        if (!guns[1].active) {
+            for (var x = 0; x < guns.length; x++)
+                guns[x].deactivateCanon()
+            guns[1].activateCanon()
+        }
         break
     case 87: //w
-        //robot.rotationMovement[1] = -1
+        if (!guns[0].active) {
+            for (var x = 0; x < guns.length; x++)
+                guns[x].deactivateCanon()
+            guns[0].activateCanon()
+        }
         break
     case 69: //e
+        if (!guns[2].active) {
+            for (var x = 0; x < guns.length; x++)
+                guns[x].deactivateCanon()
+            guns[2].activateCanon()
+        }
         break
     case 82: //r
         break
