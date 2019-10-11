@@ -13,6 +13,7 @@ var SCREEN_HEIGHT = window.innerHeight
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 115
 
+const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
 const RADIUS_BALL = 2
 
@@ -76,7 +77,15 @@ function onKeyDown(e){
             guns[2].activateCanon()
         }
         break
+
     case 82: //r
+        break
+
+    case 32: //space
+        for (var x = 0; x < guns.length; x++) {
+            if (guns[x].active)
+                guns[x].shootBall()
+        }
         break
     }
 }
@@ -103,9 +112,10 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    for (var i = 0; i < guns.length; i++) {
+    for (var i = 0; i < balls.length; i++)
+        balls[i].move()
+    for (var i = 0; i < guns.length; i++)
         guns[i].rotateCanon()
-    }
 
     render()
     requestAnimationFrame(animate)

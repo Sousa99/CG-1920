@@ -3,7 +3,9 @@ var geometry, material, mesh
 class Gun extends THREE.Object3D {
     constructor(x , y, z, rotation) {
         super()
+        this.globalPosition = new THREE.Vector3(x, y, z)
         this.angle = rotation
+        this.downAngle = 0.05
         this.active = false
 
         this.main = new THREE.Object3D()
@@ -14,7 +16,7 @@ class Gun extends THREE.Object3D {
         this.main.add(this.addMouth(0, 0, 0))
         this.main.position.set(6, 5, 0)
 
-        this.main.rotateZ(0.05)
+        this.main.rotateZ(this.downAngle)
 
         this.wheels = new THREE.Object3D()
         this.wheels.add(this.addWheel(0, 0, -5))
@@ -187,6 +189,20 @@ class Gun extends THREE.Object3D {
             this.activateCanon()
             this.active = false
         }
+    }
+
+    shootBall() {
+        var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
+        var coordinateY = (this.position.y + 2.25) * Math.cos(this.downAngle)
+        var coordinateZ = this.position.z + (8 * Math.sin(this.angle))
+        var newBall = new Ball(coordinateX, coordinateY, coordinateZ)
+
+        newBall.angle = this.angle
+        newBall.velocity.x = - Math.cos(this.angle) * VELOCITY_CONSTANT
+        newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
+        balls.push(newBall)
+
+        scene.add(newBall)
     }
 
 }
