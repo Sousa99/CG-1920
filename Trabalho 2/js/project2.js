@@ -21,7 +21,7 @@ function render() {
     renderer.render(scene, cameras[camera])
 }
 
-function createCamera(x, y, z) {
+function createOrthographicCamera(x, y, z) {
     'use strict'
 
     var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
@@ -31,6 +31,18 @@ function createCamera(x, y, z) {
     camera.position.z = z
     camera.lookAt(scene.position)
 
+    return camera
+}
+
+function createPerspectiveCamera(x, y, z) {
+    'use strict'
+
+    var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
+    camera.position.x = x
+    camera.position.y = y
+    camera.position.z = z
+    camera.lookAt(scene.position)
+    
     return camera
 }
 
@@ -175,9 +187,12 @@ function onResize() {
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    for (var i = 0; i < 3; i++) {
-        cameras[i].left = frustumSize * aspect / - 2
-        cameras[i].right = frustumSize * aspect / 2
+    cameras[0].left = frustumSize * aspect / - 2
+    cameras[0].right = frustumSize * aspect / 2
+    cameras[0].updateProjectionMatrix()
+
+    for (var i = 1; i < 3; i++) {
+        cameras[i].aspect = aspect
         cameras[i].updateProjectionMatrix()
     }
 }
@@ -194,9 +209,9 @@ function init() {
     createScene()
 
     camera = 0
-    cameras[0] = createCamera(0, 20, 0)
-    cameras[1] = createCamera(0, 0, 20)
-    cameras[2] = createCamera(20, 0, 0)
+    cameras[0] = createOrthographicCamera(0, 20, 0)
+    cameras[1] = createPerspectiveCamera(150, 50, 75)
+    //cameras[2] = createCamera(20, 0, 0)
 
     render()
 
