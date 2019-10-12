@@ -6,7 +6,7 @@ class Gun extends THREE.Object3D {
 
         this.globalPosition = new THREE.Vector3(x, y, z)
         this.angle = rotation
-        this.downAngle = 0.05
+        this.downAngle = - 2 * Math.PI / 50
         this.active = false
         this.cooldown = 0
 
@@ -244,12 +244,14 @@ class Gun extends THREE.Object3D {
                 this.cooldown = 500
 
                 var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
-                var coordinateY = (this.position.y + 2.25) * Math.cos(this.downAngle)
+                var coordinateY = (this.position.y + 5) * (- 8 * Math.sin(this.downAngle))
                 var coordinateZ = this.position.z + (8 * Math.sin(this.angle))
-                var newBall = new Ball(coordinateX, coordinateY, coordinateZ)
+                var newBall = new Ball(coordinateX, coordinateY, coordinateZ, this.angle, this.downAngle)
 
                 newBall.angle = this.angle
+                newBall.falling = true
                 newBall.velocity.x = - Math.cos(this.angle) * VELOCITY_CONSTANT
+                newBall.velocity.y = - Math.sin(this.downAngle) * VELOCITY_CONSTANT
                 newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
                 balls.push(newBall)
 
