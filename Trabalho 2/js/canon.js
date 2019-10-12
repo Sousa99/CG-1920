@@ -3,8 +3,7 @@ var geometry, material, mesh
 class Gun extends THREE.Object3D {
     constructor(x , y, z, rotation) {
         super()
-
-        this.globalPosition = new THREE.Vector3(x, y, z)
+        
         this.angle = rotation
         this.downAngle = - 2 * Math.PI / 50
         this.active = false

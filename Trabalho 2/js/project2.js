@@ -3,6 +3,8 @@ var cameras = []
 var camera, scene, renderer
 var geometry, material, mesh
 
+var selectedBall
+
 var wall
 var guns = []
 var balls = []
@@ -45,6 +47,20 @@ function createPerspectiveCamera(x, y, z) {
     camera.position.z = z
     camera.lookAt(scene.position)
     
+    return camera
+}
+
+function createMovingPerspectiveCamera(x, y, z, ball) {
+    'use strict'
+
+    var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
+    camera.position.set(x, y, z)
+    camera.lookAt(ball.position)
+    ball.add(camera)
+
+    ball.changeColor(0x9999ff)
+    selectedBall = ball
+
     return camera
 }
 
@@ -134,6 +150,8 @@ function animate() {
         guns[i].shootBall()
     }
 
+    cameras[2].lookAt(selectedBall.position)
+
     render()
     requestAnimationFrame(animate)
 }
@@ -168,7 +186,7 @@ function createScene() {
             positionOK = true
             for (var x = 0; x < i; x++) {
                 currentBall = balls[x]
-                distance = Math.sqrt(Math.pow(currentBall.globalPosition.x - coordinateX, 2) + Math.pow(currentBall.globalPosition.z - coordinateZ, 2))
+                distance = Math.sqrt(Math.pow(currentBall.position.x - coordinateX, 2) + Math.pow(currentBall.position.z - coordinateZ, 2))
                 if (distance < 2 * RADIUS_BALL) {
                     positionOK = false
                 }
@@ -213,7 +231,7 @@ function init() {
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
     cameras[1] = createPerspectiveCamera(150, 50, 75)
-    //cameras[2] = createCamera(20, 0, 0)
+    cameras[2] = createMovingPerspectiveCamera(20, 20, 20, balls[Math.floor(Math.random() * balls.length)])
 
     render()
 
