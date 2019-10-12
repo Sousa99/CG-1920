@@ -5,7 +5,6 @@ var geometry, material, mesh
 
 var wall
 var guns = []
-var gunsRotation = 0
 var balls = []
 
 var SCREEN_WIDTH = window.innerWidth
@@ -40,10 +39,12 @@ function onKeyDown(e){
 
     switch (e.keyCode) {
     case 37: //arrow_left
-        gunsRotation = 1
+        for (var x = 0; x < guns.length; x++)
+            guns[x].rotateLeft = true
         break
     case 39: //arrow_right
-        gunsRotation = -1
+        for (var x = 0; x < guns.length; x++)
+            guns[x].rotateRight = true
         break
     
     case 49: // 1
@@ -57,35 +58,27 @@ function onKeyDown(e){
         break
     
     case 81: //q
-        if (!guns[1].active) {
-            for (var x = 0; x < guns.length; x++)
-                guns[x].deactivateCanon()
-            guns[1].activateCanon()
-        }
+        guns[0].deactivate = true
+        guns[1].activate = true
+        guns[2].deactivate = true
         break
     case 87: //w
-        if (!guns[0].active) {
-            for (var x = 0; x < guns.length; x++)
-                guns[x].deactivateCanon()
-            guns[0].activateCanon()
-        }
+        guns[0].activate = true
+        guns[1].deactivate = true
+        guns[2].deactivate = true
         break
     case 69: //e
-        if (!guns[2].active) {
-            for (var x = 0; x < guns.length; x++)
-                guns[x].deactivateCanon()
-            guns[2].activateCanon()
-        }
+        guns[0].deactivate = true
+        guns[1].deactivate = true
+        guns[2].activate = true
         break
 
     case 82: //r
         break
 
     case 32: //space
-        for (var x = 0; x < guns.length; x++) {
-            if (guns[x].active)
-                guns[x].shootBall()
-        }
+        for (var x = 0; x < guns.length; x++)
+            guns[x].shoot = true
         break
     }
 }
@@ -95,12 +88,15 @@ function onKeyUp(e){
 
     switch (e.keyCode) {
     case 37: //arrow_left
+        for (var x = 0; x < guns.length; x++)
+            guns[x].rotateLeft = false
+        break
     case 39: //arrow_right
-        gunsRotation = 0
+        for (var x = 0; x < guns.length; x++)
+            guns[x].rotateRight = false
         break
     case 81: //q
     case 87: //w
-        //robot.rotationMovement[1] = 0
         break
     case 69: //e
     case 82: //r
@@ -114,8 +110,15 @@ function animate() {
 
     for (var i = 0; i < balls.length; i++)
         balls[i].move()
-    for (var i = 0; i < guns.length; i++)
+    for (var i = 0; i < guns.length; i++) {
+        if (guns[i].cooldown > 0)
+            guns[i].cooldown -= 1
+        
+        guns[i].activateCanon()
+        guns[i].deactivateCanon()
         guns[i].rotateCanon()
+        guns[i].shootBall()
+    }
 
     render()
     requestAnimationFrame(animate)
@@ -132,7 +135,7 @@ function createScene() {
     guns.push(new Gun(80, 0, - 30, 0.2))
     guns.push(new Gun(80, 0, 30, - 0.2))
 
-    guns[1].activateCanon()
+    guns[1].activate = true
 
     scene.add(wall)
     for (var i = 0; i < guns.length; i++) {

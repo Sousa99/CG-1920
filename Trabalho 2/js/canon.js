@@ -3,10 +3,18 @@ var geometry, material, mesh
 class Gun extends THREE.Object3D {
     constructor(x , y, z, rotation) {
         super()
+
         this.globalPosition = new THREE.Vector3(x, y, z)
         this.angle = rotation
         this.downAngle = 0.05
         this.active = false
+        this.cooldown = 0
+
+        this.rotateLeft = false
+        this.rotateRight = false
+        this.activate = false
+        this.deactivate = false
+        this.shoot = false
 
         this.main = new THREE.Object3D()
         this.main.add(this.addMainChamber(0, 0, 0))
@@ -155,6 +163,12 @@ class Gun extends THREE.Object3D {
     rotateCanon() {
         'use strict'
 
+        var gunsRotation = 0
+        if (this.rotateLeft)
+            gunsRotation += 1
+        if (this.rotateRight)
+            gunsRotation -= 1
+
         this.angle += ROTATE_VELOCITY_CONSTANT * gunsRotation
         this.rotateY(ROTATE_VELOCITY_CONSTANT * gunsRotation)
         this.wheels.rotateZ(ROTATE_VELOCITY_CONSTANT * gunsRotation)
@@ -164,45 +178,84 @@ class Gun extends THREE.Object3D {
     activateCanon() {
         'use strict'
 
-        this.active = true
-        var toChange = new Array()
-        var r, g, b
+        if (this.activate && this.active)
+            this.activate = false
 
-        toChange = toChange.concat(this.main)
-        while (toChange.length > 0) {
-            var current = toChange.shift()
-            
-            if (current.type == "Object3D")
-            toChange = toChange.concat(current.children)
-            else if (current.type == "Mesh") {
-                r = current.material.color.r
-                g = current.material.color.g
-                b = current.material.color.b
+        if (this.activate) {
+            this.active = true
+            this.activate = false
 
-                current.material.color.set(new THREE.Color(g, r, b))
+            var toChange = new Array()
+            var r, g, b
+
+            toChange = toChange.concat(this.main)
+            while (toChange.length > 0) {
+                var current = toChange.shift()
+                
+                if (current.type == "Object3D")
+                toChange = toChange.concat(current.children)
+                else if (current.type == "Mesh") {
+                    r = current.material.color.r
+                    g = current.material.color.g
+                    b = current.material.color.b
+
+                    current.material.color.set(new THREE.Color(g, r, b))
+                }
             }
         }
     }
 
     deactivateCanon() {
-        if (this.active) {
-            this.activateCanon()
+        'use strict'
+
+        if (this.deactivate && !this.active)
+            this.deactivate = false
+
+        if (this.deactivate) {
             this.active = false
+            this.deactivate = false
+
+            var toChange = new Array()
+            var r, g, b
+
+            toChange = toChange.concat(this.main)
+            while (toChange.length > 0) {
+                var current = toChange.shift()
+                
+                if (current.type == "Object3D")
+                toChange = toChange.concat(current.children)
+                else if (current.type == "Mesh") {
+                    r = current.material.color.r
+                    g = current.material.color.g
+                    b = current.material.color.b
+
+                    current.material.color.set(new THREE.Color(g, r, b))
+                }
+            }
         }
     }
 
     shootBall() {
-        var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
-        var coordinateY = (this.position.y + 2.25) * Math.cos(this.downAngle)
-        var coordinateZ = this.position.z + (8 * Math.sin(this.angle))
-        var newBall = new Ball(coordinateX, coordinateY, coordinateZ)
+        'use strict'
 
-        newBall.angle = this.angle
-        newBall.velocity.x = - Math.cos(this.angle) * VELOCITY_CONSTANT
-        newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
-        balls.push(newBall)
+        if (this.shoot) {
+            this.shoot = false
+            if (this.cooldown == 0 && this.active) {
+                this.cooldown = 500
 
-        scene.add(newBall)
+                var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
+                var coordinateY = (this.position.y + 2.25) * Math.cos(this.downAngle)
+                var coordinateZ = this.position.z + (8 * Math.sin(this.angle))
+                var newBall = new Ball(coordinateX, coordinateY, coordinateZ)
+
+                newBall.angle = this.angle
+                newBall.velocity.x = - Math.cos(this.angle) * VELOCITY_CONSTANT
+                newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
+                balls.push(newBall)
+
+                scene.add(newBall)
+            }
+        }
     }
 
 }
