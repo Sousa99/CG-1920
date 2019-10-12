@@ -5,7 +5,7 @@ class Gun extends THREE.Object3D {
         super()
         
         this.angle = rotation
-        this.downAngle = - 2 * Math.PI / 50
+        this.downAngle = - 2 * Math.PI / 40
         this.active = false
         this.cooldown = 0
 

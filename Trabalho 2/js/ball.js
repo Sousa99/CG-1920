@@ -28,12 +28,12 @@ class Ball extends THREE.Object3D {
         this.gravity()
 
         // Check limits
-        if (Math.abs(this.position.z) < 25 - RADIUS_BALL && this.position.x > - 21 + RADIUS_BALL) {
+        if (Math.abs(this.position.z) < 25 - RADIUS_BALL && this.position.x > - 21 + RADIUS_BALL && this.position.x < 25 - RADIUS_BALL && this.position.y < 0) {
             this.velocity.y = 0
             this.position.y = 0
         }
 
-        if (Math.abs(this.position.z) > 25 - RADIUS_BALL && !(Math.abs(this.position.z) > 28 + RADIUS_BALL) && this.position.x < 25) {
+        if (Math.abs(this.position.z) > 25 - RADIUS_BALL && !(Math.abs(this.position.z) > 28 + RADIUS_BALL) && this.position.x < 25 - RADIUS_BALL) {
             this.velocity.z = - this.velocity.z
             if (this.position.z > 25 - RADIUS_BALL)
                 this.position.z = 25 - RADIUS_BALL
@@ -41,7 +41,7 @@ class Ball extends THREE.Object3D {
                 this.position.z = - 25 + RADIUS_BALL
         }
 
-        if (this.position.x < - 21 + RADIUS_BALL && this.position.x < 25 && Math.abs(this.position.z) < 25 - RADIUS_BALL) {
+        if (this.position.x < - 21 + RADIUS_BALL && Math.abs(this.position.z) < 25 - RADIUS_BALL) {
             this.velocity.x = - this.velocity.x
             this.position.x = - 21 + RADIUS_BALL
         }
