@@ -162,6 +162,9 @@ class Gun extends THREE.Object3D {
     rotateCanon() {
         'use strict'
 
+        if (!this.active)
+            return
+            
         var gunsRotation = 0
         if (this.rotateLeft)
             gunsRotation += 1

@@ -5,7 +5,7 @@ var geometry, material, mesh
 
 var robot, target
 
-const VELOCITY_CONSTANT = 0.1
+const VELOCITY_CONSTANT = 0.15
 const ROTATE_VELOCITY_CONSTANT = 0.01
 
 var SCREEN_WIDTH = window.innerWidth
