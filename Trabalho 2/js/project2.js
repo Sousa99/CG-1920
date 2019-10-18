@@ -58,7 +58,7 @@ function createMovingPerspectiveCamera(x, y, z, ball) {
     camera.lookAt(ball.position)
     ball.add(camera)
 
-    ball.changeColor(0x9999ff)
+    ball.changeColor(0xffffff)
     selectedBall = ball
 
     return camera

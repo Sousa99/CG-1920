@@ -14,7 +14,7 @@ class Ball extends THREE.Object3D {
         this.add(axesHelper)
 
         geometry = new THREE.SphereGeometry(RADIUS_BALL, 10, 10)
-        material = new THREE.MeshBasicMaterial({ color: 0x99ff99, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x00cc99, wireframe: true })
         this.mesh = new THREE.Mesh(geometry, material)
         this.mesh.position.set(0, 2, 0)
         this.add(this.mesh)

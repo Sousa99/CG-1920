@@ -48,7 +48,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.CylinderGeometry(2, 3, 13)
-        material = new THREE.MeshBasicMaterial({ color: 0x66ff66, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x006666, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateZ(2 * Math.PI / 4)
         mesh.position.set(x - 6.5, y, z)
@@ -60,7 +60,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.SphereGeometry(3, 7, 7, 2 * Math.PI / 4, 2 * Math.PI / 2)
-        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x00cc99, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
 
@@ -71,7 +71,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x004080, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateY(2 * Math.PI / 4)
         mesh.position.set(x, y, z)
@@ -83,7 +83,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.TorusGeometry(3 + 0.50, 0.50, 5)
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x004080, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateY(2 * Math.PI / 4)
         mesh.position.set(x, y, z)
@@ -95,7 +95,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.CylinderGeometry(2 + 0.25, 2, 1)
-        material = new THREE.MeshBasicMaterial({ color: 0xccffcc, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x00cc99, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateZ(2 * Math.PI / 4)
         mesh.position.set(x - 13.5, y, z)
@@ -107,7 +107,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x004080, wireframe: true })
 
         geometry = new THREE.BoxGeometry(20, 1.75, 1.75)
         mesh = new THREE.Mesh(geometry, material)
@@ -132,7 +132,7 @@ class Gun extends THREE.Object3D {
         'use strict'
         
         var frame = new THREE.Object3D()
-        material = new THREE.MeshBasicMaterial({ color: 0x006600, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x004080, wireframe: true })
 
         geometry = new THREE.BoxGeometry(1, 8, 1)
         mesh = new THREE.Mesh(geometry, material)
@@ -151,7 +151,7 @@ class Gun extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.CylinderGeometry(2 + 1, 3, 2)
-        material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0xffff00, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.rotateX(2 * Math.PI / 4)
         mesh.position.set(x, y, z)
@@ -201,7 +201,7 @@ class Gun extends THREE.Object3D {
                     g = current.material.color.g
                     b = current.material.color.b
 
-                    current.material.color.set(new THREE.Color(g, r, b))
+                    current.material.color.set(new THREE.Color(b, g, r))
                 }
             }
         }
@@ -231,7 +231,7 @@ class Gun extends THREE.Object3D {
                     g = current.material.color.g
                     b = current.material.color.b
 
-                    current.material.color.set(new THREE.Color(g, r, b))
+                    current.material.color.set(new THREE.Color(b, g, r))
                 }
             }
         }

@@ -23,7 +23,7 @@ class Wall extends THREE.Object3D {
 		'use strict'
     
         geometry = new THREE.BoxGeometry(50, 20 ,3)
-        material = new THREE.MeshBasicMaterial({ color: 0x009933, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0x009999, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
     
@@ -34,7 +34,7 @@ class Wall extends THREE.Object3D {
         'use strict'
 
         geometry = new THREE.BoxGeometry(60, 0.5 , 56)
-        material = new THREE.MeshBasicMaterial({ color: 0x009933, wireframe: true })
+        material = new THREE.MeshBasicMaterial({ color: 0xccffff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x + 5, y - .25, z)
     
