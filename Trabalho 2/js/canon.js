@@ -248,7 +248,7 @@ class Gun extends THREE.Object3D {
                 var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
                 var coordinateY = (this.position.y + 5) * (- 8 * Math.sin(this.downAngle))
                 var coordinateZ = this.position.z + (8 * Math.sin(this.angle))
-                var newBall = new Ball(coordinateX, coordinateY, coordinateZ, this.angle, this.downAngle)
+                var newBall = new Ball(coordinateX, coordinateY, coordinateZ, this.angle, this.downAngle, showingBallAxis)
 
                 newBall.angle = this.angle
                 newBall.falling = true

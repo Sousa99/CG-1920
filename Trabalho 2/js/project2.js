@@ -20,6 +20,9 @@ const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
 const RADIUS_BALL = 2
 
+var clickedR = false
+var showingBallAxis = false
+
 function render() {
     'use strict'
     renderer.render(scene, cameras[camera])
@@ -104,6 +107,7 @@ function onKeyDown(e){
         break
 
     case 82: //r
+        clickedR = true
         break
 
     case 32: //space
@@ -138,8 +142,17 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    for (var i = 0; i < balls.length; i++)
+    for (var i = 0; i < balls.length; i++) {
+        if (clickedR) balls[i].showAxis()
+
         balls[i].move()
+    }
+
+    if (clickedR) {
+        clickedR = false
+        showingBallAxis = !showingBallAxis
+    }
+
     for (var i = 0; i < guns.length; i++) {
         if (guns[i].cooldown > 0)
             guns[i].cooldown -= 1
@@ -147,7 +160,7 @@ function animate() {
         guns[i].activateCanon()
         guns[i].deactivateCanon()
         guns[i].rotateCanon()
-        guns[i].shootBall()
+        guns[i].shootBall(showingBallAxis)
     }
 
     cameras[2].lookAt(selectedBall.position)

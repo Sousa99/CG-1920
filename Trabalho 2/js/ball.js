@@ -1,17 +1,19 @@
 var geometry, material, mesh
 
 class Ball extends THREE.Object3D {
-    constructor(x, y, z, horizontalAngle = 0, verticalAngle = 0) {
+    constructor(x, y, z, horizontalAngle = 0, verticalAngle = 0, showAxis = false) {
         super()
 
         this.velocity = new THREE.Vector3(0, 0, 0)
         this.verticalAngle = verticalAngle
         this.horizontalAngle = horizontalAngle
         
-        this.falling = false
-        var axesHelper = new THREE.AxesHelper( 5 );
-        axesHelper.position.set(0, 2, 0)
-        this.add(axesHelper)
+        this.falling = true
+        this.showingAxis = showAxis
+
+        this.axesHelper = new THREE.AxesHelper( 5 );
+        this.axesHelper.position.set(0, 2, 0)
+        if (this.showingAxis) this.add(this.axesHelper)
 
         geometry = new THREE.SphereGeometry(RADIUS_BALL, 10, 10)
         material = new THREE.MeshBasicMaterial({ color: 0x00cc99, wireframe: true })
@@ -69,5 +71,12 @@ class Ball extends THREE.Object3D {
                 else if (current.type == "Mesh")
                     current.material.color.set(color)
             }
+    }
+
+    showAxis() {
+        if (this.showingAxis) this.remove(this.axesHelper)
+        else this.add(this.axesHelper)
+
+        this.showingAxis = !this.showingAxis
     }
 }
