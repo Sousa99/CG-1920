@@ -79,4 +79,20 @@ class Ball extends THREE.Object3D {
 
         this.showingAxis = !this.showingAxis
     }
+
+    deleteBall() {
+        'use strict'
+
+        if (this.position.y >= -20)
+            return
+
+        if (this == selectedBall) {
+            selectedBall.remove(cameras[2])
+            selectedBall = undefined
+
+            lastCanonShot.add(cameras[2])
+        }
+
+        scene.remove(this)
+    }
 }

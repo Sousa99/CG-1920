@@ -257,7 +257,15 @@ class Gun extends THREE.Object3D {
                 newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
                 balls.push(newBall)
 
+                if (lastCanonShot != undefined)
+                    lastCanonShot.remove(cameras[2])
+                
+                newBall.add(cameras[2])
+                selectedBall = newBall
+                lastCanonShot = this
+                
                 scene.add(newBall)
+                newBall.changeColor(0xffffff)
             }
         }
     }

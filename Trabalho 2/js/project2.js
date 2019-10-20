@@ -4,6 +4,7 @@ var camera, scene, renderer
 var geometry, material, mesh
 
 var selectedBall
+var lastCanonShot
 
 var wall
 var guns = []
@@ -53,16 +54,14 @@ function createPerspectiveCamera(x, y, z) {
     return camera
 }
 
-function createMovingPerspectiveCamera(x, y, z, ball) {
+function createMovingPerspectiveCamera(x, y, z) {
     'use strict'
 
     var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
-    camera.position.set(x, y, z)
-    camera.lookAt(ball.position)
-    ball.add(camera)
+    guns[0].add(camera)
 
-    ball.changeColor(0xffffff)
-    selectedBall = ball
+    camera.position.set(x, y, z)
+    camera.lookAt(guns[0].position)
 
     return camera
 }
@@ -146,6 +145,7 @@ function animate() {
         if (clickedR) balls[i].showAxis()
 
         balls[i].move()
+        balls[i].deleteBall()
     }
 
     if (clickedR) {
@@ -163,7 +163,10 @@ function animate() {
         guns[i].shootBall(showingBallAxis)
     }
 
-    cameras[2].lookAt(selectedBall.position)
+    if (selectedBall != undefined)
+        cameras[2].lookAt(selectedBall.position)
+    else if (lastCanonShot != undefined)
+        cameras[2].lookAt(lastCanonShot.position)
 
     render()
     requestAnimationFrame(animate)
@@ -244,7 +247,7 @@ function init() {
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
     cameras[1] = createPerspectiveCamera(150, 50, 75)
-    cameras[2] = createMovingPerspectiveCamera(20, 20, 20, balls[Math.floor(Math.random() * balls.length)])
+    cameras[2] = createMovingPerspectiveCamera(50, 50, 50)
 
     render()
 
