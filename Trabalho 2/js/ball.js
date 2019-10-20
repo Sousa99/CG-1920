@@ -7,6 +7,7 @@ class Ball extends THREE.Object3D {
         this.velocity = new THREE.Vector3(0, 0, 0)
         this.verticalAngle = verticalAngle
         this.horizontalAngle = horizontalAngle
+        this.collision = false
         
         this.falling = true
         this.showingAxis = showAxis
@@ -96,22 +97,16 @@ class Ball extends THREE.Object3D {
         scene.remove(this)
     }
 
-    collisonBalls(){
-        var numberBalls = Math.floor(Math.random() * 7 + 5)
-        var ball, coordinateX, coordinateZ
+    collisionBalls(){
+        var numberBalls = balls.length
+        var currentBalli
         for (var i = 0; i < numberBalls; i ++) {
-            var distance, currentBall
-            for (var x = 0; x < i; x++) {
-                currentBall = balls[x]
-                distance = Math.sqrt(Math.pow(currentBall.position.x - coordinateX, 2) + Math.pow(currentBall.position.z - coordinateZ, 2))
-                if (distance < 2 * RADIUS_BALL) {
-                    positionOK = false
-                }
+            var distance
+            currentBalli = balls[i]
+            distance = Math.sqrt(Math.pow(this.position.x - currentBalli.position.x, 2) + Math.pow(this.position.z - currentBalli.position.z, 2))
+            if (distance < 2 * RADIUS_BALL && this != currentBalli) {
+                this.collision = true
             }
-
-            ball = new Ball(coordinateX, 0, coordinateZ)
-            balls.push(ball)
-            scene.add(ball)
         }
     }
 }

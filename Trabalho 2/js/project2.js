@@ -146,6 +146,7 @@ function animate() {
 
         balls[i].move()
         balls[i].deleteBall()
+        balls[i].collisionBalls()
     }
 
     if (clickedR) {
@@ -167,6 +168,8 @@ function animate() {
         cameras[2].lookAt(selectedBall.position)
     else if (lastCanonShot != undefined)
         cameras[2].lookAt(lastCanonShot.position)
+
+    
 
     render()
     requestAnimationFrame(animate)
@@ -212,10 +215,6 @@ function createScene() {
         ball = new Ball(coordinateX, 0, coordinateZ)
         balls.push(ball)
         scene.add(ball)
-    }
-
-    for (var i = 0; i < numberBalls; i ++){
-        this.collisonBalls();
     }
 }
 
