@@ -49,8 +49,14 @@ class Ball extends THREE.Object3D {
             this.position.x = - 21 + RADIUS_BALL
         }
 
-        // Move
-        this.translateOnAxis(this.velocity, 1)
+        var m = new THREE.Matrix4();
+        m.set(1, 0, 0, this.velocity.x,
+       		  0, 1, 0, this.velocity.y,
+       		  0, 0, 1, this.velocity.z,
+              0, 0, 0, 1 );
+        this.applyMatrix(m);
+        this.updateMatrix();
+        /*this.translateOnAxis(this.velocity, 1);*/
     }
 
     gravity() {
