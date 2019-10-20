@@ -213,6 +213,10 @@ function createScene() {
         balls.push(ball)
         scene.add(ball)
     }
+
+    for (var i = 0; i < numberBalls; i ++){
+        this.collisonBalls();
+    }
 }
 
 function onResize() {

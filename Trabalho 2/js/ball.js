@@ -95,4 +95,23 @@ class Ball extends THREE.Object3D {
 
         scene.remove(this)
     }
+
+    collisonBalls(){
+        var numberBalls = Math.floor(Math.random() * 7 + 5)
+        var ball, coordinateX, coordinateZ
+        for (var i = 0; i < numberBalls; i ++) {
+            var distance, currentBall
+            for (var x = 0; x < i; x++) {
+                currentBall = balls[x]
+                distance = Math.sqrt(Math.pow(currentBall.position.x - coordinateX, 2) + Math.pow(currentBall.position.z - coordinateZ, 2))
+                if (distance < 2 * RADIUS_BALL) {
+                    positionOK = false
+                }
+            }
+
+            ball = new Ball(coordinateX, 0, coordinateZ)
+            balls.push(ball)
+            scene.add(ball)
+        }
+    }
 }
