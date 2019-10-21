@@ -29,7 +29,7 @@ class Ball extends THREE.Object3D {
         this.mesh = new THREE.Mesh(geometry, material)
         this.mesh.position.set(0, 2, 0)
         this.add(this.mesh)
-
+        
         this.applyMatrix(transformMatrix)
     }
 
