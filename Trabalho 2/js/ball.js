@@ -165,6 +165,11 @@ class Ball extends THREE.Object3D {
             ballCollided.velocity = new THREE.Vector3(ballCollided.position.x - this.position.x, 0, ballCollided.position.z - this.position.z)
             ballCollided.velocity.normalize().multiplyScalar(totalVelocity * 0.5)
             console.log("Velocity 2: " + this.velocity)
+
+            for (var i = 0; i < ballCollided.collidedBalls.length; i++) {
+                if (this == ballCollided.collidedBalls[i])
+                    ballCollided.collidedBalls.splice(i, 1)
+            }
         }
 
         this.collision = false
