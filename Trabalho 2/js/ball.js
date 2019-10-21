@@ -22,7 +22,15 @@ class Ball extends THREE.Object3D {
         this.mesh.position.set(0, 2, 0)
         this.add(this.mesh)
 
-        this.position.set(x, y, z)
+        var m = new THREE.Matrix4();
+        m.set(1, 0, 0, x,
+       		  0, 1, 0, y,
+       		  0, 0, 1, z,
+              0, 0, 0, 1 );
+        this.applyMatrix(m);
+        this.updateMatrix();
+        /*this.position.set(x, y, z)*/
+
     }
 
     move() {
