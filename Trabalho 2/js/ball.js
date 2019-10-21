@@ -136,10 +136,9 @@ class Ball extends THREE.Object3D {
         for (var i = 0; i < numberBalls; i ++) {
             var distance
             currentBalli = balls[i]
-            distance = Math.sqrt(Math.pow(this.position.x - currentBalli.position.x, 2) + Math.pow(this.position.z - currentBalli.position.z, 2))
+            distance = Math.sqrt(Math.pow(this.position.x - currentBalli.position.x, 2) + Math.pow(this.position.y - currentBalli.position.y, 2) + Math.pow(this.position.z - currentBalli.position.z, 2))
             if (distance < 2 * RADIUS_BALL && this != currentBalli) {
                 this.collision = true
-                console.log(this.collidedBalls)
                 this.collidedBalls.push(currentBalli)
             }
         }
@@ -156,15 +155,12 @@ class Ball extends THREE.Object3D {
             var ballCollided = this.collidedBalls.pop()
 
             var totalVelocity = this.velocity.length() + ballCollided.velocity.length()
-            console.log("Total Velocity: " + totalVelocity)
 
             this.velocity = new THREE.Vector3(this.position.x - ballCollided.position.x, 0, this.position.z - ballCollided.position.z)
             this.velocity.normalize().multiplyScalar(totalVelocity * 0.5)
-            console.log("Velocity 1: " + this.velocity)
 
             ballCollided.velocity = new THREE.Vector3(ballCollided.position.x - this.position.x, 0, ballCollided.position.z - this.position.z)
             ballCollided.velocity.normalize().multiplyScalar(totalVelocity * 0.5)
-            console.log("Velocity 2: " + this.velocity)
 
             for (var i = 0; i < ballCollided.collidedBalls.length; i++) {
                 if (this == ballCollided.collidedBalls[i])
