@@ -3,6 +3,12 @@ var geometry, material, mesh
 class Gun extends THREE.Object3D {
     constructor(x , y, z, rotation) {
         super()
+        this.matrixAutoUpdate = false
+        var transformMatrix = new THREE.Matrix4()
+        transformMatrix.set(Math.cos(rotation),    0, Math.sin(rotation), x,
+                            0,                     1, 0,                  y,
+                            - Math.sin(rotation),  0, Math.cos(rotation), z,
+                            0,                     0, 0,                  1 )
         
         this.angle = rotation
         this.downAngle = - 2 * Math.PI / 40
@@ -38,10 +44,8 @@ class Gun extends THREE.Object3D {
         this.base.add(this.wheels)
         this.base.position.set(0, 0, 0)
 
-        this.rotateY(rotation)
-
         this.add(this.base)
-        this.position.set(x, y, z)
+        this.applyMatrix(transformMatrix)
     }
 
     addMainChamber(x, y, z) {
@@ -171,10 +175,37 @@ class Gun extends THREE.Object3D {
         if (this.rotateRight)
             gunsRotation -= 1
 
-        this.angle += ROTATE_VELOCITY_CONSTANT * gunsRotation
-        this.rotateY(ROTATE_VELOCITY_CONSTANT * gunsRotation)
-        this.wheels.rotateZ(ROTATE_VELOCITY_CONSTANT * gunsRotation)
+        var change = ROTATE_VELOCITY_CONSTANT * gunsRotation
+        this.angle += change
 
+        var x = this.position.x
+        var z = this.position.z
+        var finalMatrix = new THREE.Matrix4()
+        var finalMatrix2 = new THREE.Matrix4()
+
+        var toOrigin = new THREE.Matrix4()
+        toOrigin.set(1, 0, 0, - x,
+                    0, 1, 0, 0,
+                    0, 0, 1, - z,
+                    0, 0, 0, 1 )
+
+        var transformMatrix = new THREE.Matrix4()
+        transformMatrix.set(Math.cos(change),    0, Math.sin(change),  0,
+                            0,                   1, 0,                 0,
+                            - Math.sin(change),  0, Math.cos(change),  0,
+                            0,                   0, 0,                 1 )
+
+        var backToPoint = new THREE.Matrix4()
+        backToPoint.set(1, 0, 0, x,
+                        0, 1, 0, 0,
+                        0, 0, 1, z,
+                        0, 0, 0, 1 )
+
+        finalMatrix.multiplyMatrices(transformMatrix, toOrigin)
+        finalMatrix.multiplyMatrices(backToPoint, finalMatrix)
+        this.applyMatrix(finalMatrix)
+
+        this.wheels.rotateZ(ROTATE_VELOCITY_CONSTANT * gunsRotation)
     }
 
     activateCanon() {
