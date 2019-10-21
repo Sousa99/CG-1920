@@ -146,7 +146,6 @@ function animate() {
 
         balls[i].move()
         balls[i].deleteBall()
-        balls[i].collisionBalls()
     }
 
     if (clickedR) {

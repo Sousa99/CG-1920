@@ -252,7 +252,7 @@ class Gun extends THREE.Object3D {
 
                 newBall.angle = this.angle
                 newBall.falling = true
-                newBall.matrixAutoUpdate = false;
+                
                 newBall.velocity.x = - Math.cos(this.angle) * VELOCITY_CONSTANT
                 newBall.velocity.y = - Math.sin(this.downAngle) * VELOCITY_CONSTANT
                 newBall.velocity.z = Math.sin(this.angle) * VELOCITY_CONSTANT
