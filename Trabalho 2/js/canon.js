@@ -181,7 +181,6 @@ class Gun extends THREE.Object3D {
         var x = this.position.x
         var z = this.position.z
         var finalMatrix = new THREE.Matrix4()
-        var finalMatrix2 = new THREE.Matrix4()
 
         var toOrigin = new THREE.Matrix4()
         toOrigin.set(1, 0, 0, - x,
