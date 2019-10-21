@@ -204,7 +204,32 @@ class Gun extends THREE.Object3D {
         finalMatrix.multiplyMatrices(backToPoint, finalMatrix)
         this.applyMatrix(finalMatrix)
 
-        this.wheels.rotateZ(ROTATE_VELOCITY_CONSTANT * gunsRotation)
+        var x = this.wheels.position.x
+        var y = this.wheels.position.y
+        var z = this.wheels.position.z
+        var finalMatrix = new THREE.Matrix4()
+
+        var toOrigin = new THREE.Matrix4()
+        toOrigin.set(1, 0, 0, - x,
+                    0, 1, 0, - y,
+                    0, 0, 1, - z,
+                    0, 0, 0, 1 )
+
+        var transformMatrix = new THREE.Matrix4()
+        transformMatrix.set(Math.cos(change), - Math.sin(change), 0, 0,
+                            Math.sin(change), Math.cos(change), 0, 0,
+                            0,                0,                1, 0,
+                            0,                0,                0, 1 )
+
+        var backToPoint = new THREE.Matrix4()
+        backToPoint.set(1, 0, 0, x,
+                        0, 1, 0, y,
+                        0, 0, 1, z,
+                        0, 0, 0, 1 )
+
+        finalMatrix.multiplyMatrices(transformMatrix, toOrigin)
+        finalMatrix.multiplyMatrices(backToPoint, finalMatrix)
+        this.wheels.applyMatrix(finalMatrix)
     }
 
     activateCanon() {
