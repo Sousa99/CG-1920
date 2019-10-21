@@ -243,7 +243,7 @@ class Gun extends THREE.Object3D {
         if (this.shoot) {
             this.shoot = false
             if (this.cooldown == 0 && this.active) {
-                this.cooldown = 500
+                this.cooldown = 1
 
                 var coordinateX = this.position.x + (- 8 * Math.cos(this.angle))
                 var coordinateY = (this.position.y + 5) * (- 8 * Math.sin(this.downAngle))
