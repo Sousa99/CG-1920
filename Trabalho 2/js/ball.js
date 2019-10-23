@@ -50,7 +50,6 @@ class Ball extends THREE.Object3D {
               0, 0, 0, 1 )
         
         this.applyMatrix(m)
-        this.updateMatrix()
     }
 
     gravity() {
@@ -120,11 +119,17 @@ class Ball extends THREE.Object3D {
                 this.position.z = 25 - RADIUS_BALL
             if (this.position.z < - 25 + RADIUS_BALL)
                 this.position.z = - 25 + RADIUS_BALL
+            this.updateRotation(- this.horizontalAngle)
+        } else if (Math.abs(this.position.z) > 25 - RADIUS_BALL && !(Math.abs(this.position.z) > 28 + RADIUS_BALL) && this.position.x < 25) {
+            this.velocity.x = - this.velocity.x
+            this.position.x = 25 + RADIUS_BALL
+            this.updateRotation(- this.horizontalAngle + Math.PI)
         }
 
         if (this.position.x < - 22 + RADIUS_BALL && Math.abs(this.position.z) < 25 - RADIUS_BALL) {
             this.velocity.x = - this.velocity.x
             this.position.x = - 22 + RADIUS_BALL
+            this.updateRotation(- this.horizontalAngle + Math.PI)
         }
     }
 
@@ -154,13 +159,17 @@ class Ball extends THREE.Object3D {
         for (var x = 0; x < numberBalls; x ++) {
             var ballCollided = this.collidedBalls.pop()
 
-            var totalVelocity = this.velocity.length() + ballCollided.velocity.length()
+            var tmpVelocity = new THREE.Vector3()
+            tmpVelocity.copy(ballCollided.velocity)
+            var tmpAngle = ballCollided.horizontalAngle
 
-            this.velocity = new THREE.Vector3(this.position.x - ballCollided.position.x, 0, this.position.z - ballCollided.position.z)
-            this.velocity.normalize().multiplyScalar(totalVelocity * 0.5)
-
-            ballCollided.velocity = new THREE.Vector3(ballCollided.position.x - this.position.x, 0, ballCollided.position.z - this.position.z)
-            ballCollided.velocity.normalize().multiplyScalar(totalVelocity * 0.5)
+            ballCollided.velocity.copy(this.velocity)
+            ballCollided.updateRotation(this.horizontalAngle)
+            ballCollided.horizontalAngle = this.horizontalAngle
+            
+            this.velocity.copy(tmpVelocity)
+            this.updateRotation(tmpAngle)
+            this.horizontalAngle = tmpAngle
 
             for (var i = 0; i < ballCollided.collidedBalls.length; i++) {
                 if (this == ballCollided.collidedBalls[i])
@@ -169,5 +178,44 @@ class Ball extends THREE.Object3D {
         }
 
         this.collision = false
+    }
+
+    updateRotation(angle) {
+        'use strict'
+
+        var x = this.position.x
+        var y = this.position.y
+        var z = this.position.z
+        var finalMatrix = new THREE.Matrix4()
+
+        var toOrigin = new THREE.Matrix4()
+        toOrigin.set(1, 0, 0, - x,
+                    0, 1, 0, - y,
+                    0, 0, 1, - z,
+                    0, 0, 0, 1 )
+        
+        var unRotate = new THREE.Matrix4()
+        unRotate.set(Math.cos(- this.horizontalAngle), 0, Math.sin(- this.horizontalAngle), 0,
+                    0,                                 1, 0,                                0,
+                    - Math.sin(- this.horizontalAngle), 0, Math.cos(- this.horizontalAngle), 0,
+                    0,                                  0, 0,                                1 )
+                    
+        var transformMatrix = new THREE.Matrix4()
+        transformMatrix.set(Math.cos(angle),    0, Math.sin(angle),  0,
+                            0,                   1, 0,                 0,
+                            - Math.sin(angle),  0, Math.cos(angle),  0,
+                            0,                   0, 0,                 1 )
+
+        var backToPoint = new THREE.Matrix4()
+        backToPoint.set(1, 0, 0, x,
+                        0, 1, 0, y,
+                        0, 0, 1, z,
+                        0, 0, 0, 1 )
+        
+        finalMatrix.multiplyMatrices(unRotate, toOrigin)
+        finalMatrix.multiplyMatrices(transformMatrix, finalMatrix)
+        finalMatrix.multiplyMatrices(backToPoint, finalMatrix)
+        this.applyMatrix(finalMatrix)
+        this.horizontalAngle = angle
     }
 }
