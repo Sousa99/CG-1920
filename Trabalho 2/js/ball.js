@@ -164,10 +164,14 @@ class Ball extends THREE.Object3D {
             var tmpAngle = ballCollided.horizontalAngle
 
             ballCollided.velocity.copy(this.velocity)
+            ballCollided.position.y = 0
+            ballCollided.velocity.y = 0
             ballCollided.updateRotation(this.horizontalAngle)
             ballCollided.horizontalAngle = this.horizontalAngle
             
             this.velocity.copy(tmpVelocity)
+            this.position.y = 0
+            this.velocity.y = 0
             this.updateRotation(tmpAngle)
             this.horizontalAngle = tmpAngle
 
