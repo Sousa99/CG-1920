@@ -168,10 +168,11 @@ function animate() {
     else if (lastCanonShot != undefined)
         cameras[2].lookAt(lastCanonShot.position)
 
-    
 
     render()
-    requestAnimationFrame(animate)
+    setTimeout( function() {
+        requestAnimationFrame(animate)
+    }, 1000 / FRAMERATE )
 }
 
 function createScene() {
