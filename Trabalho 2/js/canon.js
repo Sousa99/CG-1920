@@ -27,7 +27,6 @@ class Gun extends THREE.Object3D {
         this.main.add(this.addMainChamberHold(0, 0, 0))
         this.main.add(this.addMouthHold(-8, 0, 0))
         this.main.add(this.addMouth(0, 0, 0))
-        /*this.main.position.set(6, 5, 0)*/
 
         var m = new THREE.Matrix4();
         m.set(Math.cos(this.downAngle),-Math.sin(this.downAngle), 0, 6,
@@ -35,7 +34,7 @@ class Gun extends THREE.Object3D {
                         0,                        0,              1, 0,
                         0,                        0,              0, 1);
         this.main.applyMatrix(m);
-        /*this.main.rotateZ(this.downAngle)*/
+        
 
         this.wheels = new THREE.Object3D()
         this.wheels.add(this.addWheel(0, 0, -5))
