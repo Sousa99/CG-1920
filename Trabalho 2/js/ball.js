@@ -108,7 +108,7 @@ class Ball extends THREE.Object3D {
         'use strict'
 
         // Check limits
-        if (Math.abs(this.position.z) <= 28 + RADIUS_BALL && this.position.x >= - 25 + RADIUS_BALL && this.position.x < 35 + RADIUS_BALL && this.position.y <= 0) {
+        if (Math.abs(this.position.z) <= 28 + RADIUS_BALL && this.position.x >= - 25 + RADIUS_BALL && this.position.x < 35 + RADIUS_BALL && this.position.y <= 0 && this.position.y > - 0.5) {
             this.velocity.y = 0
             this.position.y = 0
         }
