@@ -229,7 +229,7 @@ function createScene() {
         scene.add(guns[i])
     }
 
-    var numberBalls = 0//Math.floor(Math.random() * 7 + 5)
+    var numberBalls = Math.floor(Math.random() * 7 + 5)
     var ball, coordinateX, coordinateZ
     for (var i = 0; i < numberBalls; i ++) {
         var positionOK = false

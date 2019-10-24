@@ -159,21 +159,32 @@ class Ball extends THREE.Object3D {
         for (var x = 0; x < numberBalls; x ++) {
             var ballCollided = this.collidedBalls.pop()
 
-            var tmpVelocity = new THREE.Vector3()
-            tmpVelocity.copy(ballCollided.velocity)
-            var tmpAngle = ballCollided.horizontalAngle
+            var m = new THREE.Matrix4()
+            m.set(1, 0, 0, - this.velocity.x,
+                0, 1, 0, 0,
+                0, 0, 1, - this.velocity.z,
+                0, 0, 0, 1 )
+            this.applyMatrix(m)
 
-            ballCollided.velocity.copy(this.velocity)
-            ballCollided.position.y = 0
-            ballCollided.velocity.y = 0
-            //ballCollided.updateRotation(this.horizontalAngle)
-            //ballCollided.horizontalAngle = this.horizontalAngle
+            var m = new THREE.Matrix4()
+            m.set(1, 0, 0, - ballCollided.velocity.x,
+                0, 1, 0, 0,
+                0, 0, 1, - ballCollided.velocity.z,
+                0, 0, 0, 1 )
+            ballCollided.applyMatrix(m)
+
+            var copyThisVelocity = new THREE.Vector2(this.velocity.x, this.velocity.z)
+            var copyBallCollidedVelocity = new THREE.Vector2(ballCollided.velocity.x, ballCollided.velocity.z)
+            var thisAngle = this.horizontalAngle
+            var ballCollidedAngle = ballCollided.horizontalAngle
+
+            this.velocity.x = copyBallCollidedVelocity.x
+            this.velocity.z = copyBallCollidedVelocity.y
+            this.horizontalAngle = ballCollidedAngle
             
-            this.velocity.copy(tmpVelocity)
-            this.position.y = 0
-            this.velocity.y = 0
-            //this.updateRotation(tmpAngle)
-            //this.horizontalAngle = tmpAngle
+            ballCollided.velocity.x = copyThisVelocity.x
+            ballCollided.velocity.z = copyThisVelocity.y
+            ballCollided.horizontalAngle = thisAngle
 
             for (var i = 0; i < ballCollided.collidedBalls.length; i++) {
                 if (this == ballCollided.collidedBalls[i])
