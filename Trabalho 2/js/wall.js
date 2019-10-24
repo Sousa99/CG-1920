@@ -4,10 +4,10 @@ class Wall extends THREE.Object3D {
     constructor(x, y, z) {
         super()
 
-        var rightWall = this.addWall(x, y + 10, z - 26.5)
-        var frontWall = this.addWall(x - 23.5, y + 10, z)
-        var leftWall = this.addWall(x, y + 10, z + 26.5)
-        var floor = this.addFloor(x, y, z)
+        var rightWall = this.addWall(0, 10, - 26.5)
+        var frontWall = this.addWall(0 - 23.5, 10, 0)
+        var leftWall = this.addWall(0, 10, 26.5)
+        var floor = this.addFloor(0, 0, 0)
 
         frontWall.rotateY(2 * Math.PI / 4)
 

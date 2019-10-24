@@ -58,12 +58,46 @@ function createMovingPerspectiveCamera(x, y, z) {
     'use strict'
 
     var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
-    guns[0].add(camera)
 
-    camera.position.set(x, y, z)
-    camera.lookAt(guns[0].position)
+    updateMovingCamera(camera)
 
     return camera
+}
+
+function updateMovingCamera(camera) {
+    'use strict'
+    var distance
+    var x, y, z
+    var object
+    
+    if (selectedBall != undefined) {
+        object = selectedBall
+        distance = 25
+
+        x = object.position.x + distance * Math.cos(- object.horizontalAngle)
+        y = object.position.y + 5
+        z = object.position.z + distance * Math.sin(- object.horizontalAngle)
+        
+    } else if (lastCanonShot != undefined) {
+        object = lastCanonShot
+        distance = 75
+
+        x = object.position.x + distance * Math.cos(- object.angle)
+        y = object.position.y + 30
+        z = object.position.z + distance * Math.sin(- object.angle)
+
+    } else {
+        return
+    }
+
+    var transformMatrix = new THREE.Matrix4()
+    transformMatrix.set(1, 0, 0, - camera.position.x + x,
+                        0, 1, 0, - camera.position.y + y,
+                        0, 0, 1, - camera.position.z + z,
+                        0, 0, 0, 1 )
+    camera.applyMatrix(transformMatrix)
+    
+    camera.lookAt(object.position)
 }
 
 function onKeyDown(e){
@@ -91,8 +125,8 @@ function onKeyDown(e){
     
     case 81: //q
         guns[0].deactivate = true
-        guns[1].activate = true
-        guns[2].deactivate = true
+        guns[1].deactivate = true
+        guns[2].activate = true
         break
     case 87: //w
         guns[0].activate = true
@@ -101,8 +135,8 @@ function onKeyDown(e){
         break
     case 69: //e
         guns[0].deactivate = true
-        guns[1].deactivate = true
-        guns[2].activate = true
+        guns[1].activate = true
+        guns[2].deactivate = true
         break
 
     case 82: //r
@@ -168,6 +202,8 @@ function animate() {
     else if (lastCanonShot != undefined)
         cameras[2].lookAt(lastCanonShot.position)
 
+    updateMovingCamera(cameras[2])
+
 
     render()
     setTimeout( function() {
@@ -193,7 +229,7 @@ function createScene() {
         scene.add(guns[i])
     }
 
-    var numberBalls = Math.floor(Math.random() * 7 + 5)
+    var numberBalls = 0//Math.floor(Math.random() * 7 + 5)
     var ball, coordinateX, coordinateZ
     for (var i = 0; i < numberBalls; i ++) {
         var positionOK = false
@@ -212,7 +248,7 @@ function createScene() {
             }
         }
 
-        ball = new Ball(coordinateX, 0, coordinateZ)
+        ball = new Ball(coordinateX, RADIUS_BALL, coordinateZ)
         balls.push(ball)
         scene.add(ball)
     }
@@ -246,11 +282,12 @@ function init() {
     document.body.appendChild(renderer.domElement)
 
     createScene()
+    lastCanonShot = guns[1]
 
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
     cameras[1] = createPerspectiveCamera(150, 50, 75)
-    cameras[2] = createMovingPerspectiveCamera(50, 50, 50)
+    cameras[2] = createMovingPerspectiveCamera(20, 20, 20)
 
     render()
 

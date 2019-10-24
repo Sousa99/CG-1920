@@ -322,7 +322,6 @@ class Gun extends THREE.Object3D {
                 if (lastCanonShot != undefined)
                     lastCanonShot.remove(cameras[2])
                 
-                newBall.add(cameras[2])
                 selectedBall = newBall
                 lastCanonShot = this
                 
