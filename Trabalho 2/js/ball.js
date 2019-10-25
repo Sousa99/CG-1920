@@ -106,29 +106,31 @@ class Ball extends THREE.Object3D {
 
     collisionWall() {
         'use strict'
+        var m = new THREE.Matrix4()
+        m.set(1, 0, 0, - this.velocity.x,
+            0, 1, 0, - this.velocity.y,
+            0, 0, 1, - this.velocity.z,
+            0, 0, 0, 1 )
 
         // Check limits
         if (Math.abs(this.position.z) <= 28 + RADIUS_BALL && this.position.x >= - 25 + RADIUS_BALL && this.position.x < 35 + RADIUS_BALL && this.position.y <= 0 && this.position.y > - 0.5) {
+            this.applyMatrix(m)
             this.velocity.y = 0
-            this.position.y = 0
         }
 
         if (Math.abs(this.position.z) >= 25 - RADIUS_BALL && !(Math.abs(this.position.z) >= 28 + RADIUS_BALL) && this.position.x <= 25 - RADIUS_BALL) {
+            this.applyMatrix(m)
             this.velocity.z = - this.velocity.z
-            if (this.position.z > 25 - RADIUS_BALL)
-                this.position.z = 25 - RADIUS_BALL
-            if (this.position.z < - 25 + RADIUS_BALL)
-                this.position.z = - 25 + RADIUS_BALL
             this.updateRotation(- this.horizontalAngle)
         } else if (Math.abs(this.position.z) >= 25 - RADIUS_BALL && !(Math.abs(this.position.z) >= 28 + RADIUS_BALL) && this.position.x <= 25 + RADIUS_BALL) {
+            this.applyMatrix(m)
             this.velocity.x = - this.velocity.x
-            this.position.x = 25 + RADIUS_BALL
             this.updateRotation(- this.horizontalAngle + Math.PI)
         }
 
         if (this.position.x < - 22 + RADIUS_BALL && Math.abs(this.position.z) <= 25 - RADIUS_BALL) {
+            this.applyMatrix(m)
             this.velocity.x = - this.velocity.x
-            this.position.x = - 22 + RADIUS_BALL
             this.updateRotation(- this.horizontalAngle + Math.PI)
         }
     }
