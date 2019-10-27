@@ -113,9 +113,11 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-
-    spotlights[i].activateSpotight()
-    spotlights[i].deactivateSpotight()
+    for(var i = 0; i< spotlights.length;i++){
+        spotlights[i].activateSpotlight()
+        spotlights[i].deactivateSpotlight()
+    }
+    
 
     render()
     setTimeout( function() {
@@ -170,7 +172,7 @@ function init() {
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
     cameras[1] = createPerspectiveCamera(150, 50, 75)
-    cameras[2] = createMovingPerspectiveCamera(20, 20, 20)
+    
 
     render()
 

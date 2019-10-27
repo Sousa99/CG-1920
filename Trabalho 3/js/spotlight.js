@@ -1,38 +1,14 @@
 var geometry, material, mesh
 
-class Gun extends THREE.Object3D {
+class Spotlight extends THREE.Object3D {
     constructor(x , y, z, rotation) {
         super()
-        this.matrixAutoUpdate = false
-        var transformMatrix = new THREE.Matrix4()
-        transformMatrix.set(Math.cos(rotation),    0, Math.sin(rotation), x,
-                            0,                     1, 0,                  y,
-                            - Math.sin(rotation),  0, Math.cos(rotation), z,
-                            0,                     0, 0,                  1 )
-        
-        this.angle = rotation
-        this.downAngle = - 2 * Math.PI / 40
+    
         this.active = false
-        this.cooldown = 0
 
-        this.rotateLeft = false
-        this.rotateRight = false
         this.activate = false
         this.deactivate = false
 
-        this.main = new THREE.Object3D()
-        this.main.add(this.addMainChamber(0, 0, 0))
-        this.main.add(this.addMainChamberBack(0, 0, 0))
-        this.main.add(this.addMainChamberHold(0, 0, 0))
-        this.main.add(this.addMouthHold(-8, 0, 0))
-        this.main.add(this.addMouth(0, 0, 0))
-
-        var m = new THREE.Matrix4();
-        m.set(Math.cos(this.downAngle),-Math.sin(this.downAngle), 0, 6,
-              Math.sin(this.downAngle), Math.cos(this.downAngle), 0, 5,
-                        0,                        0,              1, 0,
-                        0,                        0,              0, 1);
-        this.main.applyMatrix(m);
         
 
         this.spotlight = new THREE.Object3D()
@@ -40,8 +16,7 @@ class Gun extends THREE.Object3D {
         this.spotlight.add(this.addMouthSpotlight(0, 0, 0))
         this.spotlight.position.set(0, 0, 0)
 
-        this.add(this.base)
-        this.applyMatrix(transformMatrix)
+        this.add(this.spotlight)
     }
 
     addSpotlight(x, y, z) {
