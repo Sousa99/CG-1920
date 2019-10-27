@@ -46,7 +46,7 @@ function createPerspectiveCamera(x, y, z) {
     
     return camera
 }
-
+ 
 
 function onKeyDown(e){
     'use strict'
@@ -127,15 +127,19 @@ function createScene() {
     'use strict'
 
     scene = new THREE.Scene()
-    //wall = new Wall(0, 0, 0)
 
-    spotlights.push(new Spotlight(80, 0, 0, 0))
+    spotlights.push(new Spotlight(80, 0 , 0, 0))
     spotlights.push(new Spotlight(80, 0, - 30, 0.2))
     spotlights.push(new Spotlight(80, 0, 30, - 0.2))
     spotlights.push(new Spotlight(80, 0, -30, - 0.2))
     
 
     spotlights[0].activate = true
+
+    for (var i = 0; i < spotlights.length; i++) {
+        scene.add(spotlights[i])
+    }
+
  
     
 }
