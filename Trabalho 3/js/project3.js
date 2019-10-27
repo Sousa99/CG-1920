@@ -54,28 +54,28 @@ function onKeyDown(e){
     switch (e.keyCode) {
     
     case 49: // 1
-        spotlight[0].activate = true
-        spotlight[1].deactivate = true
-        spotlight[2].deactivate = true
-        spotlight[3].deactivate = true
+        spotlights[0].activate = true
+        spotlights[1].deactivate = true
+        spotlights[2].deactivate = true
+        spotlights[3].deactivate = true
         break
     case 50: // 2
-        spotlight[1].activate = true
-        spotlight[0].deactivate = true
-        spotlight[2].deactivate = true
-        spotlight[3].deactivate = true
+        spotlights[1].activate = true
+        spotlights[0].deactivate = true
+        spotlights[2].deactivate = true
+        spotlights[3].deactivate = true
         break
     case 51: // 3
-        spotlight[2].activate = true
-        spotlight[0].deactivate = true
-        spotlight[1].deactivate = true
-        spotlight[3].deactivate = true
+        spotlights[2].activate = true
+        spotlights[0].deactivate = true
+        spotlights[1].deactivate = true
+        spotlights[3].deactivate = true
         break
     case 52: //4
-        spotlight[3].activate = true
-        spotlight[0].deactivate = true
-        spotlight[1].deactivate = true
-        spotlight[2].deactivate = true
+        spotlights[3].activate = true
+        spotlights[0].deactivate = true
+        spotlights[1].deactivate = true
+        spotlights[2].deactivate = true
         break
     case 53: //Perspectivecamera
         break
@@ -113,35 +113,9 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    for (var i = 0; i < balls.length; i++) {
-        if (clickedR) balls[i].showAxis()
 
-        balls[i].move()
-        balls[i].deleteBall()
-    }
-
-    if (clickedR) {
-        clickedR = false
-        showingBallAxis = !showingBallAxis
-    }
-
-    for (var i = 0; i < guns.length; i++) {
-        if (guns[i].cooldown > 0)
-            guns[i].cooldown -= 1
-        
-        guns[i].activateCanon()
-        guns[i].deactivateCanon()
-        guns[i].rotateCanon()
-        guns[i].shootBall(showingBallAxis)
-    }
-
-    if (selectedBall != undefined)
-        cameras[2].lookAt(selectedBall.position)
-    else if (lastCanonShot != undefined)
-        cameras[2].lookAt(lastCanonShot.position)
-
-    updateMovingCamera(cameras[2])
-
+    spotlights[i].activateSpotight()
+    spotlights[i].deactivateSpotight()
 
     render()
     setTimeout( function() {
@@ -153,9 +127,15 @@ function createScene() {
     'use strict'
 
     scene = new THREE.Scene()
+    //wall = new Wall(0, 0, 0)
+
+    spotlights.push(new Spotlight(80, 0, 0, 0))
+    spotlights.push(new Spotlight(80, 0, - 30, 0.2))
+    spotlights.push(new Spotlight(80, 0, 30, - 0.2))
+    spotlights.push(new Spotlight(80, 0, -30, - 0.2))
     
 
-    spotlight[0].activate = true
+    spotlights[0].activate = true
  
     
 }
