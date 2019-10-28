@@ -1,31 +1,35 @@
 var geometry, material, mesh
 
 class Spotlight extends THREE.Object3D {
-    constructor(x , y, z, rotation) {
+    constructor(x , y, z) {
         super()
+        this.matrixAutoUpdate = false
     
         this.active = false
+        this.changeActiveState = false
 
-        this.activate = false
-        this.deactivate = false
-
-        
+        var matrixPosition = new THREE.Matrix4()
+        matrixPosition.set(1, 0, 0, x,
+                        0, 1, 0, y,
+                        0, 0, 1, z,
+                        0, 0, 0, 1)
 
         this.spotlight = new THREE.Object3D()
         this.spotlight.add(this.addSpotlight(0, 0, 0))
-        this.spotlight.add(this.addMouthSpotlight(0, 0, 0))
+        this.spotlight.add(this.addMouthSpotlight(0, -2.5, 0))
         this.spotlight.position.set(0, 0, 0)
 
         this.add(this.spotlight)
+        this.applyMatrix(matrixPosition)
     }
 
     addSpotlight(x, y, z) {
         'use strict'
 
-        geometry = new THREE.ConeGeometry(2, 3, 13)
-        material = new THREE.MeshBasicMaterial({ color: 0x66ffff, wireframe: true })
+        geometry = new THREE.SphereGeometry(2.5, 7, 7)
+        material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x - 6.5, y, z)
+        mesh.position.set(x, y, z)
 
         return mesh
     }
@@ -33,42 +37,48 @@ class Spotlight extends THREE.Object3D {
     addMouthSpotlight(x, y, z) {
         'use strict'
 
-        geometry = new THREE.SphereGeometry(2 + 0.25, 2, 1)
-        material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+        geometry = new THREE.ConeGeometry(3, 5, 13)
+        material = new THREE.MeshBasicMaterial({ color: 0x66ffff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x - 6.5, y, z)
+        mesh.position.set(x, y, z)
 
         return mesh
     }
 
-   
+    changeActivation() {
+        'use strict'
+
+        if (this.changeActiveState) {
+            if (this.active)
+                this.activateSpotlight()
+            else
+                this.deactivateSpotlight()
+            
+            this.changeActiveState = false
+        }
+    }
 
     activateSpotlight() {
         'use strict'
 
-        if (this.activate && this.active)
-            this.activate = false
+        this.active = true
 
-        if (this.activate) {
-            this.active = true
-            this.activate = false
+        var toChange = new Array()
+        var r, g, b
 
-            var toChange = new Array()
-            var r, g, b
-
-            toChange = toChange.concat(this.main)
-            while (toChange.length > 0) {
-                var current = toChange.shift()
-                
-                if (current.type == "Object3D")
+        console.log(this)
+        toChange = toChange.concat(this)
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+            
+            if (current.type == "Object3D")
                 toChange = toChange.concat(current.children)
-                else if (current.type == "Mesh") {
-                    r = current.material.color.r
-                    g = current.material.color.g
-                    b = current.material.color.b
+            else if (current.type == "Mesh") {
+                r = current.material.color.r
+                g = current.material.color.g
+                b = current.material.color.b
 
-                    current.material.color.set(new THREE.Color(b, g, r))
-                }
+                current.material.color.set(new THREE.Color(b, g, r))
             }
         }
     }
@@ -76,28 +86,25 @@ class Spotlight extends THREE.Object3D {
     deactivateSpotlight() {
         'use strict'
 
-        if (this.deactivate && !this.active)
-            this.deactivate = false
+        this.active = false
 
-        if (this.deactivate) {
-            this.active = false
-            this.deactivate = false
+        var toChange = new Array()
+        var r, g, b
 
-            toChange = toChange.concat(this.main)
-            while (toChange.length > 0) {
-                var current = toChange.shift()
-                
-                if (current.type == "Object3D")
+        console.log(this)
+        toChange = toChange.concat(this)
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+            
+            if (current.type == "Object3D")
                 toChange = toChange.concat(current.children)
-                else if (current.type == "Mesh") {
-                    r = current.material.color.r
-                    g = current.material.color.g
-                    b = current.material.color.b
+            else if (current.type == "Mesh") {
+                r = current.material.color.r
+                g = current.material.color.g
+                b = current.material.color.b
 
-                    current.material.color.set(new THREE.Color(b, g, r))
-                }
+                current.material.color.set(new THREE.Color(b, g, r))
             }
-
         }
     }
 

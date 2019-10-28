@@ -15,8 +15,6 @@ var frustumSize = 115
 const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
 
-
-
 function render() {
     'use strict'
     renderer.render(scene, cameras[camera])
@@ -54,32 +52,22 @@ function onKeyDown(e){
     switch (e.keyCode) {
     
     case 49: // 1
-        spotlights[0].activate = true
-        spotlights[1].deactivate = true
-        spotlights[2].deactivate = true
-        spotlights[3].deactivate = true
+        spotlights[0].changeActiveState = true
         break
     case 50: // 2
-        spotlights[1].activate = true
-        spotlights[0].deactivate = true
-        spotlights[2].deactivate = true
-        spotlights[3].deactivate = true
+        spotlights[1].changeActiveState = true
         break
     case 51: // 3
-        spotlights[2].activate = true
-        spotlights[0].deactivate = true
-        spotlights[1].deactivate = true
-        spotlights[3].deactivate = true
+        spotlights[2].changeActiveState = true
         break
     case 52: //4
-        spotlights[3].activate = true
-        spotlights[0].deactivate = true
-        spotlights[1].deactivate = true
-        spotlights[2].deactivate = true
+        spotlights[3].changeActiveState = true
         break
     case 53: //Perspectivecamera
+        camera = 0
         break
     case 54: //Ortogonalcamera 
+        camera = 1
         break
     
     case 81: //q
@@ -113,9 +101,8 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    for(var i = 0; i< spotlights.length;i++){
-        spotlights[i].activateSpotlight()
-        spotlights[i].deactivateSpotlight()
+    for(var i = 0; i < spotlights.length; i++){
+        spotlights[i].changeActivation()
     }
     
 
@@ -130,20 +117,14 @@ function createScene() {
 
     scene = new THREE.Scene()
 
-    spotlights.push(new Spotlight(80, 0 , 0, 0))
-    spotlights.push(new Spotlight(80, 0, - 30, 0.2))
-    spotlights.push(new Spotlight(80, 0, 30, - 0.2))
-    spotlights.push(new Spotlight(80, 0, -30, - 0.2))
-    
-
-    spotlights[0].activate = true
+    spotlights.push(new Spotlight(0, 0 , 0))
+    spotlights.push(new Spotlight(80, 0, -30))
+    spotlights.push(new Spotlight(80, 0, 0))
+    spotlights.push(new Spotlight(80, 0, 30))
 
     for (var i = 0; i < spotlights.length; i++) {
         scene.add(spotlights[i])
     }
-
- 
-    
 }
 
 function onResize() {
@@ -153,8 +134,6 @@ function onResize() {
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-
-
 }
 
 function init() {
