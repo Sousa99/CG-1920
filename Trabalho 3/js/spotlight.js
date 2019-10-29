@@ -14,9 +14,15 @@ class Spotlight extends THREE.Object3D {
         this.spotlight.add(this.addMouthSpotlight(0, 0, 2.5))
         this.spotlight.position.set(0, 0, 0)
 
+        this.actualLight = new THREE.SpotLight( 0xffffff, 0.3)
+        this.actualLight.position.set(0, 0, 0)
+        this.actualLight.castShadow = true
+        this.actualLight.visible = false
+
         this.position.set(x, y, z)
         this.lookAt(lookAtPosition)
         this.add(this.spotlight)
+        this.add(this.actualLight)
     }
 
     addSpotlight(x, y, z) {
@@ -47,7 +53,7 @@ class Spotlight extends THREE.Object3D {
         'use strict'
 
         if (this.changeActiveState) {
-            if (this.active)
+            if (!this.active)
                 this.activateSpotlight()
             else
                 this.deactivateSpotlight()
@@ -59,12 +65,14 @@ class Spotlight extends THREE.Object3D {
     activateSpotlight() {
         'use strict'
 
+        console.log("Oi")
         this.active = true
+        this.actualLight.visible = true
+
 
         var toChange = new Array()
         var r, g, b
 
-        console.log(this)
         toChange = toChange.concat(this)
         while (toChange.length > 0) {
             var current = toChange.shift()
@@ -85,11 +93,11 @@ class Spotlight extends THREE.Object3D {
         'use strict'
 
         this.active = false
+        this.actualLight.visible = false
 
         var toChange = new Array()
         var r, g, b
 
-        console.log(this)
         toChange = toChange.concat(this)
         while (toChange.length > 0) {
             var current = toChange.shift()
