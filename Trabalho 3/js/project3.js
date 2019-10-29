@@ -1,9 +1,7 @@
 /* var THREE */
-var spotlights = []
 var cameras =[]
 var camera, scene, renderer
 var geometry, material, mesh
-
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -14,6 +12,9 @@ var frustumSize = 115
 
 const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
+
+var room
+var spotlights = []
 
 function render() {
     'use strict'
@@ -117,10 +118,14 @@ function createScene() {
 
     scene = new THREE.Scene()
 
-    spotlights.push(new Spotlight(0, 0 , 0))
-    spotlights.push(new Spotlight(80, 0, -30))
-    spotlights.push(new Spotlight(80, 0, 0))
-    spotlights.push(new Spotlight(80, 0, 30))
+    room = new Room(0, 0, 0)
+    console.log(room.position)
+    scene.add(room)
+
+    spotlights.push(new Spotlight(50, 40 , 50, room))
+    spotlights.push(new Spotlight(50, 60, 25, room))
+    spotlights.push(new Spotlight(50, 60, 50, room))
+    spotlights.push(new Spotlight(25, 60, 50, room))
 
     for (var i = 0; i < spotlights.length; i++) {
         scene.add(spotlights[i])
@@ -147,10 +152,9 @@ function init() {
 
     createScene()
 
-
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
-    cameras[1] = createPerspectiveCamera(150, 50, 75)
+    cameras[1] = createPerspectiveCamera(125, 50, 125)
     
 
     render()

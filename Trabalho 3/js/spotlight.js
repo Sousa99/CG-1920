@@ -1,26 +1,22 @@
 var geometry, material, mesh
 
 class Spotlight extends THREE.Object3D {
-    constructor(x , y, z) {
+    constructor(x , y, z, lookAtObject) {
         super()
-        this.matrixAutoUpdate = false
-    
+        var lookAtPosition = lookAtObject.position
+        this.up = new THREE.Vector3(0, 1, 0)
+
         this.active = false
         this.changeActiveState = false
 
-        var matrixPosition = new THREE.Matrix4()
-        matrixPosition.set(1, 0, 0, x,
-                        0, 1, 0, y,
-                        0, 0, 1, z,
-                        0, 0, 0, 1)
-
         this.spotlight = new THREE.Object3D()
         this.spotlight.add(this.addSpotlight(0, 0, 0))
-        this.spotlight.add(this.addMouthSpotlight(0, -2.5, 0))
+        this.spotlight.add(this.addMouthSpotlight(0, 0, 2.5))
         this.spotlight.position.set(0, 0, 0)
 
+        this.position.set(x, y, z)
+        this.lookAt(lookAtPosition)
         this.add(this.spotlight)
-        this.applyMatrix(matrixPosition)
     }
 
     addSpotlight(x, y, z) {
@@ -41,6 +37,8 @@ class Spotlight extends THREE.Object3D {
         material = new THREE.MeshBasicMaterial({ color: 0x66ffff, wireframe: true })
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(x, y, z)
+
+        mesh.rotateX(- Math.PI / 2)
 
         return mesh
     }
