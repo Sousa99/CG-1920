@@ -14,10 +14,13 @@ const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
 
 var room
+var directionalLight
 var spotlights = []
 
 function render() {
     'use strict'
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.render(scene, cameras[camera])
 }
 
@@ -45,7 +48,28 @@ function createPerspectiveCamera(x, y, z) {
     
     return camera
 }
- 
+
+function createDirectionalLight(x, y, z) {
+    var light = new THREE.DirectionalLight( 0xffffff, 0.65 )
+    light.castShadow = true
+
+    light.position.set(x, y, z)
+    light.lookAt(scene.position)
+
+    /*
+    light.shadow.camera.near = -60
+    light.shadow.camera.far = 90
+    light.shadow.camera.left= -90
+    light.shadow.camera.right = 90
+    light.shadow.camera.top= 90
+    light.shadow.camera.bottom = -90
+
+    light.shadow.mapSize.width = 4096
+    light.shadow.mapSize.height = 4096
+    */
+
+    return light
+}
 
 function onKeyDown(e){
     'use strict'
@@ -119,7 +143,6 @@ function createScene() {
     scene = new THREE.Scene()
 
     room = new Room(0, 0, 0)
-    console.log(room.position)
     scene.add(room)
 
     spotlights.push(new Spotlight(50, 40 , 50, room))
@@ -130,6 +153,9 @@ function createScene() {
     for (var i = 0; i < spotlights.length; i++) {
         scene.add(spotlights[i])
     }
+
+    directionalLight = createDirectionalLight(50, 50, 50)
+    scene.add(directionalLight)
 }
 
 function onResize() {
@@ -155,7 +181,6 @@ function init() {
     camera = 0
     cameras[0] = createOrthographicCamera(0, 20, 0)
     cameras[1] = createPerspectiveCamera(125, 50, 125)
-    
 
     render()
 

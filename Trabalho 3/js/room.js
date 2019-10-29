@@ -21,8 +21,12 @@ class Room extends THREE.Object3D {
 		'use strict'
     
         geometry = new THREE.BoxGeometry(75, 50, 0.5)
-        material = new THREE.MeshBasicMaterial({ color: 0x009999, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+
+        material = { color: 0x009999, wireframe: false }
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
         return mesh
@@ -30,10 +34,14 @@ class Room extends THREE.Object3D {
 
     addFloor(x, y, z) {
         'use strict'
-
-        geometry = new THREE.BoxGeometry(75, 0.5 , 75)
-        material = new THREE.MeshBasicMaterial({ color: 0xccffff, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
+        
+        geometry = new THREE.BoxGeometry(75, 1 , 75)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+        
+        material = { color: 0xffffff, wireframe: false }
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
         mesh.position.set(x, y - 0.5, z)
     
         return mesh
