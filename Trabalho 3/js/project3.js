@@ -145,10 +145,10 @@ function createScene() {
     room = new Room(0, 0, 0)
     scene.add(room)
 
-    spotlights.push(new Spotlight(50, 40 , 50, room))
-    spotlights.push(new Spotlight(50, 60, 25, room))
-    spotlights.push(new Spotlight(50, 60, 50, room))
-    spotlights.push(new Spotlight(25, 60, 50, room))
+    spotlights.push(new Spotlight(50, 25 , 50, room))
+    spotlights.push(new Spotlight(50, 45, 0, room))
+    spotlights.push(new Spotlight(50, 45, 50, room))
+    spotlights.push(new Spotlight(0, 45, 50, room))
 
     for (var i = 0; i < spotlights.length; i++) {
         scene.add(spotlights[i])
