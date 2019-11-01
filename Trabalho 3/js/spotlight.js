@@ -73,8 +73,7 @@ class Spotlight extends THREE.Object3D {
 
     activateSpotlight() {
         'use strict'
-
-        console.log("Oi")
+        
         this.active = true
         this.actualLight.visible = true
 
