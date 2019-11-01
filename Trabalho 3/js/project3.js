@@ -10,7 +10,7 @@ var SCREEN_HEIGHT = window.innerHeight
 var PROPORTION = 1 / 15
 var FRAMERATE = 60
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-var frustumSize = 115
+var frustumSize = 50
 
 const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.01
@@ -18,6 +18,7 @@ const ROTATE_VELOCITY_CONSTANT = 0.01
 var room
 var directionalLight
 var spotlights = []
+var frame
 
 var changeLightCalc = false
 var changeMaterial = false
@@ -37,7 +38,7 @@ function createOrthographicCamera(x, y, z) {
     camera.position.x = x
     camera.position.y = y
     camera.position.z = z
-    camera.lookAt(scene.position)
+    camera.lookAt(frame.position)
 
     return camera
 }
@@ -172,10 +173,14 @@ function createScene() {
     objects.push(room)
     scene.add(room)
 
-    spotlights.push(new Spotlight(50, 25 , 50, room))
-    spotlights.push(new Spotlight(50, 45, 0, room))
-    spotlights.push(new Spotlight(50, 45, 50, room))
-    spotlights.push(new Spotlight(0, 45, 50, room))
+    frame = new Frame(-36.5, 25, 0)
+    objects.push(frame)
+    scene.add(frame)
+
+    spotlights.push(new Spotlight(50, 25 , 50, 0.1, frame))
+    spotlights.push(new Spotlight(50, 45, 0, 0.1, frame))
+    spotlights.push(new Spotlight(50, 45, 50, 0.1, frame))
+    spotlights.push(new Spotlight(0, 45, 50, 0.1, frame))
 
     for (var i = 0; i < spotlights.length; i++) {
         objects.push(spotlights[i])
@@ -207,8 +212,8 @@ function init() {
     createScene()
 
     camera = 0
-    cameras[0] = createOrthographicCamera(0, 20, 0)
-    cameras[1] = createPerspectiveCamera(125, 50, 125)
+    cameras[0] = createPerspectiveCamera(125, 50, 125)
+    cameras[1] = createOrthographicCamera(25, 25, 0)
 
     render()
 
