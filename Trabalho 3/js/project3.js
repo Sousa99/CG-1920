@@ -108,7 +108,6 @@ function animate() {
     for(var i = 0; i < spotlights.length; i++){
         spotlights[i].changeActivation()
     }
-    
 
     render()
     setTimeout( function() {

@@ -27,10 +27,15 @@ class Spotlight extends THREE.Object3D {
 
     addSpotlight(x, y, z) {
         'use strict'
-
+        
         geometry = new THREE.SphereGeometry(2.5, 7, 7)
-        material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+        
+        material = { color: 0xffffff, wireframe: false }
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
+        
         mesh.position.set(x, y, z)
 
         return mesh
@@ -38,12 +43,16 @@ class Spotlight extends THREE.Object3D {
 
     addMouthSpotlight(x, y, z) {
         'use strict'
-
+        
         geometry = new THREE.ConeGeometry(3, 5, 13)
-        material = new THREE.MeshBasicMaterial({ color: 0x66ffff, wireframe: true })
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(x, y, z)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
 
+        material = { color: 0x66ffff, wireframe: true }
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
+        
+        mesh.position.set(x, y, z)
         mesh.rotateX(- Math.PI / 2)
 
         return mesh
