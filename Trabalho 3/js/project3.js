@@ -49,28 +49,6 @@ function createPerspectiveCamera(x, y, z) {
     return camera
 }
 
-function createDirectionalLight(x, y, z) {
-    var light = new THREE.DirectionalLight( 0xffffff, 0.65 )
-    light.castShadow = true
-
-    light.position.set(x, y, z)
-    light.lookAt(scene.position)
-
-    /*
-    light.shadow.camera.near = -60
-    light.shadow.camera.far = 90
-    light.shadow.camera.left= -90
-    light.shadow.camera.right = 90
-    light.shadow.camera.top= 90
-    light.shadow.camera.bottom = -90
-
-    light.shadow.mapSize.width = 4096
-    light.shadow.mapSize.height = 4096
-    */
-
-    return light
-}
-
 function onKeyDown(e){
     'use strict'
 
@@ -96,7 +74,7 @@ function onKeyDown(e){
         break
     
     case 81: //q
-        //active or deactive light
+        directionalLight.changeActiveState = true
         break
     case 87: //w
         //active or deactive ilumination
@@ -126,6 +104,7 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
+    directionalLight.updateLight()
     for(var i = 0; i < spotlights.length; i++){
         spotlights[i].changeActivation()
     }
@@ -154,7 +133,7 @@ function createScene() {
         scene.add(spotlights[i])
     }
 
-    directionalLight = createDirectionalLight(50, 50, 50)
+    directionalLight = new Light(50, 50, 50, 0xffffff, 0.25, scene)
     scene.add(directionalLight)
 }
 
