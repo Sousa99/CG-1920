@@ -18,7 +18,7 @@ const ROTATE_VELOCITY_CONSTANT = 0.01
 var room
 var directionalLight
 var spotlights = []
-var frame
+var frame, pedestal
 
 var changeLightCalc = false
 var changeMaterial = false
@@ -177,10 +177,14 @@ function createScene() {
     objects.push(frame)
     scene.add(frame)
 
-    spotlights.push(new Spotlight(50, 25 , 50, 0.1, frame))
-    spotlights.push(new Spotlight(50, 45, 0, 0.1, frame))
-    spotlights.push(new Spotlight(50, 45, 50, 0.1, frame))
-    spotlights.push(new Spotlight(0, 45, 50, 0.1, frame))
+    pedestal = new Pedestal(20, 0, - 25)
+    objects.push(pedestal)
+    scene.add(pedestal)
+
+    spotlights.push(new Spotlight(50, 25 , 50, 0.2, frame))
+    spotlights.push(new Spotlight(50, 45, 0, 0.2, frame))
+    spotlights.push(new Spotlight(50, 45, 50, 0.2, frame))
+    spotlights.push(new Spotlight(0, 45, 50, 0.2, frame))
 
     for (var i = 0; i < spotlights.length; i++) {
         objects.push(spotlights[i])
