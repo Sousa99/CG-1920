@@ -1,7 +1,7 @@
 var geometry, material, mesh
 
 class Pedestal extends THREE.Object3D {
-    constructor(x , y, z) {
+    constructor(x , y, z, object) {
         super()
 
         this.castShadow = true
@@ -27,7 +27,7 @@ class Pedestal extends THREE.Object3D {
             height += (1 + (i * 0.25) + (1 + (i + 1) * 0.25)) / 2
         }
 
-        this.object = null
+        this.object = object
 
         this.add(this.mainCollumn)
         this.position.set(x, y, z)

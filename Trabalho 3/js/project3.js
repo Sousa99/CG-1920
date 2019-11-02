@@ -18,7 +18,7 @@ const ROTATE_VELOCITY_CONSTANT = 0.01
 var room
 var directionalLight
 var spotlights = []
-var frame, pedestal
+var frame, pedestal, icosahedron
 
 var changeLightCalc = false
 var changeMaterial = false
@@ -177,9 +177,11 @@ function createScene() {
     objects.push(frame)
     scene.add(frame)
 
-    pedestal = new Pedestal(20, 0, - 25)
+    icosahedron = new Icosahedron(0, 1, 0)
+    pedestal = new Pedestal(20, 0, - 25, icosahedron)
     objects.push(pedestal)
     scene.add(pedestal)
+
 
     spotlights.push(new Spotlight(50, 25 , 50, 0.2, frame))
     spotlights.push(new Spotlight(50, 45, 0, 0.2, frame))
