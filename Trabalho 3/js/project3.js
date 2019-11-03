@@ -158,6 +158,8 @@ function animate() {
         spotlights[i].changeActivation()
     }
 
+    icosahedron.rotateY(0.02)
+
     render()
     setTimeout( function() {
         requestAnimationFrame(animate)
@@ -177,7 +179,7 @@ function createScene() {
     objects.push(frame)
     scene.add(frame)
 
-    icosahedron = new Icosahedron(0, 1, 0)
+    icosahedron = new Icosahedron(0, 2 * Math.E, 0, 2)
     pedestal = new Pedestal(20, 0, - 25, icosahedron)
     objects.push(pedestal)
     scene.add(pedestal)

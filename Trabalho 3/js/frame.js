@@ -33,6 +33,10 @@ class Frame extends THREE.Object3D {
         }
 
         this.add(this.backdrop)
+
+        this.frame = this.addFrame(0, 0, 0)
+        this.add(this.frame)
+
         this.rotateY(Math.PI / 2)
         this.position.set(x, y, z)
     }
@@ -76,5 +80,92 @@ class Frame extends THREE.Object3D {
         mesh.position.set(x, y, z)
     
         return mesh
+    }
+
+    addFrame(x, y, z) {
+        material = { color: 0x44FF22, wireframe: false }
+        var object = new THREE.Object3D()
+
+        var extrudeSettings = {
+            steps: 2,
+            depth: 1,
+            bevelEnabled: true,
+            bevelThickness: 1,
+            bevelSize: 1,
+            bevelOffset: 0,
+            bevelSegments: 1
+        }
+
+        var shape
+
+        // TOP
+        shape = new THREE.Shape()
+        shape.moveTo(-WIDTH_FRAME / 2 - 0.5, 0.2)
+        shape.lineTo(WIDTH_FRAME / 2 + 0.5, 0.2)
+        shape.lineTo(WIDTH_FRAME / 2 - 0.2, -0.2)
+        shape.lineTo(-WIDTH_FRAME / 2 + 0.2, -0.2)
+        shape.lineTo(-WIDTH_FRAME / 2 - 0.5, 0.2)
+
+        geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
+        mesh.position.set(x, y + HEIGTH_FRAME / 2, z)
+        object.add(mesh)
+
+        // BOTTOM
+        shape = new THREE.Shape()
+        shape.moveTo(-WIDTH_FRAME / 2 + 0.2, 0.2)
+        shape.lineTo(WIDTH_FRAME / 2 - 0.2, 0.2)
+        shape.lineTo(WIDTH_FRAME / 2 + 0.5, -0.2)
+        shape.lineTo(-WIDTH_FRAME / 2 - 0.5, -0.2)
+        shape.lineTo(-WIDTH_FRAME / 2 + 0.2, 0.2)
+
+        geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
+        mesh.position.set(x, y - HEIGTH_FRAME / 2, z)
+        object.add(mesh)
+
+        // LEFT
+        shape = new THREE.Shape()
+        shape.moveTo(-0.2, HEIGTH_FRAME / 2 + 0.5)
+        shape.lineTo(-0.2, - HEIGTH_FRAME / 2 - 0.5)
+        shape.lineTo(0.2, - HEIGTH_FRAME / 2 + 0.5)
+        shape.lineTo(0.2, HEIGTH_FRAME / 2 - 0.5)
+        shape.lineTo(-0.2, HEIGTH_FRAME / 2 + 0.5)
+
+        geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+
+        mesh = new CustomMesh(geometry, material)
+        mesh.receiveShadow = true
+        mesh.position.set(x - WIDTH_FRAME / 2, y, z)
+        object.add(mesh)
+
+         // RIGHT
+         shape = new THREE.Shape()
+         shape.moveTo(-0.2, HEIGTH_FRAME / 2 - 0.5)
+         shape.lineTo(-0.2, - HEIGTH_FRAME / 2 + 0.5)
+         shape.lineTo(0.2, - HEIGTH_FRAME / 2 - 0.5)
+         shape.lineTo(0.2, HEIGTH_FRAME / 2 + 0.5)
+         shape.lineTo(-0.2, HEIGTH_FRAME / 2 - 0.5)
+ 
+         geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+         geometry.computeFaceNormals()
+         geometry.computeVertexNormals()
+ 
+         mesh = new CustomMesh(geometry, material)
+         mesh.receiveShadow = true
+         mesh.position.set(x + WIDTH_FRAME / 2, y, z)
+         object.add(mesh)
+    
+        return object
     }
 }

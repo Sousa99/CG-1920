@@ -27,7 +27,10 @@ class Pedestal extends THREE.Object3D {
             height += (1 + (i * 0.25) + (1 + (i + 1) * 0.25)) / 2
         }
 
+        height -= (1 + (i) * 0.25) / 2
         this.object = object
+        this.object.position.set(0, this.object.position.y + height, 0)
+        this.add(this.object)
 
         this.add(this.mainCollumn)
         this.position.set(x, y, z)
