@@ -32,7 +32,7 @@ class Spotlight extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
         
-        material = { color: 0xffffff, wireframe: false }
+        material = { color: 0xff6600, wireframe: false }
         mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         

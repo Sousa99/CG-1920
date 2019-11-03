@@ -6,7 +6,7 @@ class Icosahedron extends THREE.Object3D {
 
         geometry = new THREE.Geometry()
 
-        material = {color: 	0x48d1ff, wireframe: true}
+        material = {color: 	0xffcc00, wireframe: true}
 
         geometry.vertices.push(
             new THREE.Vector3(-scalar * Math.E, 0, scalar),

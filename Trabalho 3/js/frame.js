@@ -46,7 +46,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        material = { color: 0x4444444, wireframe: false }
+        material = { color: 0xb3b3b3, wireframe: false }
         mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
@@ -83,7 +83,7 @@ class Frame extends THREE.Object3D {
     }
 
     addFrame(x, y, z) {
-        material = { color: 0x44FF22, wireframe: false }
+        material = { color: 0x804000, wireframe: false }
         var object = new THREE.Object3D()
 
         var extrudeSettings = {

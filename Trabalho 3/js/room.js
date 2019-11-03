@@ -24,7 +24,7 @@ class Room extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        material = { color: 0x009999, wireframe: false }
+        material = { color: 0x006699, wireframe: false }
         mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
@@ -39,7 +39,7 @@ class Room extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
         
-        material = { color: 0xffffff, wireframe: false }
+        material = { color: 0x99ffff, wireframe: false }
         mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y - 0.5, z)
