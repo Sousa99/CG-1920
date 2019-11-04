@@ -184,8 +184,7 @@ function createScene() {
     objects.push(pedestal)
     scene.add(pedestal)
 
-
-    spotlights.push(new Spotlight(50, 25 , 50, 0.2, Math.PI / 5, frame))
+    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 5, pedestal.object))
     spotlights.push(new Spotlight(50, 45, 0, 0.2, Math.PI / 5, frame))
     spotlights.push(new Spotlight(50, 45, 50, 0.2, Math.PI / 5, frame))
     spotlights.push(new Spotlight(0, 45, 50, 0.2, Math.PI / 5, frame))
@@ -206,6 +205,13 @@ function onResize() {
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
+
+    cameras[1].left = frustumSize * aspect / - 2
+    cameras[1].right = frustumSize * aspect / 2
+    cameras[1].updateProjectionMatrix()
+
+    cameras[0].aspect = aspect
+    cameras[0].updateProjectionMatrix()
 }
 
 function init() {

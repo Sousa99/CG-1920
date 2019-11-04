@@ -42,7 +42,7 @@ class Pedestal extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0x888888, wireframe: false }
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
@@ -57,7 +57,7 @@ class Pedestal extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0x888888, wireframe: false }
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
@@ -72,7 +72,7 @@ class Pedestal extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0x888888, wireframe: false }
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
