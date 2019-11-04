@@ -3,11 +3,12 @@ var geometry, material, mesh
 class Light extends THREE.DirectionalLight {
     constructor(x , y, z, color, intensity, lookAtObject) {
         super(color, intensity)
-        var lookAtPostion = lookAtObject.position
 
+        var lookAtPostion = lookAtObject.position
         this.active = true
         this.changeActiveState = false
         
+        this.target = lookAtObject
         this.castShadow = true
 
         this.position.set(x, y, z)

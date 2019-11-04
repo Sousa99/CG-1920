@@ -55,9 +55,12 @@ class Icosahedron extends THREE.Object3D {
         geometry.computeVertexNormals()
         this.add(mesh)
 
-        var edges = new THREE.EdgesGeometry(geometry)
-        var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color: 0xffcc00}))
-        this.add(line)
+        material = {color: 0xffcc00, wireframe: true}
+        mesh = new CustomMesh(geometry, material)
+        mesh.position.set(0, 0, 0)
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
+        this.add(mesh)
         
         this.position.set(x, y, z)
     }

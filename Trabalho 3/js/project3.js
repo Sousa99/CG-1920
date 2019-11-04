@@ -185,17 +185,17 @@ function createScene() {
     scene.add(pedestal)
 
 
-    spotlights.push(new Spotlight(50, 25 , 50, 0.2, frame))
-    spotlights.push(new Spotlight(50, 45, 0, 0.2, frame))
-    spotlights.push(new Spotlight(50, 45, 50, 0.2, frame))
-    spotlights.push(new Spotlight(0, 45, 50, 0.2, frame))
+    spotlights.push(new Spotlight(50, 25 , 50, 0.2, Math.PI / 5, frame))
+    spotlights.push(new Spotlight(50, 45, 0, 0.2, Math.PI / 5, frame))
+    spotlights.push(new Spotlight(50, 45, 50, 0.2, Math.PI / 5, frame))
+    spotlights.push(new Spotlight(0, 45, 50, 0.2, Math.PI / 5, frame))
 
     for (var i = 0; i < spotlights.length; i++) {
         objects.push(spotlights[i])
         scene.add(spotlights[i])
     }
 
-    directionalLight = new Light(50, 50, 50, 0xffffff, 0.25, scene)
+    directionalLight = new Light(50, 50, 50, 0xffffff, 0.90, scene)
     scene.add(directionalLight)
 }
 
