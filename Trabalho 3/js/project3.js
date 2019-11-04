@@ -184,10 +184,10 @@ function createScene() {
     objects.push(pedestal)
     scene.add(pedestal)
 
-    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 5, pedestal.object))
-    spotlights.push(new Spotlight(50, 45, 0, 0.2, Math.PI / 5, frame))
-    spotlights.push(new Spotlight(50, 45, 50, 0.2, Math.PI / 5, frame))
-    spotlights.push(new Spotlight(0, 45, 50, 0.2, Math.PI / 5, frame))
+    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 6, pedestal.object))
+    spotlights.push(new Spotlight(30, 50, 25, 0.2, Math.PI / 6, frame))
+    spotlights.push(new Spotlight(30, 50, -25, 0.2, Math.PI / 6, frame))
+    spotlights.push(new Spotlight(30, 50, 0, 0.2, Math.PI / 6, frame))
 
     for (var i = 0; i < spotlights.length; i++) {
         objects.push(spotlights[i])

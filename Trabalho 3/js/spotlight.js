@@ -120,7 +120,4 @@ class Spotlight extends THREE.Object3D {
             }
         }
     }
-
-
-
 }
