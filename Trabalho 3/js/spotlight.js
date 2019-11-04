@@ -76,24 +76,7 @@ class Spotlight extends THREE.Object3D {
         this.active = true
         this.actualLight.visible = true
 
-
-        var toChange = new Array()
-        var r, g, b
-
-        toChange = toChange.concat(this)
-        while (toChange.length > 0) {
-            var current = toChange.shift()
-            
-            if (current.type == "Object3D")
-                toChange = toChange.concat(current.children)
-            else if (current.type == "Mesh") {
-                r = current.material.color.r
-                g = current.material.color.g
-                b = current.material.color.b
-
-                current.material.color.set(new THREE.Color(b, g, r))
-            }
-        }
+        this.changeColor()
     }
 
     deactivateSpotlight() {
@@ -102,6 +85,12 @@ class Spotlight extends THREE.Object3D {
         this.active = false
         this.actualLight.visible = false
 
+        this.changeColor()
+    }
+
+    changeColor() {
+        'use strict'
+
         var toChange = new Array()
         var r, g, b
 
@@ -112,11 +101,15 @@ class Spotlight extends THREE.Object3D {
             if (current.type == "Object3D")
                 toChange = toChange.concat(current.children)
             else if (current.type == "Mesh") {
-                r = current.material.color.r
-                g = current.material.color.g
-                b = current.material.color.b
 
-                current.material.color.set(new THREE.Color(b, g, r))
+                for (var i = 0; i < current.materials.length; i++) {
+                    var currentMaterial = current.materials[i]
+                    r = currentMaterial.color.r
+                    g = currentMaterial.color.g
+                    b = currentMaterial.color.b
+    
+                    currentMaterial.color.set(new THREE.Color(b, g, r))
+                }
             }
         }
     }
