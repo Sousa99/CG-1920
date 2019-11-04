@@ -46,7 +46,7 @@ class Frame extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0xb3b3b3, wireframe: false }
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
@@ -59,7 +59,7 @@ class Frame extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0xffffff, wireframe: false }
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
 
         mesh.rotateX(Math.PI / 2)
@@ -74,7 +74,7 @@ class Frame extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0x000000, wireframe: false }
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
     
@@ -109,7 +109,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x, y + HEIGTH_FRAME / 2, z)
         object.add(mesh)
@@ -126,7 +126,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x, y - HEIGTH_FRAME / 2, z)
         object.add(mesh)
@@ -143,7 +143,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material)
+        mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x - WIDTH_FRAME / 2, y, z)
         object.add(mesh)
@@ -160,7 +160,7 @@ class Frame extends THREE.Object3D {
          geometry.computeFaceNormals()
          geometry.computeVertexNormals()
  
-         mesh = new CustomMesh(geometry, material)
+         mesh = new CustomMesh(geometry, material, false)
          mesh.receiveShadow = true
          mesh.position.set(x + WIDTH_FRAME / 2, y, z)
          object.add(mesh)
