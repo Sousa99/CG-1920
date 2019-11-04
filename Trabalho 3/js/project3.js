@@ -158,7 +158,7 @@ function animate() {
         spotlights[i].changeActivation()
     }
 
-    icosahedron.rotateY(0.02)
+    pedestal.object.rotateY(0.02)
 
     render()
     setTimeout( function() {
@@ -184,7 +184,7 @@ function createScene() {
     objects.push(pedestal)
     scene.add(pedestal)
 
-    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 6, pedestal.object))
+    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 6, pedestal.object, new THREE.Vector3(20, pedestal.object.position.y, -25)))
     spotlights.push(new Spotlight(30, 50, 25, 0.2, Math.PI / 6, frame))
     spotlights.push(new Spotlight(30, 50, 0, 0.2, Math.PI / 6, frame))
     spotlights.push(new Spotlight(30, 50, -25, 0.2, Math.PI / 6, frame))

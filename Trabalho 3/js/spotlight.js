@@ -1,9 +1,13 @@
 var geometry, material, mesh
 
 class Spotlight extends THREE.Object3D {
-    constructor(x , y, z, intensity, angle, lookAtObject) {
+    constructor(x , y, z, intensity, angle, lookAtObject, lookAtPosition) {
         super()
-        var lookAtPosition = lookAtObject.position
+
+        if (lookAtPosition == undefined)
+            lookAtPosition = lookAtObject.position
+        console.log(lookAtPosition)
+
         this.up = new THREE.Vector3(0, 1, 0)
 
         this.active = false
