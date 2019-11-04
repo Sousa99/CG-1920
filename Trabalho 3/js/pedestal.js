@@ -4,8 +4,6 @@ class Pedestal extends THREE.Object3D {
     constructor(x , y, z, object) {
         super()
 
-        this.castShadow = true
-
         this.mainCollumn = this.addCollumn(0, 10, 0)
 
         this.steps = []

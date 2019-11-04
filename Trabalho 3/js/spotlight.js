@@ -33,8 +33,7 @@ class Spotlight extends THREE.Object3D {
         geometry.computeVertexNormals()
         
         material = { color: 0xff6600, wireframe: false }
-        mesh = new CustomMesh(geometry, material)
-        mesh.receiveShadow = true
+        mesh = new CustomMesh(geometry, material, false)
         
         mesh.position.set(x, y, z)
 
@@ -49,8 +48,7 @@ class Spotlight extends THREE.Object3D {
         geometry.computeVertexNormals()
 
         material = { color: 0x66ffff, wireframe: true }
-        mesh = new CustomMesh(geometry, material)
-        mesh.receiveShadow = true
+        mesh = new CustomMesh(geometry, material, false)
         
         mesh.position.set(x, y, z)
         mesh.rotateX(- Math.PI / 2)

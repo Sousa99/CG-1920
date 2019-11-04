@@ -5,7 +5,6 @@ const HEIGTH_FRAME = 40
 class Frame extends THREE.Object3D {
     constructor(x, y, z) {
         super()
-        this.castShadow = true
 
         this.backdrop = this.addBackdrop(0, 0, 0)
 

@@ -48,9 +48,8 @@ class Icosahedron extends THREE.Object3D {
         mesh.position.set(0, 0, 0)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
-        mesh.castShadow = true
         this.add(mesh)
-
+        
         this.position.set(x, y, z)
     }
 }

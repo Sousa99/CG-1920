@@ -1,14 +1,19 @@
 class CustomMesh extends THREE.Mesh {
-    constructor(geometry, materialOptions) {
+    constructor(geometry, materialOptions, opaque = true) {
         var predefinedIndex = 2
         var possibilities = [new THREE.MeshBasicMaterial(materialOptions), new THREE.MeshLambertMaterial(materialOptions), new THREE.MeshPhongMaterial(materialOptions)]
-
+        
         super(geometry, possibilities[predefinedIndex])
         this.index = predefinedIndex
         this.materials = possibilities
+        this.opaque = opaque
 
         this.noLightMaterial = 0
         this.lastIndex = predefinedIndex
+
+        this.receiveShadow = true
+        if (this.opaque)
+            this.castShadow = true
     }
 
     changeLightCalc() {
@@ -34,5 +39,9 @@ class CustomMesh extends THREE.Mesh {
             this.index = this.lastIndex
             this.material = this.materials[this.index]
         }
+
+        this.receiveShadow = true
+        if (this.opaque)
+            this.castShadow = true
     }
 }
