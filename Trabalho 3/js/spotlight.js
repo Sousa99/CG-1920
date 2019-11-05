@@ -6,7 +6,6 @@ class Spotlight extends THREE.Object3D {
 
         if (lookAtPosition == undefined)
             lookAtPosition = lookAtObject.position
-        console.log(lookAtPosition)
 
         this.up = new THREE.Vector3(0, 1, 0)
 

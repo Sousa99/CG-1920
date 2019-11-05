@@ -187,7 +187,7 @@ function createScene() {
     objects.push(pedestal)
     scene.add(pedestal)
 
-    spotlights.push(new Spotlight(20, 20 , 25, 0.4, Math.PI / 10, pedestal.object, new THREE.Vector3(20, pedestal.object.position.y, -25)))
+    spotlights.push(new Spotlight(20, 20 , 25, 0.7, Math.PI / 10, pedestal.object, new THREE.Vector3(20, pedestal.object.position.y, -25)))
     spotlights.push(new Spotlight(30, 50, 35, 0.4, Math.PI / 10, frame))
     spotlights.push(new Spotlight(30, 50, 0, 0.4, Math.PI / 10, frame))
     spotlights.push(new Spotlight(30, 50, -35, 0.4, Math.PI / 10, frame))
@@ -197,7 +197,7 @@ function createScene() {
         scene.add(spotlights[i])
     }
 
-    directionalLight = new Light(50, 50, 50, 0xffffff, 0.90, scene)
+    directionalLight = new Light(1, 1, 1, 0xffffff, 0.90, scene)
     scene.add(directionalLight)
 }
 
