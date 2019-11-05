@@ -8,7 +8,7 @@ var objects = []
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
 var PROPORTION = 1 / 15
-var FRAMERATE = 60
+var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 60
 
