@@ -5,6 +5,8 @@ class Icosahedron extends THREE.Object3D {
         super()
 
         geometry = new THREE.Geometry()
+
+        this.rotating = false
         
         material = {
             color: 0xffffff,
@@ -63,5 +65,14 @@ class Icosahedron extends THREE.Object3D {
         this.add(mesh)
         
         this.position.set(x, y, z)
+    }
+
+    rotate() {
+        'use strict'
+
+        if (!this.rotating)
+            return
+        
+        this.rotateY(ROTATE_VELOCITY_CONSTANT)
     }
 }

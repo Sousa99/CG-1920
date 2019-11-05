@@ -37,7 +37,7 @@ class Pedestal extends THREE.Object3D {
     addStep(x, y, z, i) {
         'use strict'
 
-        geometry = new THREE.BoxGeometry(12 - i, 1 - i * 0.25, 12 - i)
+        geometry = new THREE.BoxGeometry(12 - i, 1 - i * 0.25, 12 - i, 2, 2, 2)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
@@ -52,7 +52,7 @@ class Pedestal extends THREE.Object3D {
     addInverseStep(x, y, z, i) {
         'use strict'
 
-        geometry = new THREE.BoxGeometry(9 + i, 1 + i * 0.25, 9 + i)
+        geometry = new THREE.BoxGeometry(9 + i, 1 + i * 0.25, 9 + i, 2, 2, 2)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
@@ -67,7 +67,7 @@ class Pedestal extends THREE.Object3D {
     addCollumn(x, y, z) {
         'use strict'
 
-        geometry = new THREE.BoxGeometry(8, 20, 8)
+        geometry = new THREE.BoxGeometry(8, 20, 8, 8, 20, 8)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 

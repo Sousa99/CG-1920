@@ -10,10 +10,10 @@ var SCREEN_HEIGHT = window.innerHeight
 var PROPORTION = 1 / 15
 var FRAMERATE = 60
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-var frustumSize = 50
+var frustumSize = 60
 
 const VELOCITY_CONSTANT = 1
-const ROTATE_VELOCITY_CONSTANT = 0.01
+const ROTATE_VELOCITY_CONSTANT = 0.02
 
 var room
 var directionalLight
@@ -128,6 +128,9 @@ function onKeyDown(e){
     case 69: //e
         changeMaterial = true
         break
+    case 65: //a
+        pedestal.object.rotating = !pedestal.object.rotating
+        break
     }
 }
 
@@ -158,7 +161,7 @@ function animate() {
         spotlights[i].changeActivation()
     }
 
-    pedestal.object.rotateY(0.02)
+    pedestal.object.rotate()
 
     render()
     setTimeout( function() {
@@ -184,10 +187,10 @@ function createScene() {
     objects.push(pedestal)
     scene.add(pedestal)
 
-    spotlights.push(new Spotlight(20, 20 , 25, 0.2, Math.PI / 6, pedestal.object, new THREE.Vector3(20, pedestal.object.position.y, -25)))
-    spotlights.push(new Spotlight(30, 50, 25, 0.2, Math.PI / 6, frame))
-    spotlights.push(new Spotlight(30, 50, 0, 0.2, Math.PI / 6, frame))
-    spotlights.push(new Spotlight(30, 50, -25, 0.2, Math.PI / 6, frame))
+    spotlights.push(new Spotlight(20, 20 , 25, 0.4, Math.PI / 10, pedestal.object, new THREE.Vector3(20, pedestal.object.position.y, -25)))
+    spotlights.push(new Spotlight(30, 50, 35, 0.4, Math.PI / 10, frame))
+    spotlights.push(new Spotlight(30, 50, 0, 0.4, Math.PI / 10, frame))
+    spotlights.push(new Spotlight(30, 50, -35, 0.4, Math.PI / 10, frame))
 
     for (var i = 0; i < spotlights.length; i++) {
         objects.push(spotlights[i])

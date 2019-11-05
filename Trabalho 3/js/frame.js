@@ -1,6 +1,10 @@
 var geometry, material, mesh
 const WIDTH_FRAME = 34
 const HEIGTH_FRAME = 40
+const BACKDROP_WIDTH_SEGMENTS = 100
+const BACKDROP_HEIGHT_SEGMENTS = 100
+const BACKDROP_DEPTH_SEGMENTS = 1
+const FRAME_SHADOW = false
 
 class Frame extends THREE.Object3D {
     constructor(x, y, z) {
@@ -41,11 +45,11 @@ class Frame extends THREE.Object3D {
     }
 
     addBackdrop(x, y, z) {
-        geometry = new THREE.BoxGeometry(WIDTH_FRAME, HEIGTH_FRAME, 0.5)
+        geometry = new THREE.BoxGeometry(WIDTH_FRAME, HEIGTH_FRAME, 0.5, BACKDROP_WIDTH_SEGMENTS, BACKDROP_HEIGHT_SEGMENTS, BACKDROP_DEPTH_SEGMENTS)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        material = { color: 0xb3b3b3, wireframe: false }
+        material = { color: 0x939393, wireframe: false }
         mesh = new CustomMesh(geometry, material, false)
         mesh.receiveShadow = true
         mesh.position.set(x, y, z)
@@ -69,7 +73,7 @@ class Frame extends THREE.Object3D {
     }
 
     addSquare(x, y, z) {
-        geometry = new THREE.BoxGeometry(2.5, 2.5, 0.7)
+        geometry = new THREE.BoxGeometry(2.5, 2.5, 0.7, 2, 2, 1)
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
@@ -86,6 +90,7 @@ class Frame extends THREE.Object3D {
         var object = new THREE.Object3D()
 
         var extrudeSettings = {
+            curveSegments: 12,
             steps: 2,
             depth: 1,
             bevelEnabled: true,
@@ -109,7 +114,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material, FRAME_SHADOW)
         mesh.receiveShadow = true
         mesh.position.set(x, y + HEIGTH_FRAME / 2, z)
         object.add(mesh)
@@ -126,7 +131,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material, FRAME_SHADOW)
         mesh.receiveShadow = true
         mesh.position.set(x, y - HEIGTH_FRAME / 2, z)
         object.add(mesh)
@@ -143,7 +148,7 @@ class Frame extends THREE.Object3D {
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
-        mesh = new CustomMesh(geometry, material, false)
+        mesh = new CustomMesh(geometry, material, FRAME_SHADOW)
         mesh.receiveShadow = true
         mesh.position.set(x - WIDTH_FRAME / 2, y, z)
         object.add(mesh)
@@ -160,7 +165,7 @@ class Frame extends THREE.Object3D {
          geometry.computeFaceNormals()
          geometry.computeVertexNormals()
  
-         mesh = new CustomMesh(geometry, material, false)
+         mesh = new CustomMesh(geometry, material, FRAME_SHADOW)
          mesh.receiveShadow = true
          mesh.position.set(x + WIDTH_FRAME / 2, y, z)
          object.add(mesh)
