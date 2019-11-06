@@ -1,7 +1,7 @@
 var geometry, material, mesh
 
 class Spotlight extends THREE.Object3D {
-    constructor(x , y, z, intensity, angle, lookAtObject, lookAtPosition) {
+    constructor(x , y, z, intensity, angle, penumbra, lookAtObject, lookAtPosition) {
         super()
 
         if (lookAtPosition == undefined)
@@ -17,7 +17,7 @@ class Spotlight extends THREE.Object3D {
         this.spotlight.add(this.addMouthSpotlight(0, 0, 2.5))
         this.spotlight.position.set(0, 0, 0)
 
-        this.actualLight = new THREE.SpotLight( 0xffffff, intensity, 0, angle)
+        this.actualLight = new THREE.SpotLight( 0xffffff, intensity, 0, angle, penumbra)
         this.actualLight.position.set(0, 0, 0)
         this.actualLight.target = lookAtObject
         this.actualLight.castShadow = true

@@ -1,10 +1,10 @@
 var geometry, material, mesh
-const WALL_WIDTH_SEGMENTS = 300
-const WALL_HEIGHT_SEGMENTS = 300
+const WALL_WIDTH_SEGMENTS = 150
+const WALL_HEIGHT_SEGMENTS = 150
 const WALL_DEPTH_SEGMENTS = 1
-const FLOOR_WIDTH_SEGMENTS = 200
+const FLOOR_WIDTH_SEGMENTS = 100
 const FLOOR_HEIGHT_SEGMENTS = 1
-const FLOOR_DEPTH_SEGMENTS = 200
+const FLOOR_DEPTH_SEGMENTS = 100
 
 class Room extends THREE.Object3D {
     constructor(x, y, z) {
