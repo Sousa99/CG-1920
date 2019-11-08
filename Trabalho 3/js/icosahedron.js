@@ -57,7 +57,7 @@ class Icosahedron extends THREE.Object3D {
         geometry.computeVertexNormals()
         this.add(mesh)
 
-        material = {color: 0xffcc00, wireframe: true, wireframeLinewidth: 5}
+        material = {color: 0xffcc00, wireframe: true}
         mesh = new CustomMesh(geometry, material)
         mesh.position.set(0, 0, 0)
         geometry.computeFaceNormals()
