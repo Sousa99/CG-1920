@@ -59,22 +59,16 @@ function onKeyDown(e){
     switch (e.keyCode) {
     
     case 49: // 1
-        spotlights[0].changeActiveState = true
         break
     case 50: // 2
-        spotlights[1].changeActiveState = true
         break
     case 51: // 3
-        spotlights[2].changeActiveState = true
         break
     case 52: //4
-        spotlights[3].changeActiveState = true
         break
     case 53: //Perspectivecamera
-        camera = 0
         break
     case 54: //Ortogonalcamera 
-        camera = 1
         break
     
     case 68: //d
@@ -109,13 +103,10 @@ function onKeyUp(e){
         break
 
     }
-   
 }
 
 function animate() {
     'use strict'
-
-    
 
     render()
     setTimeout( function() {
@@ -127,8 +118,6 @@ function createScene() {
     'use strict'
 
     scene = new THREE.Scene()
-
-    
 }
 
 function onResize() {
