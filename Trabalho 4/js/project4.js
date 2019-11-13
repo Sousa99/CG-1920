@@ -15,9 +15,8 @@ var frustumSize = 60
 const VELOCITY_CONSTANT = 1
 const ROTATE_VELOCITY_CONSTANT = 0.02
 
-
-var directionalLight
-
+var table, dice, ball
+var directionalLight, pointLight
 
 function render() {
     'use strict'
@@ -34,7 +33,7 @@ function createOrthographicCamera(x, y, z) {
     camera.position.x = x
     camera.position.y = y
     camera.position.z = z
-    camera.lookAt(frame.position)
+    camera.lookAt(scene.position)
 
     return camera
 }
@@ -50,8 +49,6 @@ function createPerspectiveCamera(x, y, z) {
     
     return camera
 }
-
-
 
 function onKeyDown(e){
     'use strict'
@@ -108,6 +105,8 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
+    ball.move()
+
     render()
     setTimeout( function() {
         requestAnimationFrame(animate)
@@ -118,6 +117,18 @@ function createScene() {
     'use strict'
 
     scene = new THREE.Scene()
+
+    table = new Table(0, 0, 0)
+    scene.add(table)
+
+    dice = new Dice(0, 0, 0)
+    scene.add(dice)
+
+    ball = new Ball()
+    scene.add(ball)
+
+    directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.90, scene)
+    scene.add(directionalLight)
 }
 
 function onResize() {
