@@ -12,16 +12,19 @@ class Ball extends THREE.Object3D {
         this.axis = new THREE.AxesHelper(3 * RADIUS_BALL)
         this.add(this.axis)
 
-        texture = new THREE.TextureLoader().load('./assets/Lenna.png');
-        //texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        //texture.repeat.set(2, 2);
+        texture = new THREE.TextureLoader().load('./assets/Lenna.png')
+        //texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+        //texture.repeat.set(2, 2)
 
-        material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, 
+        material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF,
+            map: texture,
             wireframe: false })
 
         geometry = new THREE.SphereGeometry(RADIUS_BALL, 10, 10)
         mesh = new THREE.Mesh(geometry, material)
         mesh.position.set(0, 0, 0)
+        mesh.castShadow = true
+        mesh.receiveShadow = true
         
         this.add(mesh)
         this.position.set(DISTANCE_BALL * Math.cos(this.angle), RADIUS_BALL, DISTANCE_BALL * Math.sin(this.angle))

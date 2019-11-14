@@ -1,5 +1,4 @@
 /* var THREE */
-var cameras =[]
 var camera, scene, renderer
 var geometry, material, mesh
 
@@ -22,20 +21,7 @@ function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(scene, cameras[camera])
-}
-
-function createOrthographicCamera(x, y, z) {
-    'use strict'
-
-    var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
-
-    camera.position.x = x
-    camera.position.y = y
-    camera.position.z = z
-    camera.lookAt(scene.position)
-
-    return camera
+    renderer.render(scene, camera)
 }
 
 function createPerspectiveCamera(x, y, z) {
@@ -106,6 +92,7 @@ function animate() {
     'use strict'
 
     ball.move()
+    dice.move()
 
     render()
     setTimeout( function() {
@@ -127,8 +114,11 @@ function createScene() {
     ball = new Ball()
     scene.add(ball)
 
-    directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.90, scene)
+    directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.30, scene)
     scene.add(directionalLight)
+
+    pointLight = new CustomPointLight(- 50, 25, -50, 0xff0000, 0.60)
+    scene.add(pointLight)
 }
 
 function onResize() {
@@ -139,12 +129,8 @@ function onResize() {
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    cameras[1].left = frustumSize * aspect / - 2
-    cameras[1].right = frustumSize * aspect / 2
-    cameras[1].updateProjectionMatrix()
-
-    cameras[0].aspect = aspect
-    cameras[0].updateProjectionMatrix()
+    camera.aspect = aspect
+    camera.updateProjectionMatrix()
 }
 
 function init() {
@@ -158,9 +144,7 @@ function init() {
 
     createScene()
 
-    camera = 0
-    cameras[0] = createPerspectiveCamera(125, 50, 125)
-    cameras[1] = createOrthographicCamera(25, 25, 0)
+    camera = createPerspectiveCamera(125, 50, 125)
 
     render()
 
