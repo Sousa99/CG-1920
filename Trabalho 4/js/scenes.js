@@ -19,7 +19,7 @@ class MainScene extends THREE.Scene {
         this.directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.30, this)
         this.add(this.directionalLight)
 
-        this.pointLight = new CustomPointLight(- 50, 25, -50, 0xff0000, 0.60)
+        this.pointLight = new CustomPointLight(- 50, 25, -50, 0x00ffff, 0.60)
         this.add(this.pointLight)
     }
 

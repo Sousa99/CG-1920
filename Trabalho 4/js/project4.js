@@ -10,8 +10,6 @@ var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 60
 
-var table, dice, ball
-var directionalLight, pointLight
 
 function render() {
     'use strict'
