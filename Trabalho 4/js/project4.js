@@ -1,9 +1,7 @@
 /* var THREE */
-var cameras =[]
-var camera, scene, renderer
+var camera, activeScene, renderer
 var geometry, material, mesh
-
-var objects = []
+var scenes = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -12,49 +10,31 @@ var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 60
 
-const VELOCITY_CONSTANT = 1
-const ROTATE_VELOCITY_CONSTANT = 0.02
-
-var table, dice, ball
-var directionalLight, pointLight
 
 function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(scene, cameras[camera])
+    renderer.render(scenes[activeScene], camera)
 }
 
-function createOrthographicCamera(x, y, z) {
-    'use strict'
-
-    var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
-
-    camera.position.x = x
-    camera.position.y = y
-    camera.position.z = z
-    camera.lookAt(scene.position)
-
-    return camera
-}
-
-function createPerspectiveCamera(x, y, z) {
+function createPerspectiveCamera(x, y, z, lookAt) {
     'use strict'
 
     var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
     camera.position.x = x
     camera.position.y = y
     camera.position.z = z
-    camera.lookAt(scene.position)
+    camera.lookAt(lookAt.position)
     
     return camera
 }
 
 function onKeyDown(e){
     'use strict'
+    scenes[activeScene].onKeyDown(e)
 
-    switch (e.keyCode) {
-    
+    /*
     case 49: // 1
         break
     case 50: // 2
@@ -67,68 +47,26 @@ function onKeyDown(e){
         break
     case 54: //Ortogonalcamera 
         break
-    
-    case 68: //d
-        
-        break
-    case 80: //p
-        
-        break
-    case 76: //w
-        
-        break
-    case 66: //b
-        
-        break
-    case 83: //s
-        
-        break
     case 82: //r
         
         break
     }
+    */
 }
 
 function onKeyUp(e){
     'use strict'
-
-    switch (e.keyCode) {
-    case 53://PerspectiveCamera
-    case 54://OrtogonalCamera
-        break
-    case 87: //w
-        break
-
-    }
 }
 
 function animate() {
     'use strict'
 
-    ball.move()
+    scenes[activeScene].animate()
 
     render()
     setTimeout( function() {
         requestAnimationFrame(animate)
     }, 1000 / FRAMERATE )
-}
-
-function createScene() {
-    'use strict'
-
-    scene = new THREE.Scene()
-
-    table = new Table(0, 0, 0)
-    scene.add(table)
-
-    dice = new Dice(0, 0, 0)
-    scene.add(dice)
-
-    ball = new Ball()
-    scene.add(ball)
-
-    directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.90, scene)
-    scene.add(directionalLight)
 }
 
 function onResize() {
@@ -139,12 +77,8 @@ function onResize() {
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    cameras[1].left = frustumSize * aspect / - 2
-    cameras[1].right = frustumSize * aspect / 2
-    cameras[1].updateProjectionMatrix()
-
-    cameras[0].aspect = aspect
-    cameras[0].updateProjectionMatrix()
+    camera.aspect = aspect
+    camera.updateProjectionMatrix()
 }
 
 function init() {
@@ -156,11 +90,11 @@ function init() {
 
     document.body.appendChild(renderer.domElement)
 
-    createScene()
+    scenes.push(new MainScene())
+    scenes.push(new PauseScene())
+    activeScene = 0
 
-    camera = 0
-    cameras[0] = createPerspectiveCamera(125, 50, 125)
-    cameras[1] = createOrthographicCamera(25, 25, 0)
+    camera = createPerspectiveCamera(125, 50, 125, scenes[0])
 
     render()
 
