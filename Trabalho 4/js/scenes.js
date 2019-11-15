@@ -5,6 +5,7 @@ class MainScene extends THREE.Scene {
         super()
 
         this.changeStateWireframe = false
+        this.changeLightCalc = false
         
         this.table = new Table(0, 0, 0)
         this.add(this.table)
@@ -30,12 +31,16 @@ class MainScene extends THREE.Scene {
         this.pointLight.updateLight()
 
         this.toggleWireframe()
+        this.toggleLightCalc()
     }
 
     onKeyDown(e) {
         switch (e.keyCode) {
             case 66: //b
                 this.ball.changeState = true
+                break
+            case 76: //l
+                this.changeLightCalc = true
                 break
             case 83: //s
                 activeScene = (activeScene + 1) % scenes.length
@@ -74,6 +79,27 @@ class MainScene extends THREE.Scene {
         }
 
         this.changeStateWireframe = false
+    }
+
+    toggleLightCalc() {
+        'use strict'
+
+        if (!this.changeLightCalc)
+            return
+
+        var toChange = new Array()
+        toChange = toChange.concat(this)
+
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+
+            if (current.type == "Object3D" || current.type == "Scene")
+                toChange = toChange.concat(current.children)
+            else if (current.type == "Mesh")
+                current.changeLightCalc()
+        }
+
+        this.changeLightCalc = false
     }
 }
 
