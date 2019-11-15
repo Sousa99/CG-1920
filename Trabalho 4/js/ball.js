@@ -3,7 +3,7 @@ const RADIUS_BALL = 5
 const DISTANCE_BALL = 40
 
 const ACCELARATION = 0.0005
-const MAX_VELOCITY = 0.075
+const MAX_VELOCITY = 0.065
 
 class Ball extends THREE.Object3D {
     constructor() {
@@ -25,15 +25,16 @@ class Ball extends THREE.Object3D {
 
         material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF,
             map: texture,
+            shininess: 70,
             wireframe: false })
 
-        geometry = new THREE.SphereGeometry(RADIUS_BALL, 10, 10)
-        mesh = new THREE.Mesh(geometry, material)
-        mesh.position.set(0, 0, 0)
-        mesh.castShadow = true
-        mesh.receiveShadow = true
+        geometry = new THREE.SphereGeometry(RADIUS_BALL, 20, 20)
+        this.mesh = new THREE.Mesh(geometry, material)
+        this.mesh.position.set(0, 0, 0)
+        this.mesh.castShadow = true
+        this.mesh.receiveShadow = true
         
-        this.add(mesh)
+        this.add(this.mesh)
         this.position.set(DISTANCE_BALL * Math.cos(this.angle), RADIUS_BALL, DISTANCE_BALL * Math.sin(this.angle))
     }
 
@@ -52,6 +53,9 @@ class Ball extends THREE.Object3D {
         }
 
         this.angle += this.velocity
+        this.angle %= 2 * Math.PI
+        this.rotateY(-1 * this.velocity)
+        this.mesh.rotateX(this.velocity * 5 / RADIUS_BALL);
 
         this.position.x = DISTANCE_BALL * Math.cos(this.angle)
         this.position.z = DISTANCE_BALL * Math.sin(this.angle)
