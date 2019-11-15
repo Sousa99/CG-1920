@@ -72,10 +72,7 @@ class MainScene extends THREE.Scene {
             if (current.type == "Object3D" || current.type == "Scene")
                 toChange = toChange.concat(current.children)
             else if (current.type == "Mesh")
-                if (Array.isArray(current.material)) {
-                    for (var i = 0; i < current.material.length; i++)
-                    current.material[i].wireframe = !current.material[i].wireframe
-                } else current.material.wireframe = !current.material.wireframe
+                current.changeWireframe()
         }
 
         this.changeStateWireframe = false
