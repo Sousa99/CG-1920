@@ -1,6 +1,7 @@
 /* var THREE */
-var camera, activeScene, mainScene, renderer
+var camera, activeScene, renderer
 var geometry, material, mesh
+var scenes = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -16,7 +17,7 @@ function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(activeScene, camera)
+    renderer.render(scenes[activeScene], camera)
 }
 
 function createPerspectiveCamera(x, y, z, lookAt) {
@@ -33,9 +34,9 @@ function createPerspectiveCamera(x, y, z, lookAt) {
 
 function onKeyDown(e){
     'use strict'
+    scenes[activeScene].onKeyDown(e)
 
-    switch (e.keyCode) {
-    
+    /*
     case 49: // 1
         break
     case 50: // 2
@@ -62,31 +63,23 @@ function onKeyDown(e){
         
         break
     case 83: //s
-        
+        activeScene = (activeScene + 1) % scenes.length
         break
     case 82: //r
         
         break
     }
+    */
 }
 
 function onKeyUp(e){
     'use strict'
-
-    switch (e.keyCode) {
-    case 53://PerspectiveCamera
-    case 54://OrtogonalCamera
-        break
-    case 87: //w
-        break
-
-    }
 }
 
 function animate() {
     'use strict'
 
-    activeScene.animate()
+    scenes[activeScene].animate()
 
     render()
     setTimeout( function() {
@@ -115,10 +108,11 @@ function init() {
 
     document.body.appendChild(renderer.domElement)
 
-    mainScene = new MainScene()
-    activeScene = mainScene
+    scenes.push(new MainScene())
+    scenes.push(new PauseScene())
+    activeScene = 0
 
-    camera = createPerspectiveCamera(125, 50, 125, mainScene)
+    camera = createPerspectiveCamera(125, 50, 125, scenes[0])
 
     render()
 

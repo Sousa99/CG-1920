@@ -1,3 +1,5 @@
+var texture
+
 class MainScene extends THREE.Scene {
     constructor() {
         super()
@@ -21,5 +23,34 @@ class MainScene extends THREE.Scene {
     animate() {
         this.ball.move()
         this.dice.move()
+    }
+
+    onKeyDown(e) {
+        switch (e.keyCode) {
+            case 83: //s
+                activeScene = (activeScene + 1) % scenes.length
+                break
+        }
+    }
+}
+
+class PauseScene extends THREE.Scene {
+    constructor() {
+        super()
+
+        texture = new THREE.TextureLoader().load('./assets/pause_screen.jpg')
+        this.background = texture
+    }
+
+    animate() {
+
+    }
+
+    onKeyDown(e) {
+        switch (e.keyCode) {
+            case 83: //s
+                activeScene = (activeScene + 1) % scenes.length
+                break
+        }
     }
 }
