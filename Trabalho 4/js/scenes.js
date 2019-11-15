@@ -3,6 +3,8 @@ var texture
 class MainScene extends THREE.Scene {
     constructor() {
         super()
+
+        this.changeStateWireframe = false
         
         this.table = new Table(0, 0, 0)
         this.add(this.table)
@@ -26,6 +28,8 @@ class MainScene extends THREE.Scene {
 
         this.directionalLight.updateLight()
         this.pointLight.updateLight()
+
+        this.toggleWireframe()
     }
 
     onKeyDown(e) {
@@ -42,7 +46,34 @@ class MainScene extends THREE.Scene {
             case 80: //p
                 this.pointLight.changeActiveState = true
                 break
+            case 87: //w
+                this.changeStateWireframe = true
+                break
         }
+    }
+
+    toggleWireframe() {
+        'use strict'
+
+        if (!this.changeStateWireframe)
+            return
+
+        var toChange = new Array()
+        toChange = toChange.concat(this)
+
+        while (toChange.length > 0) {
+            var current = toChange.shift()
+
+            if (current.type == "Object3D" || current.type == "Scene")
+                toChange = toChange.concat(current.children)
+            else if (current.type == "Mesh")
+                if (Array.isArray(current.material)) {
+                    for (var i = 0; i < current.material.length; i++)
+                    current.material[i].wireframe = !current.material[i].wireframe
+                } else current.material.wireframe = !current.material.wireframe
+        }
+
+        this.changeStateWireframe = false
     }
 }
 

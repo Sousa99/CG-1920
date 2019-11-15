@@ -20,8 +20,6 @@ class Ball extends THREE.Object3D {
         this.add(this.axis)
 
         texture = new THREE.TextureLoader().load('./assets/Lenna.png')
-        //texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        //texture.repeat.set(2, 2)
 
         material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF,
             map: texture,
