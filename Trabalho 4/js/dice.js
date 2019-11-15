@@ -11,11 +11,11 @@ class Dice extends THREE.Object3D {
         this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
         this.add(this.axis)
 
-        material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, 
-            wireframe: false })
+        material = { color: 0xFFFFFF, 
+            wireframe: false }
 
         geometry = new THREE.BoxGeometry(DICE_SIZE, DICE_SIZE, DICE_SIZE)
-        mesh = new THREE.Mesh(geometry, material)
+        mesh = new Mesh(geometry, material)
         mesh.position.set(0, 0, 0)
         mesh.rotateX(Math.PI / 4)
         mesh.rotateZ(Math.PI / 4)

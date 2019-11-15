@@ -13,12 +13,12 @@ class Table extends THREE.Object3D {
             './assets/wood_pattern.jpg',
             './assets/wood_pattern_side.jpg',
             './assets/wood_pattern_side.jpg']
-        var imagesBumpMap = ['./assets/wood_pattern_side.jpg', 
-            './assets/wood_pattern_side.jpg',
-            './assets/wood_pattern.jpg',
-            './assets/wood_pattern.jpg',
-            './assets/wood_pattern_side.jpg',
-            './assets/wood_pattern_side.jpg']
+        var imagesBumpMap = ['./assets/wood_bump_map.jpg', 
+            './assets/wood_bump_map.jpg',
+            './assets/wood_bump_map.jpg',
+            './assets/wood_bump_map.jpg',
+            './assets/wood_bump_map.jpg',
+            './assets/wood_bump_map.jpg']
         
         var repeat = [false, false, true, false, false, false]
         
@@ -31,21 +31,21 @@ class Table extends THREE.Object3D {
             if (repeat[i]) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping
                 texture.repeat.set(4, 4)
-                bumpmap.wrapS = bumpmap.wrapT = THREE.RepeatWrapping
-                bumpmap.repeat.set(4, 4)
             }
+            bumpmap.wrapS = bumpmap.wrapT = THREE.RepeatWrapping
+            bumpmap.repeat.set(4, 4)
 
-            material = new THREE.MeshPhongMaterial({ color: 0xffffff,
+            material = { color: 0xffffff,
                 map: texture,
                 bumpMap: bumpmap,
-                bumpScale: 1,
-                wireframe: false })
+                bumpScale: 0.7,
+                wireframe: false }
 
             materials.push(material)
         }
 
         geometry = new THREE.BoxGeometry(TABLE_WIDTH, TABLE_HEIGTH, TABLE_DEPTH)
-        mesh = new THREE.Mesh(geometry, materials)
+        mesh = new Mesh(geometry, materials)
         mesh.position.set(0, 0, 0)
         mesh.castShadow = true
         mesh.receiveShadow = true
