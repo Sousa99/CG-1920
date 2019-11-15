@@ -59,12 +59,6 @@ function onKeyDown(e){
     case 76: //w
         
         break
-    case 66: //b
-        
-        break
-    case 83: //s
-        activeScene = (activeScene + 1) % scenes.length
-        break
     case 82: //r
         
         break

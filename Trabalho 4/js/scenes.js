@@ -27,6 +27,9 @@ class MainScene extends THREE.Scene {
 
     onKeyDown(e) {
         switch (e.keyCode) {
+            case 66: //b
+                this.ball.changeState = true
+                break
             case 83: //s
                 activeScene = (activeScene + 1) % scenes.length
                 break

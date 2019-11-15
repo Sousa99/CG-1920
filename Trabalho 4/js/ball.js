@@ -1,12 +1,19 @@
 var geometry, material, mesh, texture
 const RADIUS_BALL = 5
 const DISTANCE_BALL = 40
-const SPEED_BALL = 0.025
+
+const ACCELARATION = 0.0005
+const MAX_VELOCITY = 0.075
 
 class Ball extends THREE.Object3D {
     constructor() {
         super()
-        this.moving = true
+
+        this.changeState = false
+
+        this.accelarating = false
+        this.accelaration = 0
+        this.velocity = 0
         this.angle = 0
 
         this.axis = new THREE.AxesHelper(3 * RADIUS_BALL)
@@ -31,12 +38,35 @@ class Ball extends THREE.Object3D {
     }
 
     move() {
-        if (!this.moving)
-            return
+        'use strict'
 
-        this.angle += SPEED_BALL
+        this.changeMovement()
+
+        this.velocity += this.accelaration
+        if (this.velocity < 0 && !this.accelarating) {
+            this.accelaration = 0
+            this.velocity = 0
+        } else if (this.velocity > MAX_VELOCITY && this.accelarating) {
+            this.accelaration = 0
+            this.velocity = MAX_VELOCITY
+        }
+
+        this.angle += this.velocity
 
         this.position.x = DISTANCE_BALL * Math.cos(this.angle)
         this.position.z = DISTANCE_BALL * Math.sin(this.angle)
+    }
+
+    changeMovement() {
+        'use strict'
+
+        if (!this.changeState)
+            return
+
+        if (!this.accelarating) this.accelaration = ACCELARATION
+        else this.accelaration = - ACCELARATION
+
+        this.accelarating = !this.accelarating
+        this.changeState = false
     }
 }
