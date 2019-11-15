@@ -17,9 +17,16 @@ class Dice extends THREE.Object3D {
         geometry = new THREE.BoxGeometry(DICE_SIZE, DICE_SIZE, DICE_SIZE)
         mesh = new Mesh(geometry, material)
         mesh.position.set(0, 0, 0)
-        mesh.rotateX(Math.PI / 4)
-        mesh.rotateZ(Math.PI / 4)
-
+        
+        var finalMatrix = new THREE.Matrix4()
+        var rotateXMatrix = new THREE.Matrix4()
+        rotateXMatrix.makeRotationX(Math.PI/4)
+        var rotateZMatrix = new THREE.Matrix4()
+        rotateZMatrix.makeRotationZ(Math.atan((DICE_SIZE / 2) / (Math.sqrt(2) * DICE_SIZE/2)))
+        
+        finalMatrix.multiplyMatrices(rotateZMatrix, rotateXMatrix)
+        mesh.applyMatrix(finalMatrix)
+        
         mesh.castShadow = true
         mesh.receiveShadow = true
         
