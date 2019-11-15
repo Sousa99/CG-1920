@@ -1,8 +1,6 @@
 /* var THREE */
-var camera, scene, renderer
+var camera, activeScene, mainScene, renderer
 var geometry, material, mesh
-
-var objects = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -11,9 +9,6 @@ var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var frustumSize = 60
 
-const VELOCITY_CONSTANT = 1
-const ROTATE_VELOCITY_CONSTANT = 0.02
-
 var table, dice, ball
 var directionalLight, pointLight
 
@@ -21,17 +16,17 @@ function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(scene, camera)
+    renderer.render(activeScene, camera)
 }
 
-function createPerspectiveCamera(x, y, z) {
+function createPerspectiveCamera(x, y, z, lookAt) {
     'use strict'
 
     var camera = new THREE.PerspectiveCamera(45, aspect, 1, 500 )
     camera.position.x = x
     camera.position.y = y
     camera.position.z = z
-    camera.lookAt(scene.position)
+    camera.lookAt(lookAt.position)
     
     return camera
 }
@@ -91,34 +86,12 @@ function onKeyUp(e){
 function animate() {
     'use strict'
 
-    ball.move()
-    dice.move()
+    activeScene.animate()
 
     render()
     setTimeout( function() {
         requestAnimationFrame(animate)
     }, 1000 / FRAMERATE )
-}
-
-function createScene() {
-    'use strict'
-
-    scene = new THREE.Scene()
-
-    table = new Table(0, 0, 0)
-    scene.add(table)
-
-    dice = new Dice(0, 0, 0)
-    scene.add(dice)
-
-    ball = new Ball()
-    scene.add(ball)
-
-    directionalLight = new CustomDirectionalLight(1, 1, 1, 0xffffff, 0.30, scene)
-    scene.add(directionalLight)
-
-    pointLight = new CustomPointLight(- 50, 25, -50, 0xff0000, 0.60)
-    scene.add(pointLight)
 }
 
 function onResize() {
@@ -142,9 +115,10 @@ function init() {
 
     document.body.appendChild(renderer.domElement)
 
-    createScene()
+    mainScene = new MainScene()
+    activeScene = mainScene
 
-    camera = createPerspectiveCamera(125, 50, 125)
+    camera = createPerspectiveCamera(125, 50, 125, mainScene)
 
     render()
 
