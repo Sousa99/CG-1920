@@ -23,6 +23,9 @@ class MainScene extends THREE.Scene {
     animate() {
         this.ball.move()
         this.dice.move()
+
+        this.directionalLight.updateLight()
+        this.pointLight.updateLight()
     }
 
     onKeyDown(e) {
@@ -32,6 +35,12 @@ class MainScene extends THREE.Scene {
                 break
             case 83: //s
                 activeScene = (activeScene + 1) % scenes.length
+                break
+            case 68: //d
+                this.directionalLight.changeActiveState = true
+                break
+            case 80: //p
+                this.pointLight.changeActiveState = true
                 break
         }
     }
@@ -51,6 +60,8 @@ class PauseScene extends THREE.Scene {
 
     onKeyDown(e) {
         switch (e.keyCode) {
+            case 82: //r
+                scenes[0] = new MainScene()
             case 83: //s
                 activeScene = (activeScene + 1) % scenes.length
                 break

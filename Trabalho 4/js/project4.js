@@ -50,12 +50,8 @@ function onKeyDown(e){
     case 54: //Ortogonalcamera 
         break
     
-    case 68: //d
-        
-        break
-    case 80: //p
-        
-        break
+    
+    
     case 76: //w
         
         break
