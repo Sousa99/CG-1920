@@ -15,10 +15,11 @@ class Dice extends THREE.Object3D {
 
         var imagesBumpMap = []
         
+        var repeat = [false, false, true, false, false, false]
         
         var materials = []
 
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i <  6; i++) {
             texture = new THREE.TextureLoader().load(imagesTextures[i])
             bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
