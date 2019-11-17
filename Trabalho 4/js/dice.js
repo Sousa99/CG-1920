@@ -23,8 +23,8 @@ class Dice extends THREE.Object3D {
         
         var materials = []
 
-        texture = new THREE.CubeTextureLoader().load(imagesTextures[i])
-        bumpmap = new THREE.CubeTextureLoader().load(imagesBumpMap[i])
+        texture = new THREE.CubeTextureLoader().load(imagesTextures)
+        bumpmap = new THREE.CubeTextureLoader().load(imagesBumpMap)
 
 
         material = { color: 0xffffff,
@@ -34,7 +34,7 @@ class Dice extends THREE.Object3D {
             wireframe: false }
 
         materials.push(material)
-        
+
         this.moving = true
 
         this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
