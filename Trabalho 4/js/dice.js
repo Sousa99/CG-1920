@@ -23,18 +23,20 @@ class Dice extends THREE.Object3D {
         
         var materials = []
 
-        texture = new THREE.CubeTextureLoader().load(imagesTextures)
-        bumpmap = new THREE.CubeTextureLoader().load(imagesBumpMap)
+        for (var i = 0; i < 6; i++) {
+            texture = new THREE.TextureLoader().load(imagesTextures[i])
+            bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
+        
 
-        material = { color: 0xffffff,
-            map: texture,
-            bumpMap: bumpmap,
-            bumpScale: 0.7,
-            wireframe: false }
+            material = { color: 0xffffff,
+                map: texture,
+                bumpMap: bumpmap,
+                bumpScale: 0.7,
+                wireframe: false }
 
-        materials.push(material)
-
+            materials.push(material)
+        }
         this.moving = true
 
         this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
