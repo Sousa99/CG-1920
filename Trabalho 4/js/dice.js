@@ -9,13 +9,17 @@ class Dice extends THREE.Object3D {
         var imagesTextures = ['./assets/dice-face-1.png', 
             './assets/dice-face-2.png',
             './assets/dice-face-3.png',
-            './assets/dice-face-4.png.',
-            './assets/dice-face-5.png.',
-            './assets/dice-face-6.png',]
+            './assets/dice-face-4.png',
+            './assets/dice-face-5.png',
+            './assets/dice-face-6.png']
 
-        var imagesBumpMap = []
+        var imagesBumpMap = ['./assets/dice-face-1.png', 
+        './assets/dice-face-2.png',
+        './assets/dice-face-3.png',
+        './assets/dice-face-4.png',
+        './assets/dice-face-5.png',
+        './assets/dice-face-6.png']
         
-        var repeat = [false, false, true, false, false, false]
         
         var materials = []
 
@@ -23,12 +27,6 @@ class Dice extends THREE.Object3D {
             texture = new THREE.TextureLoader().load(imagesTextures[i])
             bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
-            if (repeat[i]) {
-                texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-                texture.repeat.set(4, 4)
-            }
-            bumpmap.wrapS = bumpmap.wrapT = THREE.RepeatWrapping
-            bumpmap.repeat.set(4, 4)
 
             material = { color: 0xffffff,
                 map: texture,
