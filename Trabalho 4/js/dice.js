@@ -23,29 +23,25 @@ class Dice extends THREE.Object3D {
         
         var materials = []
 
-        for (var i = 0; i <  6; i++) {
-            texture = new THREE.TextureLoader().load(imagesTextures[i])
-            bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
+        texture = new THREE.CubeTextureLoader().load(imagesTextures[i])
+        bumpmap = new THREE.CubeTextureLoader().load(imagesBumpMap[i])
 
 
-            material = { color: 0xffffff,
-                map: texture,
-                bumpMap: bumpmap,
-                bumpScale: 0.7,
-                wireframe: false }
+        material = { color: 0xffffff,
+            map: texture,
+            bumpMap: bumpmap,
+            bumpScale: 0.7,
+            wireframe: false }
 
-            materials.push(material)
-        }
+        materials.push(material)
+        
         this.moving = true
 
         this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
         this.add(this.axis)
 
-        material = { color: 0xFFFFFF, 
-            wireframe: false }
-
         geometry = new THREE.BoxGeometry(DICE_SIZE, DICE_SIZE, DICE_SIZE)
-        mesh = new Mesh(geometry, material)
+        mesh = new Mesh(geometry, materials)
         mesh.position.set(0, 0, 0)
         
         var finalMatrix = new THREE.Matrix4()
@@ -60,7 +56,7 @@ class Dice extends THREE.Object3D {
         mesh.castShadow = true
         mesh.receiveShadow = true
         
-        this.add(mesh)
+        this.add(mesh) 
         this.position.set(x, y + (Math.sqrt(3) * DICE_SIZE) / 2, z)
     }
 
