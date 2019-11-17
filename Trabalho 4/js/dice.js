@@ -6,6 +6,37 @@ class Dice extends THREE.Object3D {
     constructor(x, y, z) {
         super()
 
+        var imagesTextures = ['./assets/dice-face-1.png', 
+            './assets/dice-face-2.png',
+            './assets/dice-face-3.png',
+            './assets/dice-face-4.png.',
+            './assets/dice-face-5.png.',
+            './assets/dice-face-6.png',]
+
+        var imagesBumpMap = []
+        
+        
+        var materials = []
+
+        for (var i = 0; i < 6; i++) {
+            texture = new THREE.TextureLoader().load(imagesTextures[i])
+            bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
+
+            if (repeat[i]) {
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+                texture.repeat.set(4, 4)
+            }
+            bumpmap.wrapS = bumpmap.wrapT = THREE.RepeatWrapping
+            bumpmap.repeat.set(4, 4)
+
+            material = { color: 0xffffff,
+                map: texture,
+                bumpMap: bumpmap,
+                bumpScale: 0.7,
+                wireframe: false }
+
+            materials.push(material)
+        }
         this.moving = true
 
         this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
