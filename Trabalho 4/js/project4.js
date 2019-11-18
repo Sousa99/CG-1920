@@ -9,8 +9,8 @@ var SCREEN_HEIGHT = window.innerHeight
 var PROPORTION = 1 / 15
 var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
+var zoom = 1
 var frustumSize = 200
-
 
 function render() {
     'use strict'
@@ -40,6 +40,9 @@ function createPerspectiveCamera(x, y, z, lookAt) {
     camera.position.y = y
     camera.position.z = z
     camera.lookAt(lookAt.position)
+    camera.zoom = zoom
+
+    camera.updateProjectionMatrix()
     
     return camera
 }
@@ -63,18 +66,33 @@ function animate() {
 function onResize() {
     'use strict'
 
-    /*
     renderer.setSize(window.innerWidth, window.innerHeight)
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
+    var zoom = 1
 
-    camera.aspect = aspect
-    camera.updateProjectionMatrix()*/
+    cameras[1].left = frustumSize * aspect / - 2
+    cameras[1].right = frustumSize * aspect / 2
+    cameras[1].updateProjectionMatrix()
+
+    if (SCREEN_WIDTH < 900)
+        zoom = SCREEN_WIDTH / 950
+
+    cameras[0].aspect = aspect
+    cameras[0].zoom = zoom
+    cameras[0].updateProjectionMatrix()
+    
+    cameras[2].aspect = aspect
+    cameras[2].zoom = zoom
+    cameras[2].updateProjectionMatrix()
 }
 
 function init() {
     'use strict'
+
+    if (SCREEN_WIDTH < 900)
+        zoom = SCREEN_WIDTH / 950
 
     renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio( window.devicePixelRatio)
