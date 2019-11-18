@@ -16,9 +16,6 @@ class Ball extends THREE.Object3D {
         this.velocity = 0
         this.angle = 0
 
-        this.axis = new THREE.AxesHelper(3 * RADIUS_BALL)
-        this.add(this.axis)
-
         texture = new THREE.TextureLoader().load('./assets/Lenna.png')
 
         material = { color: 0xFFFFFF,

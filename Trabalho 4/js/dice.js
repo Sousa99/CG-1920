@@ -27,8 +27,6 @@ class Dice extends THREE.Object3D {
             texture = new THREE.TextureLoader().load(imagesTextures[i])
             bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
-        
-
             material = { color: 0xffffff,
                 map: texture,
                 bumpMap: bumpmap,
@@ -37,10 +35,8 @@ class Dice extends THREE.Object3D {
 
             materials.push(material)
         }
-        this.moving = true
 
-        this.axis = new THREE.AxesHelper(3 * DICE_SIZE)
-        this.add(this.axis)
+        this.moving = true
 
         geometry = new THREE.BoxGeometry(DICE_SIZE, DICE_SIZE, DICE_SIZE)
         mesh = new Mesh(geometry, materials)

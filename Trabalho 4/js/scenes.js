@@ -3,6 +3,12 @@ var texture
 class MainScene extends THREE.Scene {
     constructor() {
         super()
+        this.MAX_CAMERA_INDEX = 1
+        this.MIN_CAMERA_INDEX = 0
+
+        this.camera = 0
+        this.changeScene = false
+        this.changeCamera = false
 
         this.changeStateWireframe = false
         this.changeLightCalc = false
@@ -24,6 +30,9 @@ class MainScene extends THREE.Scene {
     }
 
     animate() {
+        this.swtichCamera()
+        this.switchScene()
+
         this.ball.move()
         this.dice.move()
 
@@ -43,7 +52,7 @@ class MainScene extends THREE.Scene {
                 this.changeLightCalc = true
                 break
             case 83: //s
-                activeScene = (activeScene + 1) % scenes.length
+                this.changeScene = true
                 break
             case 68: //d
                 this.directionalLight.changeActiveState = true
@@ -53,6 +62,9 @@ class MainScene extends THREE.Scene {
                 break
             case 87: //w
                 this.changeStateWireframe = true
+                break
+            case 67:
+                this.changeCamera = true
                 break
         }
     }
@@ -98,27 +110,76 @@ class MainScene extends THREE.Scene {
 
         this.changeLightCalc = false
     }
+
+    switchScene() {
+        'use strict'
+
+        if (!this.changeScene)
+            return
+
+        activeScene = (activeScene + 1) % scenes.length
+        this.changeScene = false
+    }
+
+    swtichCamera() {
+        'use strict'
+
+        if (!this.changeCamera)
+            return
+        
+        this.camera = this.camera + 1
+        if (this.camera > this.MAX_CAMERA_INDEX)
+        this.camera = this.MIN_CAMERA_INDEX
+        
+        this.changeCamera = false
+    }
 }
 
 class PauseScene extends THREE.Scene {
     constructor() {
         super()
+        this.camera = 2
+        this.changeScene = false
+        this.restartScene = false
 
         texture = new THREE.TextureLoader().load('./assets/pause_screen.jpg')
         this.background = texture
     }
 
     animate() {
-
+        this.restart()
+        this.switchScene()
     }
 
     onKeyDown(e) {
         switch (e.keyCode) {
             case 82: //r
-                scenes[0] = new MainScene()
+                this.restartScene = true
+                break
             case 83: //s
-                activeScene = (activeScene + 1) % scenes.length
+                this.changeScene = true
                 break
         }
+    }
+
+    switchScene() {
+        'use strict'
+
+        if (!this.changeScene)
+            return
+
+        activeScene = (activeScene + 1) % scenes.length
+        this.changeScene = false
+    }
+
+    restart() {
+        'use strict'
+
+        if (!this.restartScene)
+            return
+
+        scenes[0] = new MainScene()
+        this.changeScene = true
+        this.restartScene = false
     }
 }

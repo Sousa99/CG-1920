@@ -1,6 +1,7 @@
 /* var THREE */
-var camera, activeScene, renderer
+var activeScene, renderer
 var geometry, material, mesh
+var cameras = []
 var scenes = []
 
 var SCREEN_WIDTH = window.innerWidth
@@ -8,14 +9,27 @@ var SCREEN_HEIGHT = window.innerHeight
 var PROPORTION = 1 / 15
 var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-var frustumSize = 60
+var frustumSize = 200
 
 
 function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(scenes[activeScene], camera)
+    renderer.render(scenes[activeScene], cameras[scenes[activeScene].camera])
+}
+
+function createOrthographicCamera(x, y, z, lookAt) {
+    'use strict'
+
+    var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
+
+    camera.position.x = x
+    camera.position.y = y
+    camera.position.z = z
+    camera.lookAt(lookAt.position)
+
+    return camera
 }
 
 function createPerspectiveCamera(x, y, z, lookAt) {
@@ -33,29 +47,6 @@ function createPerspectiveCamera(x, y, z, lookAt) {
 function onKeyDown(e){
     'use strict'
     scenes[activeScene].onKeyDown(e)
-
-    /*
-    case 49: // 1
-        break
-    case 50: // 2
-        break
-    case 51: // 3
-        break
-    case 52: //4
-        break
-    case 53: //Perspectivecamera
-        break
-    case 54: //Ortogonalcamera 
-        break
-    case 82: //r
-        
-        break
-    }
-    */
-}
-
-function onKeyUp(e){
-    'use strict'
 }
 
 function animate() {
@@ -72,13 +63,14 @@ function animate() {
 function onResize() {
     'use strict'
 
+    /*
     renderer.setSize(window.innerWidth, window.innerHeight)
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
     camera.aspect = aspect
-    camera.updateProjectionMatrix()
+    camera.updateProjectionMatrix()*/
 }
 
 function init() {
@@ -94,11 +86,12 @@ function init() {
     scenes.push(new PauseScene())
     activeScene = 0
 
-    camera = createPerspectiveCamera(125, 50, 125, scenes[0])
+    cameras.push(createPerspectiveCamera(125, 50, 125, scenes[0]))
+    cameras.push(createOrthographicCamera(0, 50, 0, scenes[0]))
+    cameras.push(createPerspectiveCamera(0, 0, 0, scenes[1]))
 
     render()
 
     window.addEventListener("resize", onResize)
     window.addEventListener("keydown", onKeyDown)
-    window.addEventListener("keyup", onKeyUp)
 }
