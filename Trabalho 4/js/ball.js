@@ -18,10 +18,15 @@ class Ball extends THREE.Object3D {
 
         texture = new THREE.TextureLoader().load('./assets/Lenna.png')
 
-        material = { color: 0xFFFFFF,
-            map: texture,
-            shininess: 70,
-            wireframe: false }
+        material = { 
+            basic: { color: 0xFFFFFF,
+                map: texture,
+                wireframe: false},
+            phong : { color: 0xFFFFFF,
+                map: texture,
+                wireframe: false,
+                shininess: 70}
+        }
 
         geometry = new THREE.SphereGeometry(RADIUS_BALL, 20, 20)
         this.mesh = new Mesh(geometry, material)

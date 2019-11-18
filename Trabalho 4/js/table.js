@@ -35,11 +35,16 @@ class Table extends THREE.Object3D {
             bumpmap.wrapS = bumpmap.wrapT = THREE.MirroredRepeatWrapping
             bumpmap.repeat.set(4, 4)
 
-            material = { color: 0xffffff,
-                map: texture,
-                bumpMap: bumpmap,
-                bumpScale: 0.7,
-                wireframe: false }
+            material = {
+                basic: { color: 0xffffff,
+                    map: texture,
+                    wireframe: false},
+                phong: { color: 0xffffff,
+                    map: texture,
+                    bumpMap: bumpmap,
+                    bumpScale: 0.7,
+                    wireframe: false}
+            }
 
             materials.push(material)
         }

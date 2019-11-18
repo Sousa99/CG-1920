@@ -6,11 +6,11 @@ class Mesh extends THREE.Mesh {
         if (Array.isArray(materialOptions)) {
             possibilities = [[], []]
             for (var i = 0; i < materialOptions.length; i++) {
-                possibilities[0].push(new THREE.MeshBasicMaterial(materialOptions[i]))
-                possibilities[1].push(new THREE.MeshPhongMaterial(materialOptions[i]))
+                possibilities[0].push(new THREE.MeshBasicMaterial(materialOptions[i].basic))
+                possibilities[1].push(new THREE.MeshPhongMaterial(materialOptions[i].phong))
             }
         } else {
-            possibilities = [new THREE.MeshBasicMaterial(materialOptions), new THREE.MeshPhongMaterial(materialOptions)]
+            possibilities = [new THREE.MeshBasicMaterial(materialOptions.basic), new THREE.MeshPhongMaterial(materialOptions.phong)]
         }
         
         super(geometry, possibilities[predefinedIndex])

@@ -143,7 +143,6 @@ class PauseScene extends THREE.Scene {
         this.restartScene = false
 
         texture = new THREE.TextureLoader().load('./assets/pause_screen.jpg')
-        texture.wrapS = THREE.ClampToEdgeWrapping
         this.background = texture
     }
 
