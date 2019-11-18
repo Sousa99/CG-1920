@@ -13,12 +13,12 @@ class Dice extends THREE.Object3D {
             './assets/dice-face-5.png',
             './assets/dice-face-6.png']
 
-        var imagesBumpMap = ['./assets/dice-face-1.png', 
-        './assets/dice-face-2.png',
-        './assets/dice-face-3.png',
-        './assets/dice-face-4.png',
-        './assets/dice-face-5.png',
-        './assets/dice-face-6.png']
+        var imagesBumpMap = ['./assets/dice-face-1-bumpMap.png', 
+        './assets/dice-face-2-bumpMap.png',
+        './assets/dice-face-3-bumpMap.png',
+        './assets/dice-face-4-bumpMap.png',
+        './assets/dice-face-5-bumpMap.png',
+        './assets/dice-face-6-bumpMap.png']
         
         
         var materials = []
@@ -27,7 +27,7 @@ class Dice extends THREE.Object3D {
             texture = new THREE.TextureLoader().load(imagesTextures[i])
             bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
-            material = { color: 0xffffff,
+            material = { color: 0xffff00,
                 map: texture,
                 bumpMap: bumpmap,
                 bumpScale: 0.7,
