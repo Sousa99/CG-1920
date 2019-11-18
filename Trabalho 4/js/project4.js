@@ -6,6 +6,7 @@ var scenes = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
+var ASPECT_RATIO = 16 / 9
 var PROPORTION = 1 / 15
 var FRAMERATE = 80
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
@@ -76,9 +77,9 @@ function onResize() {
     cameras[1].right = frustumSize * aspect / 2
     cameras[1].updateProjectionMatrix()
 
-    if (SCREEN_WIDTH < 900)
-        zoom = SCREEN_WIDTH / 950
-
+    if (aspect < ASPECT_RATIO)
+        zoom = aspect / ASPECT_RATIO
+    
     cameras[0].aspect = aspect
     cameras[0].zoom = zoom
     cameras[0].updateProjectionMatrix()
@@ -91,8 +92,8 @@ function onResize() {
 function init() {
     'use strict'
 
-    if (SCREEN_WIDTH < 900)
-        zoom = SCREEN_WIDTH / 950
+    if (aspect < ASPECT_RATIO)
+        zoom = aspect / ASPECT_RATIO
 
     renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio( window.devicePixelRatio)
