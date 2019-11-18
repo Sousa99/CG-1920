@@ -71,7 +71,6 @@ function onResize() {
     SCREEN_WIDTH = window.innerWidth
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-    var zoom = 1
 
     cameras[1].left = frustumSize * aspect / - 2
     cameras[1].right = frustumSize * aspect / 2
