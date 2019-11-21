@@ -93,6 +93,9 @@ class MainScene extends THREE.Scene {
         while (toChange.length > 0) {
             var current = toChange.shift()
 
+            if (current.constant)
+                continue
+
             if (current.type == "Object3D" || current.type == "Scene")
                 toChange = toChange.concat(current.children)
             else if (current.type == "Mesh")
@@ -115,6 +118,9 @@ class MainScene extends THREE.Scene {
 
         while (toChange.length > 0) {
             var current = toChange.shift()
+
+            if (current.constant)
+                continue
 
             if (current.type == "Object3D" || current.type == "Scene")
                 toChange = toChange.concat(current.children)

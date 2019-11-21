@@ -3,6 +3,7 @@ var geometry, material, mesh, texture
 class PauseText extends THREE.Object3D {
     constructor(x, y, z) {
         super()
+        this.constant = true
         
         texture = new THREE.TextureLoader().load('./assets/pause_screen.png')
         material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture, transparent: true, opacity: 50, wireframe: false })
