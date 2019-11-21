@@ -15,11 +15,13 @@ class CustomDirectionalLight extends THREE.DirectionalLight {
         this.lookAt(lookAtPostion)
     }
 
-    updateLight() {
+    updateLight(paused) {
         'use strict'
 
-        if (!this.changeActiveState)
+        if (!this.changeActiveState || paused) {
+            this.changeActiveState = false
             return
+        }
         
         if (this.active)
             this.visible = false

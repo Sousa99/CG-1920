@@ -36,17 +36,17 @@ class MainScene extends THREE.Scene {
         this.restart()
         this.ball.changeMovement(this.paused)
 
-        if (!this.paused) {
-            this.swtichCamera()
+        this.swtichCamera()
 
+        this.directionalLight.updateLight()
+        this.pointLight.updateLight()
+
+        this.toggleWireframe()
+        this.toggleLightCalc()
+
+        if (!this.paused) {
             this.ball.move()
             this.dice.move()
-
-            this.directionalLight.updateLight()
-            this.pointLight.updateLight()
-
-            this.toggleWireframe()
-            this.toggleLightCalc()
         }
     }
 

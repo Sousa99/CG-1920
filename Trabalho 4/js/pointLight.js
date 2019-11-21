@@ -12,11 +12,13 @@ class CustomPointLight extends THREE.PointLight {
         this.position.set(x, y, z)
     }
 
-    updateLight() {
+    updateLight(paused) {
         'use strict'
 
-        if (!this.changeActiveState)
+        if (!this.changeActiveState || paused) {
+            this.changeActiveState = false
             return
+        }
         
         if (this.active)
             this.visible = false
