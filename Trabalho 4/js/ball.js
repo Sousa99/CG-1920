@@ -25,7 +25,8 @@ class Ball extends THREE.Object3D {
             phong : { color: 0xFFFFFF,
                 map: texture,
                 wireframe: false,
-                shininess: 70}
+                shininess: 200,
+                specular: 0xFFFFFF}
         }
 
         geometry = new THREE.SphereGeometry(RADIUS_BALL, 20, 20)
@@ -40,8 +41,6 @@ class Ball extends THREE.Object3D {
 
     move() {
         'use strict'
-
-        this.changeMovement()
 
         this.velocity += this.accelaration
         if (this.velocity < 0 && !this.accelarating) {
@@ -61,11 +60,13 @@ class Ball extends THREE.Object3D {
         this.position.z = DISTANCE_BALL * Math.sin(this.angle)
     }
 
-    changeMovement() {
+    changeMovement(paused) {
         'use strict'
 
-        if (!this.changeState)
+        if (!this.changeState || paused) {
+            this.changeState = false
             return
+        }
 
         if (!this.accelarating) this.accelaration = ACCELARATION
         else this.accelaration = - ACCELARATION

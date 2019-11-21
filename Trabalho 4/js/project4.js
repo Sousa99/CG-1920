@@ -1,8 +1,7 @@
 /* var THREE */
-var activeScene, renderer
-var geometry, material, mesh
+var scene, renderer, camera, previousCamera = 0
+var geometry, material, mesh, pauseText
 var cameras = []
-var scenes = []
 
 var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
@@ -17,10 +16,10 @@ function render() {
     'use strict'
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-    renderer.render(scenes[activeScene], cameras[scenes[activeScene].camera])
+    renderer.render(scene, cameras[camera])
 }
 
-function createOrthographicCamera(x, y, z, lookAt) {
+function createOrthographicCamera(x, y, z, lookAt, pause) {
     'use strict'
 
     var camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, - 100, 100 )
@@ -29,6 +28,9 @@ function createOrthographicCamera(x, y, z, lookAt) {
     camera.position.y = y
     camera.position.z = z
     camera.lookAt(lookAt.position)
+
+    if (pause)
+        camera.layers.enable(1)
 
     return camera
 }
@@ -50,13 +52,13 @@ function createPerspectiveCamera(x, y, z, lookAt) {
 
 function onKeyDown(e){
     'use strict'
-    scenes[activeScene].onKeyDown(e)
+    scene.onKeyDown(e)
 }
 
 function animate() {
     'use strict'
 
-    scenes[activeScene].animate()
+    scene.animate()
 
     render()
     setTimeout( function() {
@@ -83,8 +85,8 @@ function onResize() {
     cameras[0].zoom = zoom
     cameras[0].updateProjectionMatrix()
     
-    cameras[2].aspect = aspect
-    cameras[2].zoom = zoom
+    cameras[2].left = frustumSize * aspect / - 2
+    cameras[2].right = frustumSize * aspect / 2
     cameras[2].updateProjectionMatrix()
 }
 
@@ -100,13 +102,12 @@ function init() {
 
     document.body.appendChild(renderer.domElement)
 
-    scenes.push(new MainScene())
-    scenes.push(new PauseScene())
-    activeScene = 0
+    scene = new MainScene()
 
-    cameras.push(createPerspectiveCamera(125, 50, 125, scenes[0]))
-    cameras.push(createOrthographicCamera(0, 50, 0, scenes[0]))
-    cameras.push(createPerspectiveCamera(0, 0, 0, scenes[1]))
+    cameras.push(createPerspectiveCamera(125, 50, 125, scene))
+    cameras.push(createOrthographicCamera(0, 50, 0, scene, false))
+    cameras.push(createOrthographicCamera(0, 50, 0, scene, true))
+    camera = 0
 
     render()
 

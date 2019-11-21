@@ -1,15 +1,14 @@
-var texture
-
 class MainScene extends THREE.Scene {
     constructor() {
         super()
         this.MAX_CAMERA_INDEX = 1
         this.MIN_CAMERA_INDEX = 0
 
-        this.camera = 0
-        this.changeScene = false
         this.changeCamera = false
-
+        this.changePause = false
+        this.restartScene = false
+        
+        this.paused = false
         this.changeStateWireframe = false
         this.changeLightCalc = false
         
@@ -27,20 +26,28 @@ class MainScene extends THREE.Scene {
 
         this.pointLight = new CustomPointLight(- 50, 25, -50, 0x00ffff, 0.60)
         this.add(this.pointLight)
+
+        this.pauseText = new PauseText(- 40, 50,  -55)
+        this.add(this.pauseText)
     }
 
     animate() {
-        this.swtichCamera()
-        this.switchScene()
+        this.switchPause()
+        this.restart()
+        this.ball.changeMovement(this.paused)
 
-        this.ball.move()
-        this.dice.move()
+        if (!this.paused) {
+            this.swtichCamera()
 
-        this.directionalLight.updateLight()
-        this.pointLight.updateLight()
+            this.ball.move()
+            this.dice.move()
 
-        this.toggleWireframe()
-        this.toggleLightCalc()
+            this.directionalLight.updateLight()
+            this.pointLight.updateLight()
+
+            this.toggleWireframe()
+            this.toggleLightCalc()
+        }
     }
 
     onKeyDown(e) {
@@ -52,7 +59,7 @@ class MainScene extends THREE.Scene {
                 this.changeLightCalc = true
                 break
             case 83: //s
-                this.changeScene = true
+                this.changePause = true
                 break
             case 68: //d
                 this.directionalLight.changeActiveState = true
@@ -63,8 +70,11 @@ class MainScene extends THREE.Scene {
             case 87: //w
                 this.changeStateWireframe = true
                 break
-            case 67:
+            case 67: //c
                 this.changeCamera = true
+                break
+            case 82: //r
+                this.restartScene = true
                 break
         }
     }
@@ -72,8 +82,10 @@ class MainScene extends THREE.Scene {
     toggleWireframe() {
         'use strict'
 
-        if (!this.changeStateWireframe)
+        if (!this.changeStateWireframe || this.paused) {
+            this.changeStateWireframe = false
             return
+        }
 
         var toChange = new Array()
         toChange = toChange.concat(this)
@@ -93,8 +105,10 @@ class MainScene extends THREE.Scene {
     toggleLightCalc() {
         'use strict'
 
-        if (!this.changeLightCalc)
+        if (!this.changeLightCalc || this.paused) {
+            this.changeLightCalc = false
             return
+        }
 
         var toChange = new Array()
         toChange = toChange.concat(this)
@@ -111,75 +125,46 @@ class MainScene extends THREE.Scene {
         this.changeLightCalc = false
     }
 
-    switchScene() {
+    switchPause() {
         'use strict'
 
-        if (!this.changeScene)
+        if (!this.changePause)
             return
 
-        activeScene = (activeScene + 1) % scenes.length
-        this.changeScene = false
+        if (!this.paused) {
+            previousCamera = camera
+            camera = 2
+        } else {
+            camera = previousCamera
+        }
+
+        this.paused = !this.paused
+        this.changePause = false
     }
 
     swtichCamera() {
         'use strict'
 
-        if (!this.changeCamera)
+        if (!this.changeCamera || this.paused) {
+            this.changeCamera = false
             return
+        }
         
-        this.camera = this.camera + 1
-        if (this.camera > this.MAX_CAMERA_INDEX)
-        this.camera = this.MIN_CAMERA_INDEX
+        camera = camera + 1
+        if (camera > this.MAX_CAMERA_INDEX)
+            camera = this.MIN_CAMERA_INDEX
         
         this.changeCamera = false
-    }
-}
-
-class PauseScene extends THREE.Scene {
-    constructor() {
-        super()
-        this.camera = 2
-        this.changeScene = false
-        this.restartScene = false
-
-        texture = new THREE.TextureLoader().load('./assets/pause_screen.jpg')
-        this.background = texture
-    }
-
-    animate() {
-        this.restart()
-        this.switchScene()
-    }
-
-    onKeyDown(e) {
-        switch (e.keyCode) {
-            case 82: //r
-                this.restartScene = true
-                break
-            case 83: //s
-                this.changeScene = true
-                break
-        }
-    }
-
-    switchScene() {
-        'use strict'
-
-        if (!this.changeScene)
-            return
-
-        activeScene = (activeScene + 1) % scenes.length
-        this.changeScene = false
     }
 
     restart() {
         'use strict'
 
-        if (!this.restartScene)
+        if (!this.restartScene || !this.paused)
             return
 
-        scenes[0] = new MainScene()
-        this.changeScene = true
         this.restartScene = false
+        camera = 0
+        scene = new MainScene()
     }
 }
