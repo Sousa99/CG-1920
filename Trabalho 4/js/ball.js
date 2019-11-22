@@ -2,7 +2,7 @@ var geometry, material, mesh, texture
 const RADIUS_BALL = 5
 const DISTANCE_BALL = 40
 
-const ACCELARATION = 0.05
+const ACCELARATION = 0.5
 const MAX_VELOCITY = 3.5
 
 class Ball extends THREE.Object3D {
@@ -42,7 +42,7 @@ class Ball extends THREE.Object3D {
     move(timeDiff) {
         'use strict'
 
-        this.velocity += this.accelaration
+        this.velocity += this.accelaration * timeDiff
         if (this.velocity < 0 && !this.accelarating) {
             this.accelaration = 0
             this.velocity = 0
