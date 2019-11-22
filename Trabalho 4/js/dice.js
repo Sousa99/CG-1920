@@ -27,10 +27,10 @@ class Dice extends THREE.Object3D {
             bumpmap = new THREE.TextureLoader().load(imagesBumpMap[i])
 
             material = {
-                basic: { color: 0xffff00,
+                basic: { color: 0xffffff,
                     map: texture,
                     wireframe: false},
-                phong: { color: 0xffff00,
+                phong: { color: 0xffffff,
                     map: texture,
                     bumpMap: bumpmap,
                     bumpScale: 0.7,
