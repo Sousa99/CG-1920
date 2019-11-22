@@ -2,7 +2,7 @@ var geometry, material, mesh
 
 class CustomPointLight extends THREE.PointLight {
     constructor(x , y, z, color, intensity) {
-        super(color, intensity)
+        super(color, intensity, 0, 2)
 
         this.active = true
         this.changeActiveState = false
