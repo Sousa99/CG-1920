@@ -75,16 +75,17 @@ function onResize() {
     SCREEN_HEIGHT = window.innerHeight
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 
-    cameras[1].left = frustumSize * aspect / - 2
-    cameras[1].right = frustumSize * aspect / 2
-    cameras[1].updateProjectionMatrix()
-
-    if (aspect < ASPECT_RATIO)
+    if (aspect <= ASPECT_RATIO)
         zoom = aspect / ASPECT_RATIO
-    
+    else zoom = 1
+
     cameras[0].aspect = aspect
     cameras[0].zoom = zoom
     cameras[0].updateProjectionMatrix()
+
+    cameras[1].left = frustumSize * aspect / - 2
+    cameras[1].right = frustumSize * aspect / 2
+    cameras[1].updateProjectionMatrix()
     
     cameras[2].left = frustumSize * aspect / - 2
     cameras[2].right = frustumSize * aspect / 2

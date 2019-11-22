@@ -4,7 +4,6 @@ class CustomDirectionalLight extends THREE.DirectionalLight {
     constructor(x , y, z, color, intensity, lookAtObject) {
         super(color, intensity)
 
-        var lookAtPostion = lookAtObject.position
         this.active = true
         this.changeActiveState = false
         
@@ -12,7 +11,7 @@ class CustomDirectionalLight extends THREE.DirectionalLight {
         this.castShadow = true
 
         this.position.set(x, y, z)
-        this.lookAt(lookAtPostion)
+        this.target = lookAtObject
     }
 
     updateLight(paused) {
