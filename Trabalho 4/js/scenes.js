@@ -1,6 +1,8 @@
 class MainScene extends THREE.Scene {
     constructor() {
         super()
+        clock.start()
+        
         this.MAX_CAMERA_INDEX = 1
         this.MIN_CAMERA_INDEX = 0
 
@@ -31,23 +33,21 @@ class MainScene extends THREE.Scene {
         this.add(this.pauseText)
     }
 
-    animate() {
+    animate(timeDiff) {
         this.switchPause()
         this.restart()
         this.ball.changeMovement(this.paused)
 
         this.swtichCamera()
 
-        this.directionalLight.updateLight()
-        this.pointLight.updateLight()
+        this.directionalLight.updateLight(this.paused)
+        this.pointLight.updateLight(this.paused)
 
         this.toggleWireframe()
         this.toggleLightCalc()
 
-        if (!this.paused) {
-            this.ball.move()
-            this.dice.move()
-        }
+        this.ball.move(timeDiff)
+        this.dice.move(timeDiff)
     }
 
     onKeyDown(e) {
@@ -138,9 +138,11 @@ class MainScene extends THREE.Scene {
             return
 
         if (!this.paused) {
+            clock.stop()
             previousCamera = camera
             camera = 2
         } else {
+            clock.start()
             camera = previousCamera
         }
 

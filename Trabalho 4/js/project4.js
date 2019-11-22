@@ -1,5 +1,5 @@
 /* var THREE */
-var scene, renderer, camera, previousCamera = 0
+var scene, renderer, camera, clock, previousCamera = 0
 var geometry, material, mesh, pauseText
 var cameras = []
 
@@ -7,7 +7,7 @@ var SCREEN_WIDTH = window.innerWidth
 var SCREEN_HEIGHT = window.innerHeight
 var ASPECT_RATIO = 16 / 9
 var PROPORTION = 1 / 15
-var FRAMERATE = 80
+var FRAMERATE = 60
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT
 var zoom = 1
 var frustumSize = 200
@@ -58,7 +58,8 @@ function onKeyDown(e){
 function animate() {
     'use strict'
 
-    scene.animate()
+    var timeDiff = clock.getDelta()
+    scene.animate(timeDiff)
 
     render()
     setTimeout( function() {
@@ -92,6 +93,10 @@ function onResize() {
 
 function init() {
     'use strict'
+
+    clock = new THREE.Clock(true)
+    clock.start()
+    console.log("Clock is Running: " + clock.running)
 
     if (aspect < ASPECT_RATIO)
         zoom = aspect / ASPECT_RATIO

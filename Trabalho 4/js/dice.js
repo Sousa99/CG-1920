@@ -1,6 +1,6 @@
 var geometry, material, mesh
 const DICE_SIZE = 15
-const DICE_SPEED = 0.025
+const DICE_SPEED = 2
 
 class Dice extends THREE.Object3D {
     constructor(x, y, z) {
@@ -62,10 +62,10 @@ class Dice extends THREE.Object3D {
         this.position.set(x, y + (Math.sqrt(3) * DICE_SIZE) / 2, z)
     }
 
-    move() {
+    move(timeDiff) {
         if (!this.moving)
             return
 
-        this.rotateY(DICE_SPEED)
+        this.rotateY(DICE_SPEED * timeDiff)
     }
 }

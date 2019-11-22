@@ -2,8 +2,8 @@ var geometry, material, mesh, texture
 const RADIUS_BALL = 5
 const DISTANCE_BALL = 40
 
-const ACCELARATION = 0.0005
-const MAX_VELOCITY = 0.065
+const ACCELARATION = 0.05
+const MAX_VELOCITY = 3.5
 
 class Ball extends THREE.Object3D {
     constructor() {
@@ -39,7 +39,7 @@ class Ball extends THREE.Object3D {
         this.position.set(DISTANCE_BALL * Math.cos(this.angle), RADIUS_BALL, DISTANCE_BALL * Math.sin(this.angle))
     }
 
-    move() {
+    move(timeDiff) {
         'use strict'
 
         this.velocity += this.accelaration
@@ -51,10 +51,10 @@ class Ball extends THREE.Object3D {
             this.velocity = MAX_VELOCITY
         }
 
-        this.angle += this.velocity
+        this.angle += this.velocity * timeDiff
         this.angle %= 2 * Math.PI
-        this.rotateY(-1 * this.velocity)
-        this.mesh.rotateX(this.velocity * 5 / RADIUS_BALL);
+        this.rotateY(-1 * this.velocity * timeDiff)
+        this.mesh.rotateX(this.velocity * 5 / RADIUS_BALL * timeDiff);
 
         this.position.x = DISTANCE_BALL * Math.cos(this.angle)
         this.position.z = DISTANCE_BALL * Math.sin(this.angle)
