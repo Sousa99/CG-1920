@@ -85,10 +85,12 @@ function onResize() {
 
     cameras[1].left = frustumSize * aspect / - 2
     cameras[1].right = frustumSize * aspect / 2
+    cameras[1].zoom = zoom
     cameras[1].updateProjectionMatrix()
     
     cameras[2].left = frustumSize * aspect / - 2
     cameras[2].right = frustumSize * aspect / 2
+    cameras[2].zoom = zoom
     cameras[2].updateProjectionMatrix()
 }
 
